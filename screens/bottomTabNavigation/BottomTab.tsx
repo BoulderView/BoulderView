@@ -10,7 +10,16 @@ const Tab = createBottomTabNavigator();
 
 export const BottomTab = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName='Home' screenOptions={{
+      tabBarActiveTintColor:"black",
+      tabBarInactiveTintColor:"white",
+      tabBarInactiveBackgroundColor:"#0B2447",
+      tabBarActiveBackgroundColor:"#A5D7E8",
+      tabBarLabelStyle:{
+        fontSize:15,
+        fontFamily:"notoserif"
+      }
+    }}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Venue" component={VenueScreen} />
       <Tab.Screen name="Climbs" component={ClimbsScreen} />
