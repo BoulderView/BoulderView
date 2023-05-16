@@ -10,7 +10,8 @@ import { SavedScreen } from './SavedScreen';
 
 const Tab = createBottomTabNavigator();
 
-export const ScreenNavigation = () => {
+// Screen navigation with bottom tab bar
+export const ScreenNavigation: React.FC = () => {
   return (
     <Tab.Navigator initialRouteName='Home' screenOptions={{
       tabBarActiveTintColor:"black",
@@ -33,8 +34,7 @@ export const ScreenNavigation = () => {
       <Tab.Screen name="Home" component={HomeScreen} options={{
         tabBarIcon: ({color, size}) => (
           <Ionicons name="home-outline" color={color} size={size} />
-        ),
-        title: "Home"
+        )
       }}/>
       <Tab.Screen name="Venue" component={VenueScreen} options={{
         tabBarIcon: ({color, size}) => (
@@ -43,7 +43,7 @@ export const ScreenNavigation = () => {
       }}/>
       <Tab.Screen name="Climbs" component={ClimbsScreen} options={{
         tabBarIcon: ({color, size}) => (
-          <Ionicons name="play-circle-outline" color={color} size={size} />
+          <Ionicons name="stats-chart-outline" color={color} size={size} />
         )
       }}/>
       <Tab.Screen name="Saved" component={SavedScreen} options={{

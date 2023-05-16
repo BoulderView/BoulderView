@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button } from "react-native";
 
-export const ClimbsScreen = () => {
+import { MonthlyBarChart } from '../../components/MonthlyBarChart';
+
+export const ClimbsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
+      <MonthlyBarChart />
       <Text
         onPress={() => alert("This is the climbs screen")}
         style={styles.text}>Climbs Screen</Text>

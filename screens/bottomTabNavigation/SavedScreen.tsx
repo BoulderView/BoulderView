@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button } from "react-native";
 
-export const SavedScreen = () => {
+export const SavedScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text
