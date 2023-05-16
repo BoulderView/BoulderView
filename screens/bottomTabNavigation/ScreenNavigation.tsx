@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { HomeScreen } from './HomeScreen';
@@ -11,7 +10,7 @@ import { SavedScreen } from './SavedScreen';
 
 const Tab = createBottomTabNavigator();
 
-export const BottomTab = () => {
+export const ScreenNavigation = () => {
   return (
     <Tab.Navigator initialRouteName='Home' screenOptions={{
       tabBarActiveTintColor:"black",
@@ -21,12 +20,21 @@ export const BottomTab = () => {
       tabBarLabelStyle:{
         fontSize:15,
         fontFamily:"notoserif"
-      }
+      },
+      headerStyle: {
+        backgroundColor: '#fff'
+      },
+      headerTintColor: '#0B2447',
+      headerTitleStyle: {
+        fontSize: 30
+      },
+      headerTitleAlign: 'center'
     }}>
       <Tab.Screen name="Home" component={HomeScreen} options={{
         tabBarIcon: ({color, size}) => (
           <Ionicons name="home-outline" color={color} size={size} />
-        )
+        ),
+        title: "Home"
       }}/>
       <Tab.Screen name="Venue" component={VenueScreen} options={{
         tabBarIcon: ({color, size}) => (
