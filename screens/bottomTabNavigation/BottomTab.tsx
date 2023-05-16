@@ -1,5 +1,8 @@
 import * as React from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import { HomeScreen } from './HomeScreen';
 import { VenueScreen } from './VenueScreen';
 import { ProfileScreen } from './ProfileScreen';
@@ -20,11 +23,31 @@ export const BottomTab = () => {
         fontFamily:"notoserif"
       }
     }}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Venue" component={VenueScreen} />
-      <Tab.Screen name="Climbs" component={ClimbsScreen} />
-      <Tab.Screen name="Saved" component={SavedScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} options={{
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name="home-outline" color={color} size={size} />
+        )
+      }}/>
+      <Tab.Screen name="Venue" component={VenueScreen} options={{
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name="location-outline" color={color} size={size} />
+        )
+      }}/>
+      <Tab.Screen name="Climbs" component={ClimbsScreen} options={{
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name="play-circle-outline" color={color} size={size} />
+        )
+      }}/>
+      <Tab.Screen name="Saved" component={SavedScreen} options={{
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name="bookmark-outline" color={color} size={size} />
+        )
+      }}/>
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name="person-circle-outline" color={color} size={size} />
+        )
+      }}/>
     </Tab.Navigator>
   );
 };
