@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, ImageSourcePropType } from "react-native";
-import { Card, Paragraph, Title } from "react-native-paper";
+import { Button, Card, Paragraph, Title } from "react-native-paper";
 
 export const HomeCard = (props: {
     title: string;
@@ -10,13 +10,16 @@ export const HomeCard = (props: {
     return (
         <View style={styles.container}>
             <Card>
-                <Card.Cover source={props.coverImage}></Card.Cover>
+                <Card.Cover source={props.coverImage} style={{ width: 350, height: 350 }}></Card.Cover>
                 <Card.Content>
                     <Title>{props.title}</Title>
                 </Card.Content>
                 <Card.Content>
                     <Paragraph>{props.content}</Paragraph>
                 </Card.Content>
+                <Card.Actions>
+                    <Button>Favourite</Button>
+                </Card.Actions>
             </Card>
         </View>);
 }

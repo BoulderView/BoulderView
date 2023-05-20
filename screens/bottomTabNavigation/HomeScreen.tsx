@@ -11,7 +11,7 @@ export const HomeScreen = () => {
       <SearchBar />
       <View style={styles.buttons}>
         <Button>Locations</Button>
-        <Button>Saved Places</Button>
+        <Button>Favourited Places</Button>
       </View>
       <ScrollView>
         <HomeCard title="Boruda" coverImage={require('../../assets/borudaclimbing.jpg')} content='boruda - a concept boulder gym inspired by the Japanese climbing scene.'></HomeCard>
