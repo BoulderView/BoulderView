@@ -1,6 +1,5 @@
-import Constants from 'expo-constants';
 import * as React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { BottomSheetContentComponent } from './BottomSheetContentComponent';
 
