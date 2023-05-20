@@ -1,26 +1,34 @@
 import * as React from 'react';
-import { StyleProp, StyleSheetProperties, ViewStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, TextInputSubmitEditingEventData, ViewStyle } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
+  searchFunction: (query: string) => void;
 }
 
-export const SearchBar = ({ style }:Props) => {
+export const SearchBar = ({ style, searchFunction }:Props) => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = (query:string) => setSearchQuery(query);
+
+  const onSubmitSearch = (event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
+    const query = event.nativeEvent.text;
+    searchFunction(query);
+  };
 
   return (
     <>
       <Searchbar
         placeholder="Search"
         onChangeText={onChangeSearch}
+        onSubmitEditing={onSubmitSearch}
         value={searchQuery}
         style={[
           style, 
           {marginLeft:10,
-          marginRight:10}]}
+          marginRight:10}
+        ]}
       />
     </>
   );

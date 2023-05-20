@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, Dimensions, Platform, StatusBar } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { View, StyleSheet, Dimensions, Text } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { SearchBar } from '../../components/SearchBar';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from "expo-constants";
+import { useState } from 'react';
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,16 +17,68 @@ const INITIAL_POSITION = {  // boruda climb's location
   longitudeDelta: LONGITUDE_DELTA
 };
 
+// Dummy data
+const data: { [key : string] : {position : Region }} = {
+  "boruda" : {
+    "position" : {
+      latitude: 1.2741,
+      longitude: 103.8037,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    }
+  },
+  "Fit Bloc" : {
+    "position" : {
+      latitude: 1.287825,
+      longitude: 103.790536,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    }
+  }
+}
+
 export const VenueScreen: React.FC = () => {
+  const [region, setRegion] = useState(INITIAL_POSITION);
+  const [showSecondary, setShowSecondary] = useState(false);
+
+  // Do something on submit
+  const onSubmitSearch = (query:string) => {
+    console.log("hello");
+  }
+
+  const mapMarkerPress = () => {
+    setShowSecondary(true);
+  }
+
   return (
     <View style={styles.container}>
       <MapView 
         style={styles.map} 
         provider={PROVIDER_GOOGLE} 
-        initialRegion={INITIAL_POSITION}/>
+        initialRegion={INITIAL_POSITION}
+        onRegionChange={setRegion}
+      >
+       {Object.keys(data).map((key) => { // iterating through the dummy data
+          const item = data[key];
+          const position = item.position;
+          return (
+            <Marker
+              key={key}
+              coordinate={position}
+              title={key}
+              onPress={() => mapMarkerPress()}
+            />
+          );
+        })}
+      </MapView>
       <View style={styles.searchBarContainer}>
-        <SearchBar />
+        <SearchBar searchFunction={onSubmitSearch}/>
       </View>
+      {showSecondary ? 
+      <View style={styles.secondaryView}>
+        <Text>hello</Text>
+      </View> : 
+      null}
     </View>
   );
 };
@@ -51,4 +103,13 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingTop: Constants.statusBarHeight + 10,
   },
+  secondaryView : {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height / 3,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0
+  }
 });

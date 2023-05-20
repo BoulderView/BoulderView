@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 import { SearchBar } from '../../components/SearchBar';
 
 export const HomeScreen = () => {
+  const onSubmitSearch = (query:string) => {
+    console.log("hello");
+  }
+
   return (
     <View style={styles.container}> 
-      <SearchBar />
+      <SearchBar searchFunction={onSubmitSearch}/>
       <Text>This is bottom text.</Text>
     </View>
   );
