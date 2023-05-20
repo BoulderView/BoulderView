@@ -1,9 +1,12 @@
+import "react-native-gesture-handler";
 import * as React from 'react';
 import { View, StyleSheet, Dimensions, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { SearchBar } from '../../components/SearchBar';
 import Constants from "expo-constants";
-import { useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { BottomSheetComponent } from "../../components/BottomSheet/BottomSheetComponent";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,6 +44,17 @@ export const VenueScreen: React.FC = () => {
   const [region, setRegion] = useState(INITIAL_POSITION);
   const [showSecondary, setShowSecondary] = useState(false);
 
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [isOpen, setIsOpen] = useState(true);
+
+  const snapPoints = ['30%'];
+
+  const handleSnapPress = useCallback((index:number) => {
+    bottomSheetRef.current?.snapToIndex(index);
+    setIsOpen(true);
+  }, [])
+
   // Do something on submit
   const onSubmitSearch = (query:string) => {
     console.log("hello");
@@ -58,7 +72,7 @@ export const VenueScreen: React.FC = () => {
         initialRegion={INITIAL_POSITION}
         onRegionChange={setRegion}
       >
-       {Object.keys(data).map((key) => { // iterating through the dummy data
+      {Object.keys(data).map((key) => { // iterating through the dummy data
           const item = data[key];
           const position = item.position;
           return (
@@ -66,7 +80,7 @@ export const VenueScreen: React.FC = () => {
               key={key}
               coordinate={position}
               title={key}
-              onPress={() => mapMarkerPress()}
+              onPress={() => handleSnapPress(0)}
             />
           );
         })}
@@ -74,11 +88,16 @@ export const VenueScreen: React.FC = () => {
       <View style={styles.searchBarContainer}>
         <SearchBar searchFunction={onSubmitSearch}/>
       </View>
-      {showSecondary ? 
-      <View style={styles.secondaryView}>
-        <Text>hello</Text>
-      </View> : 
-      null}
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        onClose={() => setIsOpen(false)}
+      >
+        <BottomSheetView>
+          <BottomSheetComponent />
+        </BottomSheetView>
+      </BottomSheet>  
     </View>
   );
 };

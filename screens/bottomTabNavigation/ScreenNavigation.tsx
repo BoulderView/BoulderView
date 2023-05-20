@@ -22,8 +22,7 @@ export const ScreenNavigation: React.FC = () => {
         tabBarInactiveBackgroundColor:"#0B2447",
         tabBarActiveBackgroundColor:"#A5D7E8",
         tabBarLabelStyle:{
-          fontSize:15,
-          fontFamily:"notoserif"
+          fontSize:15
         },
         headerStyle: {
           backgroundColor: '#fff'

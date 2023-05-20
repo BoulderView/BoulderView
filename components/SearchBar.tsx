@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { NativeSyntheticEvent, StyleProp, TextInputSubmitEditingEventData, ViewStyle } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
@@ -8,7 +9,7 @@ interface Props {
 }
 
 export const SearchBar = ({ style, searchFunction }:Props) => {
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const onChangeSearch = (query:string) => setSearchQuery(query);
 
