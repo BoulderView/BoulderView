@@ -12,7 +12,7 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar searchFunction={onSubmitSearch}/>
       <View style={styles.buttons}>
         <Button>Locations</Button>
         <Button>Favourited Places</Button>
