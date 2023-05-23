@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, ImageSourcePropType } from "react-native";
+import { Text, View, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
 
 export const HomeCard = (props: {
@@ -8,9 +8,9 @@ export const HomeCard = (props: {
     content: string;
 }) => {
     return (
-        <View style={styles.container}>
+        <View style={styles.homecard}>
             <Card>
-                <Card.Cover source={props.coverImage} style={{ width: 350, height: 350 }}></Card.Cover>
+                <Card.Cover source={props.coverImage}></Card.Cover>
                 <Card.Content>
                     <Title>{props.title}</Title>
                 </Card.Content>
@@ -25,10 +25,10 @@ export const HomeCard = (props: {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    homecard: {
         flex: 0,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: "white",
+        paddingHorizontal: 5,
+        paddingVertical: 3,
+        width: '100%',
     },
 });
