@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-paper';
-import { bottomScreenModel } from '../../models/bottomScreenModel';
 
 interface Props {
   icon: string,
