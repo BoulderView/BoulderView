@@ -10,6 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 .eslintrc.js
+.vscode
 
 # macOS
 .DS_Store
