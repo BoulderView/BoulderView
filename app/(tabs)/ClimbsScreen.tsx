@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Button } from "react-native";
 
 import { MonthlyBarChart } from '../../components/MonthlyBarChart';
 
+// Still a work in progress
 export const ClimbsScreen: React.FC = () => {
   return (
     <View style={styles.container}>

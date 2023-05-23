@@ -1,11 +1,12 @@
 import "react-native-gesture-handler";
 import * as React from 'react';
-import { View, StyleSheet, Dimensions, Text } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { SearchBar } from '../../components/SearchBar';
 import Constants from "expo-constants";
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+
 import { BottomSheetComponent } from "../../components/BottomSheet/BottomSheetComponent";
 
 const { width, height } = Dimensions.get("window");
@@ -40,9 +41,8 @@ const data: { [key : string] : {position : Region }} = {
   }
 }
 
-export const VenueScreen: React.FC = () => {
+const VenueScreen: React.FC = () => {
   const [region, setRegion] = useState(INITIAL_POSITION);
-  const [showSecondary, setShowSecondary] = useState(false);
 
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -58,10 +58,6 @@ export const VenueScreen: React.FC = () => {
   // Do something on submit
   const onSubmitSearch = (query:string) => {
     console.log("hello");
-  }
-
-  const mapMarkerPress = () => {
-    setShowSecondary(true);
   }
 
   return (
@@ -101,6 +97,8 @@ export const VenueScreen: React.FC = () => {
     </View>
   );
 };
+
+export default VenueScreen;
 
 const styles = StyleSheet.create({
   container: {

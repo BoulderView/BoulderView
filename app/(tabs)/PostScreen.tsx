@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
-export const ProfileScreen = () => {
+const PostScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text
-        onPress={() => alert("This is the profile screen")}
-        style={styles.text}>Profile Screen</Text>
+        onPress={() => alert("This is the saved screen")}
+        style={styles.text}>Saved Screen</Text>
     </View>
   );
 };
+
+export default PostScreen;
 
 const styles = StyleSheet.create({
   container: {

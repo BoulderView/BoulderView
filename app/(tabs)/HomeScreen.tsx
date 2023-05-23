@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import { Button, Card, Paragraph, Title } from "react-native-paper";
+import { Button } from "react-native-paper";
 
 import { SearchBar } from '../../components/SearchBar';
 import { HomeCard } from '../../components/HomeCard';
 
-export const HomeScreen = () => {
+const HomeScreen = () => {
   const onSubmitSearch = (query: string) => {
     console.log("hello");
   }
 
   return (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar searchFunction={onSubmitSearch}/>
       <View style={styles.buttons}>
         <Button>Locations</Button>
         <Button>Favourited Places</Button>
@@ -28,6 +28,8 @@ export const HomeScreen = () => {
     </View >
   );
 }
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
