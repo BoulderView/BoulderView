@@ -1,19 +1,16 @@
-import { Stack } from "expo-router";
+import React from 'react';
+import { Slot, Stack } from "expo-router";
 import { AuthProvider } from "../contexts/auth";  // AuthProvider not finished
 
 const MainLayout = () => {
   return (
     // AuthProvider goes here
-    <Stack>
-      {/* removing the (tabs) header */}
-      <Stack.Screen
-        name="(tabs)"
-        options={{
-          headerShown:false
-        }}
-      />
-    </Stack>
-  )
+    <AuthProvider>
+      <Stack screenOptions={{
+        headerShown: false
+      }} />
+    </AuthProvider>
+  );
 };
 
 export default MainLayout;
