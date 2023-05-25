@@ -1,3 +1,4 @@
+import React from 'react';
 import { Stack } from "expo-router";
 import { AuthProvider } from "../contexts/auth";  // AuthProvider not finished
 
@@ -9,7 +10,7 @@ const MainLayout = () => {
       <Stack.Screen
         name="(tabs)"
         options={{
-          headerShown:false
+          headerShown: false
         }}
       />
     </Stack>
