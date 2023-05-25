@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { AuthProvider } from "../contexts/auth";  // AuthProvider not finished
 
 const MainLayout = () => {
