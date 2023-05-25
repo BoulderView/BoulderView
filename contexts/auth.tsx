@@ -3,14 +3,13 @@ import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext({});
 
-interface Props {
-  children:any;
-}
-
 export const useAuth = () => {
   return useContext(AuthContext);
 }
 
+interface Props {
+  children:any;
+}
 
 export const AuthProvider = ({children}:Props) => {
   const [user, setUser] = useState(null);
