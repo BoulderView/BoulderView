@@ -1,20 +1,21 @@
+import React from 'react';
 import { Stack } from "expo-router";
 
 const HomeLayout = () => {
   return (
     // AuthProvider goes here
-    <Stack 
+    <Stack
       screenOptions={{
         headerTitleAlign: 'center',
-        headerShadowVisible:false,
+        headerShadowVisible: false,
       }}>
       <Stack.Screen
         name="index"
         options={{
-          headerTitle:"Discover",
-          headerTitleStyle: { 
-            fontSize:30
-        },
+          headerTitle: "Discover",
+          headerTitleStyle: {
+            fontSize: 30
+          },
         }}
       />
     </Stack>

@@ -6,5 +6,5 @@ export default function Root() {
   const navigation = useRouter();
 
   // Redirect to home page for now, need authProvider
-  return <Redirect href="/home" />;
+  return (<Redirect href="/home" />);
 }
