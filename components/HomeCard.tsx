@@ -16,7 +16,7 @@ export const HomeCard = (props: {
     <View style={styles.homecard}>
       {/* Will go to the gym page when the button is pressed */}
       <Card onPress={() => {
-        router.push(`/home/${props.id}`)
+        router.push({pathname: `/home/${props.id}`})
       }}>
         <Card.Cover source={props.coverImage}></Card.Cover>
         <Card.Content>
