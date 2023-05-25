@@ -13,6 +13,10 @@ const GYM_DATA = [
   { title: "Boulder+ Chevrons", coverImage: require("../../assets/boulderplus.jpg"), content: "Aperia Mall is home to boulder+, Singapore's newest bouldering gym. Come see what the fuss is about." },
 ]
 
+const onSubmitSearch = (query: string) => {
+  console.log("hello");
+}
+
 export const HomeScreen = () => {
   return (
     <View style={styles.container}>
@@ -25,8 +29,8 @@ export const HomeScreen = () => {
         data={GYM_DATA}
         renderItem={({ item }) =>
           <HomeCard title={item.title}
-            coverImage={item.coverImage}
-            content={item.content}></HomeCard>}
+            coverImage={item.cove rImage}
+        content={item.content}></HomeCard>}
       />
     </View >
   );
