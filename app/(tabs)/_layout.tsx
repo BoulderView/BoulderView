@@ -3,12 +3,18 @@ import { Platform, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const TabLayout = () => {
+  interface Options {
+    color: string;
+    size: number;
+    focused: boolean;
+  }
+
   return (
     <Tabs screenOptions={{
-      tabBarActiveTintColor:"black",
+      tabBarActiveTintColor:"#A5D7E8",
       tabBarInactiveTintColor:"white",
       tabBarInactiveBackgroundColor:"#0B2447",
-      tabBarActiveBackgroundColor:"#A5D7E8",
+      tabBarActiveBackgroundColor:"#0B2447",
       tabBarLabelStyle:{
         fontSize:12
       },
@@ -27,8 +33,8 @@ const TabLayout = () => {
         options={{
           tabBarLabel:"Home",
           headerShown:false,
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name="home-outline" color={color} size={size} />
+          tabBarIcon: ({color, size, focused}) => (
+            <Ionicons name={focused ? "home" : "home-outline"} color={color} size={size} />
           )
         }}
       />
@@ -37,8 +43,8 @@ const TabLayout = () => {
         options={{
           title:"Venues",
           headerShown:false,
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name="location-outline" color={color} size={size} />
+          tabBarIcon: ({color, size, focused}) => (
+            <Ionicons name={focused ? "location" : "location-outline"} color={color} size={size} />
           )
         }}
       />
@@ -48,8 +54,8 @@ const TabLayout = () => {
           tabBarLabel:"Post",
           headerTitle:"Post",
           headerShown:false,
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name="add-circle-outline" color={color} size={size} />
+          tabBarIcon: ({color, size, focused}) => (
+            <Ionicons name={focused ? "add-circle" : "add-circle-outline"} color={color} size={size} />
           )
         }}
       />
@@ -59,8 +65,8 @@ const TabLayout = () => {
           tabBarLabel:"Climbs",
           headerTitle:"Climbs",
           headerShown:false,
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name="person-outline" color={color} size={size} />
+          tabBarIcon: ({color, size, focused}) => (
+            <Ionicons name={focused ? "stats-chart" : "stats-chart-outline"} color={color} size={size} />
           )
         }}
       />
@@ -70,8 +76,8 @@ const TabLayout = () => {
           tabBarLabel:"Profile",
           headerTitle:"Profile",
           headerShown:false,
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name="person-outline" color={color} size={size} />
+          tabBarIcon: ({color, size, focused}) => (
+            <Ionicons name={focused ? "person" : "person-outline"} color={color} size={size} />
           )
         }}
       />
