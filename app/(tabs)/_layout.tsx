@@ -2,7 +2,7 @@ import { Stack, Tabs } from "expo-router";
 import { Platform, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const HomeLayout = () => {
+const TabLayout = () => {
   return (
     <Tabs screenOptions={{
       tabBarActiveTintColor:"black",
@@ -23,36 +23,53 @@ const HomeLayout = () => {
       tabBarHideOnKeyboard: Platform.OS!== 'ios'  // disabled for ios
     }}>
       <Tabs.Screen
-        name="HomeScreen"
+        name="home"
         options={{
-          title:"Home",
+          tabBarLabel:"Home",
+          headerShown:false,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="home-outline" color={color} size={size} />
           )
         }}
       />
       <Tabs.Screen
-        name="VenueScreen"
+        name="venues"
         options={{
           title:"Venues",
+          headerShown:false,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="location-outline" color={color} size={size} />
           )
         }}
       />
       <Tabs.Screen
-        name="PostScreen"
+        name="post"
         options={{
-          title:"Post",
+          tabBarLabel:"Post",
+          headerTitle:"Post",
+          headerShown:false,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="add-circle-outline" color={color} size={size} />
           )
         }}
       />
       <Tabs.Screen
-        name="ProfileScreen"
+        name="climbs"
         options={{
-          title:"Profile",
+          tabBarLabel:"Climbs",
+          headerTitle:"Climbs",
+          headerShown:false,
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name="person-outline" color={color} size={size} />
+          )
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarLabel:"Profile",
+          headerTitle:"Profile",
+          headerShown:false,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="person-outline" color={color} size={size} />
           )
@@ -62,4 +79,4 @@ const HomeLayout = () => {
   )
 };
 
-export default HomeLayout;
+export default TabLayout;

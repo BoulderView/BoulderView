@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button } from "react-native";
 
-import { MonthlyBarChart } from '../../components/MonthlyBarChart';
+import { MonthlyBarChart } from '../../../components/MonthlyBarChart';
 
 // Still a work in progress
-export const ClimbsScreen: React.FC = () => {
+const ClimbsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <MonthlyBarChart />
@@ -14,6 +14,8 @@ export const ClimbsScreen: React.FC = () => {
     </View>
   );
 };
+
+export default ClimbsScreen;
 
 const styles = StyleSheet.create({
   container: {

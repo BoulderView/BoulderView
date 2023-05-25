@@ -1,10 +1,11 @@
 import { Stack } from "expo-router";
 import { AuthProvider } from "../contexts/auth";  // AuthProvider not finished
 
-const Layout = () => {
+const MainLayout = () => {
   return (
     // AuthProvider goes here
     <Stack>
+      {/* removing the (tabs) header */}
       <Stack.Screen
         name="(tabs)"
         options={{
@@ -15,4 +16,4 @@ const Layout = () => {
   )
 };
 
-export default Layout;
+export default MainLayout;

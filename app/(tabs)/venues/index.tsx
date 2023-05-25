@@ -2,12 +2,12 @@ import "react-native-gesture-handler";
 import * as React from 'react';
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { SearchBar } from '../../components/SearchBar';
+import { SearchBar } from '../../../components/SearchBar';
 import Constants from "expo-constants";
 import { useCallback, useRef, useState } from 'react';
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
-import { BottomSheetComponent } from "../../components/BottomSheet/BottomSheetComponent";
+import { BottomSheetComponent } from "../../../components/BottomSheet/BottomSheetComponent";
 
 const { width, height } = Dimensions.get("window");
 
