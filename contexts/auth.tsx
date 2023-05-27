@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from '../lib/supabase';
 import { useRouter, useSegments } from 'expo-router';
+import { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 
 const AuthContext = createContext({});
 
@@ -10,19 +11,17 @@ export const useAuth = () => {
 }
 
 interface Props {
-  children: any;
+  children:ReactNode;
 }
 
-function useProtectedRoute(user) {
+function useProtectedRoute(user: User|null) {
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    console.log('useProtectedRoute useEffect called');
-    const inAuthGroup = segments[0] === "(auth)"
+    const inAuthGroup = segments[0] === "(auth)";
     if (!user && !inAuthGroup) {
-      console.log(`inAuthGroup: ${inAuthGroup}`)
-      router.replace("/login");
+     router.replace("/login");
     } else if (user && inAuthGroup) {
       router.replace('/');
     }
@@ -30,14 +29,14 @@ function useProtectedRoute(user) {
 }
 
 export const AuthProvider = ({ children }: Props) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User|null>(null);
+
   useProtectedRoute(user);
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event: any, session: any) => {
-      console.log(`authStateEvent: ${event}`);
+    const { data } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       if (event === "SIGNED_IN") {
-        setUser(session.user);
+        setUser(session ? session.user : null);
       } else if (event === "SIGNED_OUT") {
         setUser(null);
       }
