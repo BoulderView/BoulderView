@@ -72,7 +72,6 @@ const GymDetailsPage = () => {
     <View style={styles.container}>
       <Stack.Screen options={{ 
         headerTitle:data.title,
-        headerShown:false,
         headerRight: () => (
           <Button icon="bookmark-outline" mode="contained" onPress={handleButtonPress}>
             {data.followerCount}
@@ -83,7 +82,6 @@ const GymDetailsPage = () => {
         },
         headerTintColor: 'white', // Replace with your desired color for the button
       }} />
-      <GymTabNavigation />
     </View>
   )
 };
