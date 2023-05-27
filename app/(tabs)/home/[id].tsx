@@ -1,18 +1,10 @@
 import { Stack } from 'expo-router';
 import React, { createRef, forwardRef, useRef } from 'react';
 import { 
-  Text, 
   StyleSheet, 
-  View, 
-  Animated, 
-  Image, 
-  findNodeHandle } from 'react-native';
+  View  } from 'react-native';
 import { Button } from 'react-native-paper';
-
-import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import GymTabNavigation from '../../../components/GymTabNavigator';
+import Router from '../../../components/Router';
 
 const GYM_DATA = [
   {
@@ -82,6 +74,7 @@ const GymDetailsPage = () => {
         },
         headerTintColor: 'white', // Replace with your desired color for the button
       }} />
+      <Router />
     </View>
   )
 };
