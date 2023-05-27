@@ -9,7 +9,7 @@ import { AuthProvider } from '../../../contexts/auth';
 const GYM_DATA = [
   {
     id: 1,
-    title: "Boruda",
+    title: "Boruda Climbing",
     coverImage: require("../../../assets/borudaclimbing.jpg"),
     content: "boruda - a concept boulder gym inspired by the Japanese climbing scene."
   },
