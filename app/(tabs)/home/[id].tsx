@@ -1,14 +1,23 @@
 import { Stack } from 'expo-router';
-import React from 'react';
-import { Text, StyleSheet, SafeAreaView, View } from 'react-native';
+import React, { createRef, forwardRef, useRef } from 'react';
+import { 
+  Text, 
+  StyleSheet, 
+  View, 
+  Animated, 
+  Image, 
+  findNodeHandle } from 'react-native';
+import { Button } from 'react-native-paper';
 
-import GymHeader from "../../../components/GymHeader";
-
+import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import GymTabNavigation from '../../../components/GymTabNavigator';
 
 const GYM_DATA = [
   {
     id: 1,
-    title: "Boruda", 
+    title: "Boruda Climbing", 
     coverImage: require("../../../assets/borudaclimbing.jpg"), 
     content: "boruda - a concept boulder gym inspired by the Japanese climbing scene.",
     rating: 4.7,
@@ -55,21 +64,26 @@ const GymDetailsPage = () => {
   const id = 1
   const data = GYM_DATA[0]
 
+  const handleButtonPress = () => {
+    console.log("Pressed")
+  }
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ 
-        headerTitle: () => <GymHeader 
-          title={data.title}
-          rating={data.rating}
-          followerCount={data.followerCount}
-          image={data.coverImage} 
-        />,
+        headerTitle:data.title,
+        headerShown:false,
+        headerRight: () => (
+          <Button icon="bookmark-outline" mode="contained" onPress={handleButtonPress}>
+            {data.followerCount}
+          </Button>
+        ),
         headerStyle: {
           backgroundColor: '#576CBC', // Replace with your desired color
         },
         headerTintColor: 'white', // Replace with your desired color for the button
       }} />
-      <Text style={styles.text}>Id: {id}</Text>
+      <GymTabNavigation />
     </View>
   )
 };
@@ -78,11 +92,9 @@ export default GymDetailsPage;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: '#fff',
     alignItems: 'center',
-  },
-  text: {
-    fontSize: 26
+    justifyContent:"center",
   }
 });
