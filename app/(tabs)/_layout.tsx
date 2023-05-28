@@ -13,6 +13,9 @@ const TabLayout = () => {
         tabBarInactiveTintColor:"white",
         tabBarInactiveBackgroundColor:"#0B2447",
         tabBarActiveBackgroundColor:"#0B2447",
+        tabBarStyle:{
+          backgroundColor: "#0B2447",
+        },
         tabBarLabelStyle:{
           fontSize:12
         },
@@ -40,7 +43,7 @@ const TabLayout = () => {
           title:"Venues",
           headerShown:false,
           tabBarIcon: ({color, size, focused}) => (
-            <Ionicons name={focused ? "location" : "location-outline"} color={color} size={size} />
+            <Ionicons name={focused ? "map" : "map-outline"} color={color} size={size} />
           )
         }}
       />
