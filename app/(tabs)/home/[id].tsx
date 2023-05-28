@@ -85,6 +85,9 @@ const GymDetailsPage = () => {
     <View style={styles.container}>
       <Stack.Screen options={{ 
         headerTitle:data.title,
+        headerTitleStyle: {
+          fontSize: 25,
+        },
         headerRight: () => (
           <Button icon="bookmark-outline" mode="contained" onPress={handleButtonPress}>
             {data.followerCount}

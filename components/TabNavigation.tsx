@@ -4,6 +4,20 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import { TabObject } from '../models/TabObject';
 
+/* 
+  Have to provide a tabObject in this manner for it to work
+  const tabObject: TabObject = {
+    LocationsComponent: {
+      title: 'Locations',
+      component: <LocationsComponent />,
+    },
+    FavouritesComponent: {
+      title: 'Favourites',
+      component: <FavouritesComponent />,
+    },
+  };
+*/
+
 interface Props {
   tabObject:TabObject;
 }
