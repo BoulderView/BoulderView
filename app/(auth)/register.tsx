@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { View } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, TextInput, ActivityIndicator, Button } from 'react-native-paper';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 export default function Register() {
     const [email, setEmail] = useState('');
@@ -30,22 +31,76 @@ export default function Register() {
 
     return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
-            <Text>Email</Text>
-            <TextInput
-                autoCapitalize='none'
-                textContentType='emailAddress'
-                value={email}
-                onChangeText={setEmail} />
-            <Text>Password</Text>
-            <TextInput
-                secureTextEntry
-                autoCapitalize='none'
-                textContentType='password'
-                value={password}
-                onChangeText={setPassword} />
-            <Button onPress={handleSubmit}>Submit</Button>
+            <View style={{ marginBottom: 150 }}>
+                <Text style={{ textAlign: "center", fontSize: 28, fontWeight: '500', color: "#333", marginBottom: 30 }}>Register</Text>
+                <View style={styles.inputContainer}>
+                    <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        mode="flat"
+                        autoCapitalize='none'
+                        textContentType='emailAddress'
+                        value={email}
+                        onChangeText={setEmail} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <MaterialIcons name="lock" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
+                    <TextInput
+                        secureTextEntry
+                        style={styles.input}
+                        placeholder="Password"
+                        autoCapitalize='none'
+                        textContentType='password'
+                        value={password}
+                        onChangeText={setPassword} />
+                </View>
+                <View style={{ marginTop: 100 }}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={handleSubmit}>
+                        <Text style={styles.buttonTextStyle}>Create Account</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
             {errMsg !== "" && <Text>{errMsg}</Text>}
             {loading && <ActivityIndicator />}
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    inputContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: "hidden",
+        borderWidth: 0.1,
+        borderColor: '#000',
+        borderRadius: 20,
+        height: 50,
+        margin: 5,
+    },
+    input: {
+        borderRadius: 5,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        flex: 1,
+        backgroundColor: '#fff',
+        overflow: "hidden",
+    },
+    iconStyle: {
+        height: 25,
+        width: 25,
+    },
+    buttonStyle: {
+        backgroundColor: '#19376D',
+        padding: 20,
+        borderRadius: 20,
+        marginHorizontal: 10,
+    },
+    buttonTextStyle: {
+        textAlign: 'center',
+        fontWeight: '700',
+        fontSize: 16,
+        color: '#fff'
+    },
+});
