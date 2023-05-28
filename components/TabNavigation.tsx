@@ -6,6 +6,7 @@ import MapComponent from './homeComponents/MapComponent';
 import ExploreComponent from './homeComponents/ExploreComponent';
 import LeaderboardComponent from './homeComponents/LeaderboardComponent';
 
+// Enum all tabs
 enum Tab {
   MapComponent,
   ExploreComponent,

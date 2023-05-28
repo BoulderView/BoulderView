@@ -4,7 +4,6 @@ import { Button } from "react-native-paper";
 
 import { SearchBar } from '../../../components/SearchBar';
 import { HomeCard } from '../../../components/HomeCard';
-import { AuthProvider } from '../../../contexts/auth';
 
 const GYM_DATA = [
   {
