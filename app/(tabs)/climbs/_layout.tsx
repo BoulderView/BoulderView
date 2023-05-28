@@ -14,7 +14,11 @@ const HomeLayout = () => {
         options={{
           headerTitle: "Climbs",
           headerTitleStyle: {
-            fontSize: 30
+            fontSize: 25,
+          },
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: '#576CBC'
           },
         }}
       />

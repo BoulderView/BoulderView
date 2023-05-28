@@ -12,9 +12,13 @@ const PostLayout = () => {
         name="index"
         options={{
           headerTitle:"Post",
-          headerTitleStyle: { 
-            fontSize:30
-        },
+          headerTitleStyle: {
+            fontSize: 25,
+          },
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: '#576CBC'
+          },
         }}
       />
     </Stack>

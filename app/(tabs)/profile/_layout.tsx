@@ -12,9 +12,13 @@ const VenueLayout = () => {
         name="index"
         options={{
           headerTitle:"Profile",
-          headerTitleStyle: { 
-            fontSize:30
-        },
+          headerTitleStyle: {
+            fontSize: 25,
+          },
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: '#576CBC'
+          },
         }}
       />
     </Stack>

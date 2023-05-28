@@ -16,9 +16,6 @@ const TabLayout = () => {
         tabBarLabelStyle:{
           fontSize:12
         },
-        headerStyle: {
-          backgroundColor: '#fff'
-        },
         headerTintColor: '#0B2447',
         headerTitleStyle: {
           fontSize: 30

@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { View, StyleSheet, FlatList } from "react-native";
-import { Button } from "react-native-paper";
 
 import { SearchBar } from '../../../components/SearchBar';
+import LocationsComponent from '../../../components/homeComponents/LocationsComponent';
+import { TabObject } from '../../../models/TabObject';
+import FavouritesComponent from '../../../components/homeComponents/FavouritesComponent';
+import TabNavigation from '../../../components/TabNavigation';
 import { HomeCard } from '../../../components/HomeCard';
-import { AuthProvider } from '../../../contexts/auth';
 
 const GYM_DATA = [
   {
@@ -40,28 +42,21 @@ const GYM_DATA = [
 ]
 
 export const HomeScreen = () => {
-  // Do something on submit
-  const onSubmitSearch = (query: string) => {
-    console.log("hello");
-  }
+  // Define the tab object
+  const tabObject: TabObject = {
+    LocationsComponent: {
+      title: 'Locations',
+      component: <LocationsComponent />,
+    },
+    FavouritesComponent: {
+      title: 'Favourites',
+      component: <FavouritesComponent />,
+    },
+  };
 
   return (
     <View style={styles.container}>
-      <SearchBar searchFunction={onSubmitSearch} />
-      <View style={styles.buttons}>
-        <Button>Locations</Button>
-        <Button>Favourited Places</Button>
-      </View>
-      <FlatList
-        data={GYM_DATA}
-        renderItem={({ item }) =>
-          <HomeCard
-            id={item.id}
-            title={item.title}
-            coverImage={item.coverImage}
-            content={item.content}
-          />}
-      />
+      <TabNavigation tabObject={tabObject}/>
     </View>
   );
 }
