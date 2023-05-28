@@ -51,18 +51,20 @@ const ExploreComponent: React.FC = () => {
   return (
     <View style={styles.container}>
       <SearchBar searchFunction={onSubmitSearch} />
-      <FlatList
-        data={POST_DATA}
-        numColumns={2}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) =>
-          <PostOverviewComponent
-            image={item.image}
-            caption={item.caption}
-            name={item.name}
-            likes={item.likes}
-          />}
-      />
+      <View style={styles.flatListContainer}>
+        <FlatList
+          data={POST_DATA}
+          numColumns={2}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) =>
+            <PostOverviewComponent
+              image={item.image}
+              caption={item.caption}
+              name={item.name}
+              likes={item.likes}
+            />}
+        />
+      </View>
     </View>
   );
 };
@@ -72,6 +74,8 @@ export default ExploreComponent;
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    alignItems:"center"
   },
+  flatListContainer: {
+    alignItems:"center"
+  }
 })
