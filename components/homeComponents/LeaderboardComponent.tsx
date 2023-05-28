@@ -1,13 +1,10 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { Avatar, Card, IconButton, Divider } from 'react-native-paper';
+import { Avatar, Card, Divider } from 'react-native-paper';
 
-interface Props {
-  name:string;
-  boulder:string;
-  time:string;
-}
-
+/*
+  dummy data for leaderboard
+*/
 const LEADER_DATA = [
   {
     id: 1,
@@ -71,18 +68,14 @@ const LEADER_DATA = [
   }
 ]
 
-const ItemSeparator: React.FC = () => {
-  return <Divider />;
-};
-
-const LeaderboardComponent = (propss:Props) => {
+const LeaderboardComponent = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Hardest climbs</Text>
       <FlatList
         data={LEADER_DATA}
         keyExtractor={(item) => item.id.toString()}
-        ItemSeparatorComponent={ItemSeparator}
+        ItemSeparatorComponent={Divider}
         renderItem={({ item }) =>
             <Card.Title
             title={item.name}
