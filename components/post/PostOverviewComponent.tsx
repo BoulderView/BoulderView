@@ -13,7 +13,6 @@ interface Props {
   likes:number;
 }
 
-
 const PostOverviewComponent = (props:Props) => {
   return (
     <View style={styles.container}>

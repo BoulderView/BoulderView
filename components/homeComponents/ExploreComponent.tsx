@@ -42,18 +42,6 @@ const POST_DATA = [
   }
 ]
 
-
-const ItemSeparator: React.FC = () => {
-  return (
-    <View style={styles.separator}>
-      <View style={styles.horizontalSeparator} />
-      <View style={styles.verticalSeparator} />
-    </View>
-  );
-};
-
-
-
 const ExploreComponent: React.FC = () => {
   // Do something on submit
   const onSubmitSearch = (query: string) => {
