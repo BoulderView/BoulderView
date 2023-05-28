@@ -1,19 +1,35 @@
 {
-    "build": {
-      "preview": {
-        "android": {
-          "buildType": "apk"
-        }
+  "cli": {
+    "version": ">= 3.13.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient":true,
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
       },
-      "preview2": {
-        "android": {
-          "gradleCommand": ":app:assembleRelease"
-        }
+      "ios": {
+        "buildConfiguration": "Debug"
+      }
+    },
+    "preview": {
+      "ios": {
+        "simulator":true
       },
-      "preview3": {
-        "developmentClient": true
+      "android" : {
+        "buildType": "apk"
       },
-      "production": {}
-    }
+      "distribution": "internal",
+      "env": {
+        "SUPABASE_PROJECT_URL":"https://oyddvgscselkwusnocru.supabase.co",
+        "SUPABASE_API_KEY":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im95ZGR2Z3Njc2Vsa3d1c25vY3J1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODQ1NTk1MjUsImV4cCI6MjAwMDEzNTUyNX0.EaB0bxVD5YP8XuaC-_y0ZiP4SFVjiWuyvx0-edrBWUc",
+        "GOOGLE_MAPS_API_KEY":"AIzaSyCJofptypq9nORlUr69cw0VJ07GBxifEe4"
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
   }
-  
+}
