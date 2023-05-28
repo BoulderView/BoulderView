@@ -16,11 +16,8 @@
 <h3 align="left">For Milestone 1:</h3>
 <p align="left">
 1. Created a functional login/register page that connects to our Supabase database
-
 2. Created a functional profile page that retrieves information from Supabase with CRUD capability
-
 3. Created a functional map component on our app to navigate to the gym
-
 4. Created 
 </p>
 
