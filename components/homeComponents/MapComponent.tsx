@@ -32,6 +32,16 @@ const MapComponent: React.FC = () => {
 
   const [panEnabled, setPanEnabled] = useState(false);
 
+  /*
+    Ensure that the image cannot be panned without zooming
+    and made sure that zoom does not become ridiculously small
+
+    To fix panning the image without zooming, panEnabled is set to
+    true only when zoomed in
+
+    To fix zoom out too small, reset all animated value to original when
+    scale < 1
+  */
   const handlePinchStateChange = ({ nativeEvent }:any) => {
     // Enabling pan only after pinch-zoom
     if (nativeEvent.state === State.ACTIVE) {
