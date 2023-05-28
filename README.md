@@ -27,8 +27,11 @@
 <h3 align="left">For Milestone 2:</h3>
 <p align="left">
 1 - We aim to create the statistics page with fully customisable workouts to track
+
 2 - Create the media sharing and searching features
+
 3 - Attempt to create a interactable indoor map
+
 4 - Start working on and improving the UI
 </p>
 
