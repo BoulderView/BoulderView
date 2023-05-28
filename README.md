@@ -7,7 +7,7 @@
 
 - 👨‍💻 A stat tracker to track your climbing sessions and record your best climbs 
 
-- Main collaborators are myself [here](https://github.com/Kurtyjlee) and Zheng Jing [here!](https://github.com/leezhengjing?tab=repositories)
+- Main collaborators are [Kurt](https://github.com/Kurtyjlee) and [Zheng Jing](https://github.com/leezhengjing?tab=repositories)
 
 - Our colour scheme for the app will be: ![color-hunt](https://github.com/Kurtyjlee/BoulderView/tree/main/assets/colorhunt.png)
 
@@ -21,7 +21,7 @@
 
 3 - Created a functional map component on our app to navigate to the gym
 
-4 - Created 
+4 - Created the home card pages and explore tabs
 </p>
 
 <h3 align="left">For Milestone 2:</h3>
