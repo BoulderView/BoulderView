@@ -2,66 +2,33 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-import MapComponent from './homeComponents/MapComponent';
-import ExploreComponent from './homeComponents/ExploreComponent';
-import LeaderboardComponent from './homeComponents/LeaderboardComponent';
+import { TabObject } from '../models/TabObject';
 
-// Enum all tabs
-enum Tab {
-  MapComponent,
-  ExploreComponent,
-  LeaderboardComponent,
+interface Props {
+  tabObject:TabObject;
 }
 
-const TabBar: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<Tab>(Tab.MapComponent);
+const TabBar = ({ tabObject }:Props) => {
+  const [selectedTab, setSelectedTab] = useState(Object.keys(tabObject)[0]);
 
-  const renderSelectedTab = () => {
-    switch (selectedTab) {
-      case Tab.MapComponent:
-        return <MapComponent />;
-      case Tab.ExploreComponent:
-        return <ExploreComponent />;
-      case Tab.LeaderboardComponent:
-        return <LeaderboardComponent />;
-      default:
-        return null;
-    }
-  };
-
-  const handleTabPress = (tab: Tab) => {
-    setSelectedTab(tab);
+  const handleTabPress = (tabKey: string) => {
+    setSelectedTab(tabKey);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.tabBar}>
-        <TouchableOpacity
-          style={selectedTab === Tab.MapComponent ? styles.selectedTab : styles.tab}
-          onPress={() => handleTabPress(Tab.MapComponent)}
-        >
-          <Text style={{
-            color: selectedTab === Tab.MapComponent ? "#A5D7E8" : "white"
-          }}>Map</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={selectedTab === Tab.ExploreComponent ? styles.selectedTab : styles.tab}
-          onPress={() => handleTabPress(Tab.ExploreComponent)}
-        >
-          <Text style={{
-            color: selectedTab === Tab.ExploreComponent ? "#A5D7E8" : "white"
-          }}>Explore</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={selectedTab === Tab.LeaderboardComponent ? styles.selectedTab : styles.tab}
-          onPress={() => handleTabPress(Tab.LeaderboardComponent)}
-        >
-          <Text style={{
-            color: selectedTab === Tab.LeaderboardComponent ? "#A5D7E8" : "white"
-          }}>Leaderboard</Text>
-        </TouchableOpacity>
+        {Object.entries(tabObject).map(([tabKey, tab]) => (
+          <TouchableOpacity
+            key={tab.title}
+            style={selectedTab === tabKey ? styles.selectedTab : styles.tab}
+            onPress={() => handleTabPress(tabKey)}
+          >
+            <Text style={{ color: selectedTab === tabKey ? '#A5D7E8' : 'white' }}>{tab.title}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
-      {renderSelectedTab()}
+      {tabObject[selectedTab].component}
     </View>
   );
 };

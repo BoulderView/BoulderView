@@ -1,10 +1,15 @@
 import { Stack } from 'expo-router';
-import React, { createRef, forwardRef, useRef } from 'react';
+import React from 'react';
 import { 
   StyleSheet, 
   View  } from 'react-native';
 import { Button } from 'react-native-paper';
+
 import TabNavigation from '../../../components/TabNavigation';
+import MapComponent from '../../../components/gymComponents/MapComponent';
+import ExploreComponent from '../../../components/gymComponents/ExploreComponent';
+import LeaderboardComponent from '../../../components/gymComponents/LeaderboardComponent';
+import { TabObject } from '../../../models/TabObject';
 
 const GYM_DATA = [
   {
@@ -60,6 +65,22 @@ const GymDetailsPage = () => {
     console.log("Pressed")
   }
 
+  // Define the tab object
+  const tabObject: TabObject = {
+    MapComponent: {
+      title: 'Map',
+      component: <MapComponent />,
+    },
+    ExploreComponent: {
+      title: 'Explore',
+      component: <ExploreComponent />,
+    },
+    LeaderboardComponent: {
+      title: 'Leaderboard',
+      component: <LeaderboardComponent />,
+    },
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ 
@@ -74,7 +95,7 @@ const GymDetailsPage = () => {
         },
         headerTintColor: 'white', // Replace with your desired color for the button
       }} />
-      <TabNavigation />
+      <TabNavigation tabObject={tabObject}/>
     </View>
   )
 };
