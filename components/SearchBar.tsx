@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { NativeSyntheticEvent, StyleProp, TextInputSubmitEditingEventData, ViewStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, TextInputSubmitEditingEventData, View, ViewStyle } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
 interface Props {
@@ -27,8 +27,7 @@ export const SearchBar = ({ style, searchFunction }:Props) => {
         value={searchQuery}
         style={[
           style, 
-          {marginLeft:10,
-          marginRight:10}
+          {margin: 10}
         ]}
       />
     </>
