@@ -2,6 +2,7 @@ import React from 'react';
 import { Stack, Tabs } from "expo-router";
 import { Platform, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { TabBarIndicator } from 'react-native-tab-view';
 
 const TabLayout = () => {
 
@@ -23,7 +24,7 @@ const TabLayout = () => {
           fontSize: 30
         },
         headerTitleAlign: 'center',
-        tabBarHideOnKeyboard: Platform.OS!== 'ios'  // disabled for ios
+        tabBarHideOnKeyboard: Platform.OS!== 'ios',  // disabled for ios
       }}
     >
       <Tabs.Screen

@@ -4,7 +4,7 @@ import {
   StyleSheet, 
   View  } from 'react-native';
 import { Button } from 'react-native-paper';
-import Router from '../../../components/Router';
+import TabNavigation from '../../../components/TabNavigation';
 
 const GYM_DATA = [
   {
@@ -74,7 +74,7 @@ const GymDetailsPage = () => {
         },
         headerTintColor: 'white', // Replace with your desired color for the button
       }} />
-      <Router />
+      <TabNavigation />
     </View>
   )
 };

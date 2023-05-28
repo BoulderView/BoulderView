@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const Tab3: React.FC = () => {
+const LeaderboardComponent: React.FC = () => {
   return (
     <View>
       <Text>Component for Tab 3</Text>
@@ -9,4 +9,4 @@ const Tab3: React.FC = () => {
   );
 };
 
-export default Tab3;
+export default LeaderboardComponent;
