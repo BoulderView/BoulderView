@@ -1,23 +1,30 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { supabase } from '../../../lib/supabase';
-import { Button } from 'react-native-paper';
+import { Session } from '@supabase/supabase-js';
+import LoginPage from '../../(auth)/login';
+import Account from '../../../components/Account';
+
+
 
 const ProfileScreen = () => {
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState('');
-  const [website, setWebsite] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState();
+  const [session, setSession] = useState<Session | null>(null)
 
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
   return (
-    <View style={styles.container}>
-      <Text
-        onPress={() => alert("This is the profile screen")}
-        style={styles.text}>Profile Screen</Text>
-      <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
+    <View>
+      {session && session.user ? <Account key={session.user.id} session={session} /> : <LoginPage />}
     </View>
-  );
+  )
 };
 
 export default ProfileScreen;

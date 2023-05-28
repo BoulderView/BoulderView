@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Text, TextInput, ActivityIndicator, Button } from 'react-native-paper';
+import { Text, TextInput, ActivityIndicator } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 export default function Register() {

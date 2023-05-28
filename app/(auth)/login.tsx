@@ -5,8 +5,8 @@ import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
 import { Link } from "expo-router";
 import { supabase } from "../../lib/supabase";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { transparent } from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Auth } from '@supabase/auth-ui-react'
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
