@@ -12,6 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "owner": "boulderview2023",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -23,7 +24,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.BoulderView"
+      "package": "com.anonymous.BoulderView",
+      "config": {
+        "googleMaps" :{
+          "apiKey": "AIzaSyCJofptypq9nORlUr69cw0VJ07GBxifEe4"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
