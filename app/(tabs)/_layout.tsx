@@ -51,7 +51,6 @@ const TabLayout = () => {
         name="post"
         options={{
           tabBarLabel:"Post",
-          headerTitle:"Post",
           headerShown:false,
           tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused ? "add-circle" : "add-circle-outline"} color={color} size={size} />

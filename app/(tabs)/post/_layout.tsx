@@ -7,6 +7,7 @@ const PostLayout = () => {
       screenOptions={{
         headerTitleAlign: 'center',
         headerShadowVisible:false,
+        headerShown:false
       }}>
       <Stack.Screen
         name="index"
