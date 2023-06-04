@@ -19,6 +19,7 @@
     "@supabase/auth-ui-shared": "^0.1.6",
     "@supabase/supabase-js": "^2.22.0",
     "expo": "~48.0.18",
+    "expo-camera": "~13.2.1",
     "expo-constants": "~14.2.1",
     "expo-image-picker": "~14.1.1",
     "expo-linking": "~4.0.1",
@@ -26,6 +27,7 @@
     "expo-secure-store": "~12.1.1",
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
+    "expo-updates": "~0.16.4",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-document-picker": "^9.0.1",
@@ -41,9 +43,7 @@
     "react-native-url-polyfill": "^1.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-router-native": "^6.11.2",
-    "victory-native": "^36.6.10",
-    "expo-updates": "~0.16.4",
-    "expo-camera": "~13.2.1"
+    "victory-native": "^36.6.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
