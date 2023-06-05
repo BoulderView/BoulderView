@@ -11,9 +11,8 @@ const PostScreen= () => {
   let cameraRef = useRef<Camera | null>(null);
   const [type, setType] = useState(CameraType.back);
 
-  // Photo
-  const [photo, setPhoto] = useState<CameraCapturedPicture | undefined>();
-  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | undefined>();
+  // Media
+  const [media, setMedia] = useState<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>();
 
   // Permissions
   const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
@@ -89,64 +88,54 @@ const PostScreen= () => {
     console.log(type);
   }
 
-  // Pick image
-  const pickImage = async () => {
+  // Pick image or videos
+  const pickMedia = async () => {
+    /*
+      Options for the videos and pictures
+      quality: 1 for best quality pictures
+      exif: remove shutter speed and other camera options
+    */
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:ImagePicker.MediaTypeOptions.Images,
+      mediaTypes:ImagePicker.MediaTypeOptions.All,
       allowsEditing:true,
       quality:1,
       base64:true,
       allowsMultipleSelection:false,
-      exif:false
+      exif:false,
+      aspect:[9,16]
     })
 
     // When image was picked
     if (!result.canceled) {
-      setImage(result.assets[0]);
+      setMedia(result.assets[0]);
+      console.log("media chosen");
     }
   }
 
-  // handles taking pictures
-  const takePic = async () => {
+  // handles taking pictures and videos
+  const takeMedia = async () => {
     /*
       Options for the pictures 
       quality: 1 for best quality pictures
       exif: remove shutter speed and other camera options
     */
-    let options = {
+    let newMedia = await cameraRef.current?.takePictureAsync({
       quality:1,
       base64:true,
       exif:false
-    };
-
-    let newPhoto = await cameraRef.current?.takePictureAsync(options);
-    setPhoto(newPhoto);
-    console.log("photo taken");
+    });
+    setMedia(newMedia);
+    console.log("media taken");
   }
 
-  // Preview the photo
-  if (photo) {
+  // Preview the media
+  if (media) {
     return (
       <SafeAreaView style={styles.container}>
-        <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+        <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + media.base64 }} />
         <Button mode="contained" style={styles.button} onPress={() => {
-          setPhoto(undefined);
-          console.log("closing photo")
-        }}>
-          Close
-        </Button>
-      </SafeAreaView>
-    );
-  }
-
-  // Preview the photo
-  if (image) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + image.base64 }} />
-        <Button mode="contained" style={styles.button} onPress={() => {
-          setPhoto(undefined);
-          console.log("closing photo")
+          setMedia(undefined);
+          console.log("closing media")
         }}>
           Close
         </Button>
@@ -170,10 +159,10 @@ const PostScreen= () => {
           <Button mode="contained" style={styles.button} onPress={toggleCameraType}>
             Flip Camera
           </Button>
-          <Button mode="contained" style={styles.button} onPress={takePic}>
+          <Button mode="contained" style={styles.button} onPress={takeMedia}>
             Take picture
           </Button>
-          <Button mode="contained" style={styles.button} onPress={pickImage}>
+          <Button mode="contained" style={styles.button} onPress={pickMedia}>
             Open Gallery
           </Button>
         </View>
