@@ -1,29 +1,81 @@
-import * as React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text, View, StyleSheet, Image } from "react-native";
 import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
-import { useRef, useState } from 'react';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from 'expo-router';
+import * as ImagePicker from "expo-image-picker";
 
 const PostScreen= () => {
+  // Camera
   let cameraRef = useRef<Camera | null>(null);
   const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  // Photo
   const [photo, setPhoto] = useState<CameraCapturedPicture | undefined>();
+  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | undefined>();
+
+  // Permissions
+  const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
+  const [galleryPermission, requestGalleryPermission] = ImagePicker.useMediaLibraryPermissions();
+
+  const navigation = useNavigation();
+
+  // Only navigates to the default page of the home page, need to fix
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+  useEffect(() => {
+    (async () => {
+      
+    })
+  }, [])
 
   // Camera permissions are still loading
-  if (!permission) {
-    return <View />;
+  if (!cameraPermission || !galleryPermission) {
+    return (
+      <View style={{
+        flex:1,
+        alignItems:"center",
+        justifyContent:"center"
+      }}>
+        <Text style={{ textAlign: 'center' }}>
+          Getting permissions...
+        </Text>
+      </View>
+    );
   }
 
   // Camera permissions are not granted yet
-  if (!permission.granted) {
+  if (!cameraPermission.granted || !galleryPermission.granted) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button mode="contained" onPress={requestPermission}>
-          Grant permission
-        </Button>
+      <View style={{
+        flex:1,
+        alignItems:"center",
+        justifyContent:"center"
+      }}>
+        <Text style={{ textAlign: 'center' }}>
+          We need permission to both the camera and gallery
+        </Text>
+        {
+          !cameraPermission.granted
+            ? <Button mode="contained" onPress={requestCameraPermission}>
+                Grant camera permission
+              </Button>
+            : <Text style={{ textAlign: 'center' }}>
+                Camera permission granted
+              </Text>
+        }
+        {
+          !galleryPermission.granted
+            ? <Button mode="contained" onPress={requestGalleryPermission}>
+                Grant gallery permission
+              </Button>
+            : <Text style={{ textAlign: 'center' }}>
+                Gallery permission granted
+              </Text>
+        }
       </View>
     );
   }
@@ -37,7 +89,22 @@ const PostScreen= () => {
     console.log(type);
   }
 
-  
+  // Pick image
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes:ImagePicker.MediaTypeOptions.Images,
+      allowsEditing:true,
+      quality:1,
+      base64:true,
+      allowsMultipleSelection:false,
+      exif:false
+    })
+
+    // When image was picked
+    if (!result.canceled) {
+      setImage(result.assets[0]);
+    }
+  }
 
   // handles taking pictures
   const takePic = async () => {
@@ -72,6 +139,21 @@ const PostScreen= () => {
     );
   }
 
+  // Preview the photo
+  if (image) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + image.base64 }} />
+        <Button mode="contained" style={styles.button} onPress={() => {
+          setPhoto(undefined);
+          console.log("closing photo")
+        }}>
+          Close
+        </Button>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Camera 
@@ -80,11 +162,19 @@ const PostScreen= () => {
         ref={cameraRef}
       >
         <View style={styles.buttonContainer}>
+          <Button mode="contained" style={styles.button} onPress={
+            () => handleGoBack()
+          }>
+            Go Back
+          </Button>
           <Button mode="contained" style={styles.button} onPress={toggleCameraType}>
             Flip Camera
           </Button>
           <Button mode="contained" style={styles.button} onPress={takePic}>
             Take picture
+          </Button>
+          <Button mode="contained" style={styles.button} onPress={pickImage}>
+            Open Gallery
           </Button>
         </View>
       </Camera>

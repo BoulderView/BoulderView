@@ -3,11 +3,12 @@ import { Stack, Tabs } from "expo-router";
 import { Platform, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { TabBarIndicator } from 'react-native-tab-view';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 
 const TabLayout = () => {
 
   return (
-    <Tabs 
+    <Tabs
       screenOptions={{
         tabBarActiveTintColor:"#A5D7E8",
         tabBarInactiveTintColor:"white",
@@ -52,6 +53,7 @@ const TabLayout = () => {
         options={{
           tabBarLabel:"Post",
           headerShown:false,
+          tabBarStyle: { display: "none" },
           tabBarIcon: ({color, size, focused}) => (
             <Ionicons name={focused ? "add-circle" : "add-circle-outline"} color={color} size={size} />
           )
