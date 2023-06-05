@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
-import { Button } from 'react-native-paper';
+import { Button, IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
 import * as ImagePicker from "expo-image-picker";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const PostScreen= () => {
+
+
   // Camera
   let cameraRef = useRef<Camera | null>(null);
   const [type, setType] = useState(CameraType.back);
@@ -108,7 +111,6 @@ const PostScreen= () => {
     // When image was picked
     if (!result.canceled) {
       setMedia(result.assets[0]);
-      console.log("media chosen");
     }
   }
 
@@ -125,7 +127,6 @@ const PostScreen= () => {
       exif:false
     });
     setMedia(newMedia);
-    console.log("media taken");
   }
 
   // Preview the media
@@ -133,10 +134,7 @@ const PostScreen= () => {
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + media.base64 }} />
-        <Button mode="contained" style={styles.button} onPress={() => {
-          setMedia(undefined);
-          console.log("closing media")
-        }}>
+        <Button mode="contained" style={styles.button} onPress={() => {setMedia(undefined);}}>
           Close
         </Button>
       </SafeAreaView>
@@ -151,20 +149,41 @@ const PostScreen= () => {
         ref={cameraRef}
       >
         <View style={styles.buttonContainer}>
-          <Button mode="contained" style={styles.button} onPress={
-            () => handleGoBack()
-          }>
-            Go Back
-          </Button>
-          <Button mode="contained" style={styles.button} onPress={toggleCameraType}>
-            Flip Camera
-          </Button>
-          <Button mode="contained" style={styles.button} onPress={takeMedia}>
-            Take picture
-          </Button>
-          <Button mode="contained" style={styles.button} onPress={pickMedia}>
-            Open Gallery
-          </Button>
+          <View style={styles.topSubContainer}>
+            <IconButton
+              icon="arrow-left"
+              iconColor="white"
+              containerColor="#576CBC"
+              size={25}
+              mode="contained"
+              onPress={() => handleGoBack()}
+            />
+          </View>
+          <View style={styles.bottomSubContainer}>
+            <IconButton
+              icon="image"
+              iconColor="white"
+              containerColor="transparent"
+              size={30}
+              onPress={pickMedia}
+            />
+            <IconButton
+              icon="radiobox-marked"
+              iconColor="white"
+              containerColor="transparent"
+              size={60}
+              mode="contained"
+              onPress={takeMedia}
+            />
+            <IconButton
+              icon="camera-flip-outline"
+              iconColor="white"
+              containerColor="transparent"
+              size={30}
+              mode="contained"
+              onPress={toggleCameraType}
+            />
+          </View>
         </View>
       </Camera>
     </SafeAreaView>
@@ -176,6 +195,7 @@ export default PostScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"black"
   },
   camera: {
     flex:1,
@@ -184,11 +204,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     alignItems:"center",
-    justifyContent:"flex-end",
+    justifyContent:"space-between",
+  },
+  topSubContainer: {
+    flexDirection:"row",
+    width:"100%",
+    backgroundColor:'transparent',
+    margin:10,
+    paddingHorizontal:10
+  },
+  bottomSubContainer: {
+    flexDirection:"row",
+    width:"100%",
+    backgroundColor:'transparent',
+    justifyContent:"space-evenly",
+    margin:10,
+    alignItems:"center"
   },
   button: {
-    flex: 0.05,
-    alignSelf: 'flex-end',
     alignItems: 'center',
     margin:5,
   },
