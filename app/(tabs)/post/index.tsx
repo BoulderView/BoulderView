@@ -1,21 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useRef, useState } from 'react';
+import { View, StyleSheet } from "react-native";
 import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
-import { Button, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
 import * as ImagePicker from "expo-image-picker";
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import NoPermissionsComponent from '../../../components/imageComponents/NoPermissionsComponent';
+import PermissionsLoadingComponent from '../../../components/imageComponents/PermissionsLoadingComponent';
+import CameraActionComponent from '../../../components/imageComponents/CameraActionComponent';
+import FlipCameraComponent from '../../../components/imageComponents/FlipCameraComponent';
+import PickMediaComponent from '../../../components/imageComponents/PickMediaComponent';
+import PreviewMediaComponent from '../../../components/imageComponents/PreviewMediaComponent';
 
 const PostScreen= () => {
-
 
   // Camera
   let cameraRef = useRef<Camera | null>(null);
   const [type, setType] = useState(CameraType.back);
 
   // Media
-  const [media, setMedia] = useState<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>();
+  const [media, setMedia] = useState<ImagePicker.ImagePickerAsset | CameraCapturedPicture>();
 
   // Permissions
   const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
@@ -23,121 +28,32 @@ const PostScreen= () => {
 
   const navigation = useNavigation();
 
-  // Only navigates to the default page of the home page, need to fix
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-
-  useEffect(() => {
-    (async () => {
-      
-    })
-  }, [])
-
   // Camera permissions are still loading
   if (!cameraPermission || !galleryPermission) {
     return (
-      <View style={{
-        flex:1,
-        alignItems:"center",
-        justifyContent:"center"
-      }}>
-        <Text style={{ textAlign: 'center' }}>
-          Getting permissions...
-        </Text>
-      </View>
+      <PermissionsLoadingComponent />
     );
   }
 
   // Camera permissions are not granted yet
   if (!cameraPermission.granted || !galleryPermission.granted) {
     return (
-      <View style={{
-        flex:1,
-        alignItems:"center",
-        justifyContent:"center"
-      }}>
-        <Text style={{ textAlign: 'center' }}>
-          We need permission to both the camera and gallery
-        </Text>
-        {
-          !cameraPermission.granted
-            ? <Button mode="contained" onPress={requestCameraPermission}>
-                Grant camera permission
-              </Button>
-            : <Text style={{ textAlign: 'center' }}>
-                Camera permission granted
-              </Text>
-        }
-        {
-          !galleryPermission.granted
-            ? <Button mode="contained" onPress={requestGalleryPermission}>
-                Grant gallery permission
-              </Button>
-            : <Text style={{ textAlign: 'center' }}>
-                Gallery permission granted
-              </Text>
-        }
-      </View>
+      <NoPermissionsComponent 
+        cameraPermission={cameraPermission}
+        galleryPermission={galleryPermission}
+        requestCameraPermission={requestCameraPermission}
+        requestGalleryPermission={requestGalleryPermission}
+      />
     );
-  }
-
-  // Change between front and back camera
-  const toggleCameraType = () => {
-    setType(current => 
-      (current === CameraType.back 
-        ? CameraType.front 
-        : CameraType.back));
-    console.log(type);
-  }
-
-  // Pick image or videos
-  const pickMedia = async () => {
-    /*
-      Options for the videos and pictures
-      quality: 1 for best quality pictures
-      exif: remove shutter speed and other camera options
-    */
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:ImagePicker.MediaTypeOptions.All,
-      allowsEditing:true,
-      quality:1,
-      base64:true,
-      allowsMultipleSelection:false,
-      exif:false,
-      aspect:[9,16]
-    })
-
-    // When image was picked
-    if (!result.canceled) {
-      setMedia(result.assets[0]);
-    }
-  }
-
-  // handles taking pictures and videos
-  const takeMedia = async () => {
-    /*
-      Options for the pictures 
-      quality: 1 for best quality pictures
-      exif: remove shutter speed and other camera options
-    */
-    let newMedia = await cameraRef.current?.takePictureAsync({
-      quality:1,
-      base64:true,
-      exif:false
-    });
-    setMedia(newMedia);
   }
 
   // Preview the media
   if (media) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + media.base64 }} />
-        <Button mode="contained" style={styles.button} onPress={() => {setMedia(undefined);}}>
-          Close
-        </Button>
-      </SafeAreaView>
+      <PreviewMediaComponent
+        media={media}
+        setMedia={setMedia}
+      />
     );
   }
 
@@ -156,32 +72,20 @@ const PostScreen= () => {
               containerColor="#576CBC"
               size={25}
               mode="contained"
-              onPress={() => handleGoBack()}
+              onPress={() => navigation.goBack()}
             />
           </View>
           <View style={styles.bottomSubContainer}>
-            <IconButton
-              icon="image"
-              iconColor="white"
-              containerColor="transparent"
-              size={30}
-              onPress={pickMedia}
+            <PickMediaComponent
+              setMedia={setMedia}
             />
-            <IconButton
-              icon="radiobox-marked"
-              iconColor="white"
-              containerColor="transparent"
-              size={60}
-              mode="contained"
-              onPress={takeMedia}
+            <CameraActionComponent
+              cameraRef={cameraRef}
+              setMedia={setMedia}
             />
-            <IconButton
-              icon="camera-flip-outline"
-              iconColor="white"
-              containerColor="transparent"
-              size={30}
-              mode="contained"
-              onPress={toggleCameraType}
+            <FlipCameraComponent 
+              setType={setType}
+              type={type}
             />
           </View>
         </View>
@@ -220,13 +124,5 @@ const styles = StyleSheet.create({
     justifyContent:"space-evenly",
     margin:10,
     alignItems:"center"
-  },
-  button: {
-    alignItems: 'center',
-    margin:5,
-  },
-  preview: {
-    alignSelf:"stretch",
-    flex:1
   }
 });
