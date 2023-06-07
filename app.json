@@ -32,12 +32,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.BoulderView",
-      "config": {
-        "googleMaps" :{
-          "apiKey": "AIzaSyCJofptypq9nORlUr69cw0VJ07GBxifEe4"
-        }
-      }
+      "package": "com.anonymous.BoulderView"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -46,6 +41,26 @@
       "eas": {
         "projectId": "e822daa8-0d06-4d87-b9dd-89c35b42d33d"
       }
-    }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e822daa8-0d06-4d87-b9dd-89c35b42d33d"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "BoulderView accesses your photos and videos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow BoulderView to access your camera."
+        }
+      ]
+    ]
   }
 }

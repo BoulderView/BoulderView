@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, FlatList } from "react-native";
+import { useRoute } from '@react-navigation/native';
 
 import { SearchBar } from '../../../components/SearchBar';
 import LocationsComponent from '../../../components/homeComponents/LocationsComponent';
@@ -7,6 +8,7 @@ import { TabObject } from '../../../models/TabObject';
 import FavouritesComponent from '../../../components/homeComponents/FavouritesComponent';
 import TabNavigation from '../../../components/TabNavigation';
 import { HomeCard } from '../../../components/HomeCard';
+import { useEffect } from 'react';
 
 const GYM_DATA = [
   {

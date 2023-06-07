@@ -41,7 +41,7 @@ const data: { [key : string] : {position : Region }} = {
   }
 }
 
-const VenueScreen: React.FC = () => {
+const VenueScreen = () => {
   const [region, setRegion] = useState(INITIAL_POSITION);
 
   // ref
