@@ -5,6 +5,7 @@ import { supabase } from '../../../lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import LoginPage from '../../(auth)/login';
 import Account from '../../../components/Account';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 
@@ -21,9 +22,9 @@ const ProfileScreen = () => {
     })
   }, [])
   return (
-    <View>
+    <ScrollView>
       {session && session.user ? <Account key={session.user.id} session={session} /> : <LoginPage />}
-    </View>
+    </ScrollView>
   )
 };
 
