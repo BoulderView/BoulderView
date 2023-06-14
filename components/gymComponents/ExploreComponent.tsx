@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 
 import { SearchBar } from '../SearchBar';
-import PostOverviewComponent from '../post/PostOverviewComponent';
+import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 
 const POST_DATA = [
   {
