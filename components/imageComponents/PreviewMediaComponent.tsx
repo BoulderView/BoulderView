@@ -49,7 +49,7 @@ const PreviewMediaComponent = ({ media, setMedia }:Props) => {
 
       const uploads:postModel = {
         caption: caption,
-        postVideoUrl: postVideoUrl,
+        post_video_url: postVideoUrl,
         profile_id: session?.user.id,
         created_at: new Date(),
       }

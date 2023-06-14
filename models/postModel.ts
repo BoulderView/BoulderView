@@ -1,7 +1,7 @@
 export type postModel = {
   caption: string,
-  postVideoUrl: string,
+  post_video_url: string,
   profile_id: string
   created_at: Date,
-  gymId?: string
+  gym_id?: string
 }
