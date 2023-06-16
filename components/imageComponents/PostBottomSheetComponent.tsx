@@ -9,6 +9,7 @@ import { PostgrestError, Session } from '@supabase/supabase-js';
 import { postModel } from '../../models/postModel';
 import { supabase } from '../../lib/supabase';
 import { CameraCapturedPicture } from 'expo-camera';
+import { gymModel } from '../../models/gymModel';
 
 interface Props {
   session:Session | null;
@@ -21,18 +22,46 @@ const PostBottomSheetComponent: React.FC<Props> = ({
   media,
   setMedia,
 }) => {
+
+  // States
   const [descText, setDescText] = useState("");
-  const [gym, setGym] = useState<bigint>(BigInt(1));
+  const [selectedGym, setSelectedGym] = useState<gymModel>();
+  const [isPrivate, setIsPrivate] = useState(true);
+  const [selectedGrade, setSelectedGrade] = useState("Q1");
 
   // Do something on submit
-  const onSubmitSearch = (query: string) => {
-    console.log("hello");
+  const onSubmitSearch = async (query: string) => {
+    try {
+      console.log(query);
+      let { data, error, status } = await supabase
+        .from('gym')
+        .select()
+        .eq("name", query)
+        .single();
+      
+      console.log(data);
+
+      // If there is any form of error
+      if (error || status !== 200) {
+        throw error;
+      }
+
+      if (data) {
+        // Casting data to gymModel
+        const updatedData = data as gymModel;
+        setSelectedGym(updatedData);
+      }
+
+      console.log("Selected gym:" + selectedGym?.cover_image_url);
+
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
   }
 
   // Adding the image to storage and updates post table
   const uploadMedia = async (
     media:ImagePicker.ImagePickerAsset,
-    caption:string
   ) => {
     try {
       const ext = media.uri.substring(media.uri.lastIndexOf(".") + 1);
@@ -47,7 +76,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       })));
   
       // Creating new entry on the 
-      const errorPost = await uploadPost(caption, fileName);
+      const errorPost = await uploadPost(fileName);
   
       if (errorPost) throw new Error(errorPost.message);
   
@@ -73,7 +102,6 @@ const PostBottomSheetComponent: React.FC<Props> = ({
 
   // Creating a table entry for the post
   const uploadPost = async (
-    caption:string,
     postVideoUrl:string
   ) : Promise<PostgrestError | null> => {
     try {
@@ -81,11 +109,21 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       // Requires the user to be signed in
       if (!session?.user) throw new Error('No user on the session!')
 
+      let selectedGymId:string | null = null;
+
+      if (selectedGym) {
+        selectedGymId = selectedGym.id;
+      }
+
       const uploads:postModel = {
-        caption: caption,
+        caption: descText,
         post_video_url: postVideoUrl,
         profile_id: session?.user.id,
+        gym_id: selectedGymId,
         created_at: new Date(),
+        updated_at: new Date(),
+        is_private: isPrivate,
+        selected_grade: selectedGrade
       }
 
       // uploading post
@@ -106,8 +144,12 @@ const PostBottomSheetComponent: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <SearchBar searchFunction={onSubmitSearch} placeholder='Tag Gym' />
+        <SearchBar 
+          searchFunction={onSubmitSearch} 
+          placeholder='Tag Gym' 
+        />
         <Divider />
+        {selectedGym && <Text>Selected Gym: {selectedGym.name}</Text>}
         <TextInput
           label="Caption"
           value={descText}
@@ -118,7 +160,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
         />
         <View style={styles.buttonView}>
           <Button mode="contained" style={styles.button} onPress={() => {
-            uploadMedia(media, "testing")
+            uploadMedia(media)
           }}>
             upload
           </Button>

@@ -1,14 +1,13 @@
 import { CameraCapturedPicture } from 'expo-camera';
-import React, { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
-import { Image, StyleSheet, Alert, View } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import React, { Dispatch, useEffect, useRef, useState } from 'react';
+import { Image, StyleSheet } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '../../lib/supabase';
-import { PostgrestError, Session } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
-import { postModel } from '../../models/postModel';
 import PostBottomSheetComponent from './PostBottomSheetComponent';
 
 interface Props {

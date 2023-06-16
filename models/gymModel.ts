@@ -1,6 +1,7 @@
 export type gymModel = {
-  id: number;
-  title: string;
+  id: string;
+  name: string;
   cover_image_url: string;
-  content: string;
+  description: string;
+  gym_grade?:string[];
 }
