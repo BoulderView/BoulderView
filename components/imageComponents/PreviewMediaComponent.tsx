@@ -16,7 +16,7 @@ interface Props {
   setMedia: Dispatch<React.SetStateAction<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>>;
 }
 
-const PreviewMediaComponent = ({ media, setMedia }:Props) => {
+const PreviewMediaComponent: React.FC<Props> = ({ media, setMedia }) => {
   const [session, setSession] = useState<Session | null>(null);
 
   // ref
@@ -55,11 +55,11 @@ const PreviewMediaComponent = ({ media, setMedia }:Props) => {
         onClose={() => setIsOpen(false)}
       >
         <BottomSheetView>
-          <PostBottomSheetComponent 
-            session={session}
-            media={media}
-            setMedia={setMedia}
-          />
+        <PostBottomSheetComponent 
+          session={session}
+          media={media}
+          setMedia={setMedia}
+        />
         </BottomSheetView>
       </BottomSheet>  
     </SafeAreaView>

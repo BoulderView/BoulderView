@@ -8,10 +8,10 @@ interface Props {
   setMedia: Dispatch<React.SetStateAction<ImagePickerAsset | CameraCapturedPicture | undefined>>;
 }
 
-const CameraActionComponent = ({
+const CameraActionComponent: React.FC<Props> = ({
   cameraRef,
   setMedia
-}:Props) => {
+}) => {
   // handles taking pictures
   const takePhoto = async () => {
     /*

@@ -10,20 +10,17 @@ import { postModel } from '../../models/postModel';
 import { supabase } from '../../lib/supabase';
 import { CameraCapturedPicture } from 'expo-camera';
 
-
-const data = {
-  "name": "Boruda Climb",
-  "desc": "Movement beyond boundaries",
-  "distance": "8 mins away",
-  "address": "991A Alexandra Rd, Singapore 119969",
-  "opening": "Thursday, 11.30am - 10.30pm"
+interface Props {
+  session:Session | null;
+  media:ImagePicker.ImagePickerAsset | CameraCapturedPicture;
+  setMedia:Dispatch<React.SetStateAction<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>>;
 }
 
-const PostBottomSheetComponent = (
-  session:Session | null,
-  media:ImagePicker.ImagePickerAsset | CameraCapturedPicture,
-  setMedia:Dispatch<React.SetStateAction<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>>
-) => {
+const PostBottomSheetComponent: React.FC<Props> = ({
+  session,
+  media,
+  setMedia,
+}) => {
   const [descText, setDescText] = useState("");
   const [gym, setGym] = useState<bigint>(BigInt(1));
 

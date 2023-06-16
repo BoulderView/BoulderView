@@ -13,7 +13,7 @@ interface Props {
   likes:number;
 }
 
-const PostOverviewComponent = (props:Props) => {
+const PostOverviewComponent:React.FC<Props> = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.postContainer}>

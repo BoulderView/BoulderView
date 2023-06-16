@@ -7,7 +7,7 @@ interface Props {
   type?: CameraType
 }
 
-const FlipCameraComponent = ({ setType, type }:Props) => { 
+const FlipCameraComponent:React.FC<Props> = ({ setType, type }) => { 
   // Change between front and back camera
   const toggleCameraType = () => {
     setType(current => 

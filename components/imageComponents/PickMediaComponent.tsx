@@ -7,7 +7,7 @@ interface Props {
   setMedia: Dispatch<React.SetStateAction<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>>;
 }
 
-const PickMediaComponent = ({ setMedia }:Props) => { 
+const PickMediaComponent:React.FC<Props> = ({ setMedia }) => { 
   // Pick image or videos
   const pickMedia = async () => {
     /*
