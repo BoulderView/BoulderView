@@ -50,7 +50,7 @@ const ExploreComponent: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <SearchBar searchFunction={onSubmitSearch} />
+      <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
       <View style={styles.flatListContainer}>
         <FlatList
           data={POST_DATA}

@@ -11,7 +11,7 @@ const data = {
   "opening": "Thursday, 11.30am - 10.30pm"
 }
 
-export const BottomSheetComponent:React.FC = () => {
+const BottomSheetComponent = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -35,6 +35,8 @@ export const BottomSheetComponent:React.FC = () => {
     </View>
   )
 };
+
+export default BottomSheetComponent;
 
 const styles = StyleSheet.create({
   container: {
