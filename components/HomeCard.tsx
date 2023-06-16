@@ -1,14 +1,43 @@
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { View, StyleSheet, ImageSourcePropType } from "react-native";
+import { useEffect, useState } from 'react';
+import { View, StyleSheet, ImageSourcePropType, Alert } from "react-native";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
+import { supabase } from '../lib/supabase';
 
 export const HomeCard = (props: {
   id: number;
   title: string;
-  coverImage: ImageSourcePropType;
+  coverImage: string;
   content: string;
 }) => {
+
+  const [coverImageUrl, setCoverImageUrl] = useState<string>();
+
+  useEffect(() => {
+    if (props.coverImage) downloadImage(props.coverImage)
+  }, [props.coverImage])
+
+  // Retrieving image directly from supabase
+  const downloadImage = async  (coverImage: string) => {
+    try {
+      const { data, error } = await supabase.storage.from('homeCardImages').download(coverImage);
+
+      if (error) {
+        throw error;
+      }
+
+      const fr = new FileReader();
+      fr.readAsDataURL(data);
+      fr.onload = () => {
+        setCoverImageUrl(fr.result as string);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert('Error downloading image: ', error.message);
+      }
+    }
+  }
 
   const router = useRouter();
 
@@ -18,7 +47,7 @@ export const HomeCard = (props: {
       <Card onPress={() => {
         router.push({pathname: `/home/${props.id}`})
       }}>
-        <Card.Cover source={props.coverImage}></Card.Cover>
+        <Card.Cover source={{ uri:coverImageUrl}}></Card.Cover>
         <Card.Content>
           <Title>{props.title}</Title>
         </Card.Content>

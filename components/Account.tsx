@@ -8,13 +8,13 @@ import Avatar from './Avatar'
 import { profileModel } from '../models/profileModel'
 
 export default function Account({ session }: { session: Session }) {
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState('')
-  const [description, setDescription] = useState('')
-  const [avatarUrl, setAvatarUrl] = useState('')
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState('');
+  const [description, setDescription] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
 
   useEffect(() => {
-    if (session) getProfile()
+    if (session) getProfile();
   }, [session])
 
   async function getProfile() {
@@ -26,22 +26,22 @@ export default function Account({ session }: { session: Session }) {
         .from('profiles')
         .select(`username, description, avatar_url`)
         .eq('id', session?.user.id)
-        .single()
+        .single();
       if (error && status !== 406) {
-        throw error
+        throw error;
       }
 
       if (data) {
-        setUsername(data.username)
-        setDescription(data.description)
-        setAvatarUrl(data.avatar_url)
+        setUsername(data.username);
+        setDescription(data.description);
+        setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
       if (error instanceof Error) {
-        Alert.alert(error.message)
+        Alert.alert(error.message);
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -55,8 +55,8 @@ export default function Account({ session }: { session: Session }) {
     avatar_url: string
   }) {
     try {
-      setLoading(true)
-      if (!session?.user) throw new Error('No user on the session!')
+      setLoading(true);
+      if (!session?.user) throw new Error('No user on the session!');
 
       const updates:profileModel = {
         id: session?.user.id,
@@ -66,17 +66,17 @@ export default function Account({ session }: { session: Session }) {
         updated_at: new Date(),
       }
 
-      let { error } = await supabase.from('profiles').upsert(updates)
+      let { error } = await supabase.from('profiles').upsert(updates);
 
       if (error) {
-        throw error
+        throw error;
       }
     } catch (error) {
       if (error instanceof Error) {
-        Alert.alert(error.message)
+        Alert.alert(error.message);
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
