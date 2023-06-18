@@ -6,7 +6,7 @@ import { Button, Card, Paragraph, Title } from "react-native-paper";
 import { supabase } from '../lib/supabase';
 
 export const HomeCard = (props: {
-  id: number;
+  id: string;
   title: string;
   coverImage: string;
   content: string;

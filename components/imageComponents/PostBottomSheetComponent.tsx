@@ -1,6 +1,6 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
-import { Button, Divider, TextInput } from 'react-native-paper';
+import { Button, Divider, TextInput, SegmentedButtons } from 'react-native-paper';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -28,6 +28,18 @@ const PostBottomSheetComponent: React.FC<Props> = ({
   const [selectedGym, setSelectedGym] = useState<gymModel>();
   const [isPrivate, setIsPrivate] = useState(true);
   const [selectedGrade, setSelectedGrade] = useState("Q1");
+  const [isLoading, setIsLoading] = useState(false);
+  const [value, setValue] = React.useState('');
+
+  // This effect runs after every render
+  useEffect(() => {
+    if (value === "public") {
+      setIsPrivate(false);
+      console.log("change");
+    } else if (value === "private") {
+      setIsPrivate(true);
+    }
+  }, [value]);
 
   // Do something on submit
   const onSubmitSearch = async (query: string) => {
@@ -64,6 +76,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
     media:ImagePicker.ImagePickerAsset,
   ) => {
     try {
+      setIsLoading(true);
       const ext = media.uri.substring(media.uri.lastIndexOf(".") + 1);
 
       const fileName:string = media.uri.replace(/^.*[\\/]/, "");
@@ -97,6 +110,8 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       if (error instanceof Error) {
         Alert.alert(error.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -159,9 +174,28 @@ const PostBottomSheetComponent: React.FC<Props> = ({
           onChangeText={text => setDescText(text)}
         />
         <View style={styles.buttonView}>
-          <Button mode="contained" style={styles.button} onPress={() => {
-            uploadMedia(media)
-          }}>
+          <SegmentedButtons
+            value={value}
+            onValueChange={setValue}
+            buttons={[
+              {
+                value: 'private',
+                label: 'Private',
+              },
+              {
+                value: 'public',
+                label: 'Public',
+              },
+            ]}
+          />
+          <Button 
+            mode="contained" 
+            style={styles.button} 
+            onPress={() => {
+              uploadMedia(media)
+            }}
+            loading={isLoading}
+          >
             upload
           </Button>
         </View>
@@ -202,8 +236,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     flexDirection:"row",
-    justifyContent:"center",
-    padding:5,
+    justifyContent:"space-between",
     margin:5,
   }
 });
