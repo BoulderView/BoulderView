@@ -131,14 +131,16 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       }
 
       const uploads:postModel = {
+        id:undefined,
         caption: descText,
-        post_video_url: postVideoUrl,
+        post_image_url: postVideoUrl,
         profile_id: session?.user.id,
         gym_id: selectedGymId,
         created_at: new Date(),
         updated_at: new Date(),
         is_private: isPrivate,
-        selected_grade: selectedGrade
+        selected_grade: selectedGrade,
+        likes: 0
       }
 
       // uploading post
@@ -240,3 +242,7 @@ const styles = StyleSheet.create({
     margin:5,
   }
 });
+function uuid_generate_v4(): string {
+  throw new Error('Function not implemented.');
+}
+

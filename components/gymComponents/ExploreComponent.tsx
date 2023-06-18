@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
 
 import { SearchBar } from '../SearchBar';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
+import { supabase } from '../../lib/supabase';
+import { postModel } from '../../models/postModel';
 
 const POST_DATA = [
   {
@@ -48,20 +50,50 @@ const ExploreComponent: React.FC = () => {
     console.log("hello");
   }
 
+  const [postData, setPostData] = useState<postModel[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let { data, error, status } = await supabase
+          .from('post')
+          .select();
+  
+        // If there is any form of error
+        if (error || status !== 200) {
+          throw error;
+        }
+  
+        if (data) {
+          // Casting data to gymModel
+          const updatedData = data as postModel[];
+          setPostData(updatedData);
+        }
+  
+      } catch (error: any) {
+        Alert.alert(error.message);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
       <View style={styles.flatListContainer}>
         <FlatList
-          data={POST_DATA}
+          data={postData}
           numColumns={2}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id as string}
           renderItem={({ item }) =>
             <PostOverviewComponent
-              image={item.image}
+              imageUrl={item.post_image_url}
               caption={item.caption}
-              name={item.name}
+              profileId={item.profile_id}
               likes={item.likes}
+              selectedGrade={item.selected_grade}
+              createdAt={item.created_at}
             />}
         />
       </View>

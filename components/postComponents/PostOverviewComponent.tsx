@@ -1,5 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, ImageSourcePropType } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, Dimensions, Alert } from 'react-native';
+import { supabase } from '../../lib/supabase';
+import { profileModel } from '../../models/profileModel';
 
 // Calculating the screen and maintaining an aspect ratio
 const { width } = Dimensions.get('window');
@@ -7,27 +9,89 @@ const containerWidth = width * 0.45;
 const containerHeight = containerWidth * (16 / 9);
 
 interface Props {
-  image:ImageSourcePropType;
+  imageUrl:string;
   caption:string;
-  name:string;
+  profileId:string;
   likes:number;
+  selectedGrade:string;
+  createdAt: Date;
 }
 
-const PostOverviewComponent:React.FC<Props> = (props) => {
+const PostOverviewComponent:React.FC<Props> = ({
+  imageUrl,
+  caption,
+  profileId,
+  likes,
+  selectedGrade,
+  createdAt
+}) => {
+
+  const [user, setUser] = useState<profileModel>();
+  const [postImageUrl, setPostImageUrl] = useState<string>()
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        let { data, error, status } = await supabase
+          .from('profiles')
+          .select()
+          .eq("id", profileId)
+          .single()
+  
+        // If there is any form of error
+        if (error || status !== 200) {
+          throw error;
+        }
+  
+        if (data) {
+          // Casting data to gymModel
+          const updatedData = data as profileModel;
+          setUser(updatedData);
+        }
+  
+      } catch (error: any) {
+        Alert.alert(error.message);
+      }
+    };
+
+    const fetchPostImage = async () => {
+      try {
+        const { data, error } = await supabase.storage.from('postVideos').download(imageUrl);
+  
+        if (error) {
+          throw error
+        }
+  
+        const fr = new FileReader()
+        fr.readAsDataURL(data)
+        fr.onload = () => {
+          setPostImageUrl(fr.result as string)
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log('Error downloading image: ', error.message)
+        }
+      }
+    }
+  
+    fetchUserData();
+    fetchPostImage();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.postContainer}>
         <Image 
-          source={props.image}
+          source={{ uri:postImageUrl}}
           style={styles.image}
           resizeMode="cover"
         />
       </View>
       <View style={styles.bottomContainer}>
-        <Text>{props.caption}</Text>
+        <Text>{caption}</Text>
         <View style={styles.bottomView}>
-          <Text style={styles.title}>{props.name}</Text>
-          <Text>❤️{props.likes}</Text>
+          <Text style={styles.title}>{user?.username}</Text>
+          <Text>❤️{likes}</Text>
         </View>
       </View>
     </View>
