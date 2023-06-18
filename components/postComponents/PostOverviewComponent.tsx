@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
     height:"20%",
     margin:5,
     justifyContent: 'space-between',
-    padding:5
+    padding:5,
+    color:"grey"
   },
   postContainer: {
     width:"100%",
