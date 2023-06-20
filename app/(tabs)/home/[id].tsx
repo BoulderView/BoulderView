@@ -67,7 +67,7 @@ const GymDetailsPage = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ 
-        headerTitle:gymData?.name,
+        headerTitle:gymData ? gymData.name : "",
         headerTitleStyle: {
           fontSize: 25,
         },

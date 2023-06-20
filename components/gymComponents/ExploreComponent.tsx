@@ -57,6 +57,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           renderItem={({ item }) =>
             <PostOverviewComponent
               videoUrl={item.post_video_url}
+              thumbnailUrl={item.post_thumbnail_url}
               caption={item.caption}
               profileId={item.profile_id}
               likes={item.likes}

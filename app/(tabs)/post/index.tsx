@@ -20,8 +20,8 @@ const PostScreen= () => {
   const [type, setType] = useState(CameraType.back);
 
   // Media
-  const [media, setMedia] = useState<ImagePicker.ImagePickerAsset | CameraCapturedPicture>();
   const [mediaUri, setMediaUri] = useState<string>("");
+  
   // Permissions
   const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
   const [galleryPermission, requestGalleryPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -48,7 +48,7 @@ const PostScreen= () => {
   }
 
   // Preview the media
-  if (media || mediaUri !== "") {
+  if (mediaUri !== "") {
     return (
       <PreviewMediaComponent
         mediaUri={mediaUri}

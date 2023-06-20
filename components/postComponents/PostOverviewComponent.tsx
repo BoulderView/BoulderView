@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, Alert } from 'react-native';
 import { supabase } from '../../lib/supabase';
+import * as VideoThumbnails from 'expo-video-thumbnails';
+
 import { profileModel } from '../../models/profileModel';
+import { ActivityIndicator } from 'react-native-paper';
 
 // Calculating the screen and maintaining an aspect ratio
 const { width } = Dimensions.get('window');
@@ -10,6 +13,7 @@ const containerHeight = containerWidth * (16 / 9);
 
 interface Props {
   videoUrl:string;
+  thumbnailUrl:string,
   caption:string;
   profileId:string;
   likes:number;
@@ -19,6 +23,7 @@ interface Props {
 
 const PostOverviewComponent:React.FC<Props> = ({
   videoUrl,
+  thumbnailUrl,
   caption,
   profileId,
   likes,
@@ -27,7 +32,8 @@ const PostOverviewComponent:React.FC<Props> = ({
 }) => {
 
   const [user, setUser] = useState<profileModel>();
-  const [postvideoUrl, setPostvideoUrl] = useState<string>()
+  const [postvideoUri, setPostvideoUri] = useState<string|null>(null)
+  const [thumbnailUri, setThumbnailUri] = useState<string|null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -54,7 +60,7 @@ const PostOverviewComponent:React.FC<Props> = ({
       }
     };
 
-    const fetchPostImage = async () => {
+    const fetchPostVideo = async () => {
       try {
         const { data, error } = await supabase.storage.from('postVideos').download(videoUrl);
   
@@ -65,7 +71,27 @@ const PostOverviewComponent:React.FC<Props> = ({
         const fr = new FileReader()
         fr.readAsDataURL(data)
         fr.onload = () => {
-          setPostvideoUrl(fr.result as string)
+          setPostvideoUri(fr.result as string)
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log('Error downloading image: ', error.message)
+        }
+      }
+    }
+
+    const fetchThumbnail = async () => {
+      try {
+        const { data, error } = await supabase.storage.from('postThumbnails').download(thumbnailUrl);
+  
+        if (error) {
+          throw error
+        }
+  
+        const fr = new FileReader()
+        fr.readAsDataURL(data)
+        fr.onload = () => {
+          setThumbnailUri(fr.result as string)
         }
       } catch (error) {
         if (error instanceof Error) {
@@ -75,17 +101,22 @@ const PostOverviewComponent:React.FC<Props> = ({
     }
   
     fetchUserData();
-    fetchPostImage();
-  }, []);
+    fetchPostVideo();
+    fetchThumbnail()
+  }, [thumbnailUri, postvideoUri]);
 
   return (
     <View style={styles.container}>
       <View style={styles.postContainer}>
-        <Image 
-          source={{ uri:postvideoUrl}}
+      {thumbnailUri ? (
+        <Image
+          source={{ uri: thumbnailUri }}
           style={styles.image}
           resizeMode="cover"
         />
+      ) : (
+        <ActivityIndicator size="small" color="gray" style={{flex:1, justifyContent:"center"}}/>
+      )}
       </View>
       <View style={styles.bottomContainer}>
         <Text>

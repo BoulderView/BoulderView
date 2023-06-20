@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import { Button, Divider, TextInput, SegmentedButtons } from 'react-native-paper';
 import { useState } from 'react';
 import { PostgrestError, Session } from '@supabase/supabase-js';
+import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { SearchBar } from '../SearchBar';
 import { postModel } from '../../models/postModel';
@@ -68,54 +69,75 @@ const PostBottomSheetComponent: React.FC<Props> = ({
     }
   }
 
-  // Adding the image to storage and updates post table
-  const uploadMedia = async (
-    media:string,
-  ) => {
+  const uploadThumbnail = async (): Promise<string | undefined> => {
     try {
-      setIsLoading(true);
-      const ext = media.substring(media.lastIndexOf(".") + 1);
+      const { uri } = await VideoThumbnails.getThumbnailAsync(
+        mediaUri,
+        {
+          time: 100,
+        }
+      );
+      const ext = uri.substring(uri.lastIndexOf(".") + 1);
 
-      const fileName:string = media.replace(/^.*[\\/]/, "");
+      const thumbnailUrl:string = uri.replace(/^.*[\\/]/, "");
   
       const formData = new FormData();
       formData.append("files", JSON.parse(JSON.stringify({
-        uri: media,
-        name: fileName,
-        type: `video/${ext}`,
+        uri: uri,
+        name: thumbnailUrl,
+        type: `image/${ext}`,
       })));
-  
-      // Creating new entry on the 
-      const errorPost = await uploadPost(fileName);
-  
-      if (errorPost) throw new Error(errorPost.message);
   
       // Uploading to the supabase storage
       const { data, error } = await supabase
         .storage
-        .from('postVideos')
-        .upload(fileName, formData);
-      
-      // Error occurred
-      if (error) throw new Error(error.message);
-      
-      // Success case
-      Alert.alert("Video uploaded");
-      setMediaUri("");
+        .from('postThumbnails')
+        .upload(thumbnailUrl, formData);
+
+      return thumbnailUrl;
 
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
       }
-    } finally {
-      setIsLoading(false);
+    }
+  };
+
+  // Adding the image to storage and updates post table
+  const uploadMedia = async (): Promise<string | undefined> => {
+    try {
+      setIsLoading(true);
+      const ext = mediaUri.substring(mediaUri.lastIndexOf(".") + 1);
+
+      const postVideoUrl:string = mediaUri.replace(/^.*[\\/]/, "");
+  
+      const formData = new FormData();
+      formData.append("files", JSON.parse(JSON.stringify({
+        uri: mediaUri,
+        name: postVideoUrl,
+        type: `video/${ext}`,
+      })));
+  
+      // Uploading to the supabase storage
+      const { data, error } = await supabase
+        .storage
+        .from('postVideos')
+        .upload(postVideoUrl, formData);
+      
+      // Error occurred
+      if (error) throw new Error(error.message);
+
+      return postVideoUrl;
+      
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
     }
   };
 
   // Creating a table entry for the post
-  const uploadPost = async (
-    postVideoUrl:string
-  ) : Promise<PostgrestError | null> => {
+  const uploadPost = async () => {
     try {
 
       // Requires the user to be signed in
@@ -127,10 +149,21 @@ const PostBottomSheetComponent: React.FC<Props> = ({
         selectedGymId = selectedGym.id;
       }
 
+      // Upload video
+      const postVideoUrl = await uploadMedia();
+
+      // Upload thumbnail
+      const thumbnailUrl = await uploadThumbnail();
+
+      if (postVideoUrl === undefined || thumbnailUrl === undefined) {
+        throw new Error("video or thumbnail upload failed");
+      }
+
       const uploads:postModel = {
         id:undefined,
         caption: descText,
         post_video_url: postVideoUrl,
+        post_thumbnail_url: thumbnailUrl,
         profile_id: session?.user.id,
         gym_id: selectedGymId,
         created_at: new Date(),
@@ -146,12 +179,19 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       if (error) {
         throw error
       }
-      return null;
+
+      setMediaUri("");
+
+      // Success case
+      Alert.alert("Video uploaded");
+      
     } catch (error:any) {
       if (error instanceof Error) {
-        Alert.alert(error.message)
-      }
-      return error
+        Alert.alert(error.message);
+      } 
+
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -190,9 +230,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
           <Button 
             mode="contained" 
             style={styles.button} 
-            onPress={() => {
-              uploadMedia(mediaUri)
-            }}
+            onPress={uploadPost}
             loading={isLoading}
           >
             upload
