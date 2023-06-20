@@ -6,13 +6,11 @@ import { IconButton } from 'react-native-paper';
 interface Props {
   cameraRef: RefObject<Camera>;
   setMediaUri: Dispatch<string>;
-  mediaUri:string|undefined;
 }
 
 const CameraActionComponent: React.FC<Props> = ({
   cameraRef,
   setMediaUri,
-  mediaUri
 }) => {
   
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -20,14 +18,12 @@ const CameraActionComponent: React.FC<Props> = ({
   // handles taking videos
   const takeVideo = async () => {
     if (!isRecording) {
-      console.log("taking video")
 
       setIsRecording(true);
       const newVideo = await cameraRef.current?.recordAsync();
   
       if (newVideo) {
         setMediaUri(newVideo.uri);
-        console.log(mediaUri);
       } else {
         Alert.alert("video capture failed");
       }

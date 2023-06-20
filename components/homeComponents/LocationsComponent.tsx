@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
+import { supabase } from '../../lib/supabase';
+import { Alert } from 'react-native';
 
 import { HomeCard } from '../HomeCard';
 import { SearchBar } from '../SearchBar';
-import { supabase } from '../../lib/supabase';
-import { Alert } from 'react-native';
 import { gymModel } from '../../models/gymModel';
 
 const LocationsComponent = () => {
@@ -35,7 +35,7 @@ const LocationsComponent = () => {
   
       } catch (error: any) {
         Alert.alert(error.message);
-      }
+      };
     };
   
     fetchData();

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, FlatList, StyleSheet, Alert } from 'react-native';
 
 import { SearchBar } from '../SearchBar';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     flex:1,
   },
   flatListContainer: {
-    alignItems:"center"
+    alignItems:"center",
+    flex:1
   }
 })

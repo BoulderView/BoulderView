@@ -42,7 +42,6 @@ const PostBottomSheetComponent: React.FC<Props> = ({
   // Do something on submit
   const onSubmitSearch = async (query: string) => {
     try {
-      console.log(query);
       let { data, error, status } = await supabase
         .from('gym')
         .select()

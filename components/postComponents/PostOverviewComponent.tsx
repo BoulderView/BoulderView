@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, Alert } from 'react-native';
 import { supabase } from '../../lib/supabase';
-import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { profileModel } from '../../models/profileModel';
 import { ActivityIndicator } from 'react-native-paper';

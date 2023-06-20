@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet } from "react-native";
-import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera';
 import { IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
@@ -82,7 +82,6 @@ const PostScreen= () => {
             <CameraActionComponent
               cameraRef={cameraRef}
               setMediaUri={setMediaUri}
-              mediaUri={mediaUri}
             />
             <FlipCameraComponent 
               setType={setType}
