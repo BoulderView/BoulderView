@@ -6,45 +6,11 @@ import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
 
-const POST_DATA = [
-  {
-    id: 1,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is cool",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 2,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is hot",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 3,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is sexy",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 4,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is life",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 5,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is everything",
-    name: "Alex Honnold",
-    likes: 1500
-  }
-]
+interface Props {
+  gymId:string|string[]|undefined;
+}
 
-const ExploreComponent: React.FC = () => {
+const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   // Do something on submit
   const onSubmitSearch = (query: string) => {
     console.log("hello");
@@ -57,7 +23,8 @@ const ExploreComponent: React.FC = () => {
       try {
         let { data, error, status } = await supabase
           .from('post')
-          .select();
+          .select()
+          .eq('gym_id', gymId);
   
         // If there is any form of error
         if (error || status !== 200) {

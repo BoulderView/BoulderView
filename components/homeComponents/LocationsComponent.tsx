@@ -49,9 +49,9 @@ const LocationsComponent = () => {
         renderItem={({ item }) =>
           <HomeCard
             id={item.id}
-            title={item.name}
+            name={item.name}
             coverImage={item.cover_image_url.trim()}
-            content={item.description}
+            description={item.description}
           />}
       />
     </>

@@ -12,6 +12,7 @@ export default function Account({ session }: { session: Session }) {
   const [username, setUsername] = useState('');
   const [description, setDescription] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [fullName, setFullName] = useState("");
 
   useEffect(() => {
     if (session) getProfile();
@@ -24,7 +25,7 @@ export default function Account({ session }: { session: Session }) {
 
       let { data, error, status } = await supabase
         .from('profiles')
-        .select(`username, description, avatar_url`)
+        .select(`username, description, avatar_url, full_name`)
         .eq('id', session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -35,6 +36,7 @@ export default function Account({ session }: { session: Session }) {
         setUsername(data.username);
         setDescription(data.description);
         setAvatarUrl(data.avatar_url);
+        setFullName(data.full_name);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -45,24 +47,17 @@ export default function Account({ session }: { session: Session }) {
     }
   }
 
-  async function updateProfile({
-    username,
-    description,
-    avatar_url,
-  }: {
-    username: string
-    description: string
-    avatar_url: string
-  }) {
+  async function updateProfile() {
     try {
       setLoading(true);
       if (!session?.user) throw new Error('No user on the session!');
 
       const updates:profileModel = {
         id: session?.user.id,
-        username,
-        description,
-        avatar_url,
+        full_name: fullName,
+        username: username,
+        description: description,
+        avatar_url: avatarUrl,
         updated_at: new Date(),
       }
 
@@ -88,7 +83,7 @@ export default function Account({ session }: { session: Session }) {
           url={avatarUrl}
           onUpload={(url: string) => {
             setAvatarUrl(url)
-            updateProfile({ username, description, avatar_url: url })
+            updateProfile()
           }}
         />
       </View>
@@ -105,7 +100,7 @@ export default function Account({ session }: { session: Session }) {
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
           title={loading ? 'Loading ...' : 'Update'}
-          onPress={() => updateProfile({ username, description, avatar_url: avatarUrl })}
+          onPress={() => updateProfile()}
           disabled={loading}
         />
       </View>

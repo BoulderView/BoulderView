@@ -242,7 +242,3 @@ const styles = StyleSheet.create({
     margin:5,
   }
 });
-function uuid_generate_v4(): string {
-  throw new Error('Function not implemented.');
-}
-

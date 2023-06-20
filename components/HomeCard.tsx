@@ -7,15 +7,15 @@ import { supabase } from '../lib/supabase';
 
 export const HomeCard = (props: {
   id: string;
-  title: string;
+  name: string;
   coverImage: string;
-  content: string;
+  description: string;
 }) => {
 
   const [coverImageUrl, setCoverImageUrl] = useState<string>();
 
   useEffect(() => {
-    if (props.coverImage) downloadImage(props.coverImage)
+    if (props.coverImage) downloadImage(props.coverImage);
   }, [props.coverImage])
 
   // Retrieving image directly from supabase
@@ -49,10 +49,10 @@ export const HomeCard = (props: {
       }}>
         <Card.Cover source={{ uri:coverImageUrl}}></Card.Cover>
         <Card.Content>
-          <Title>{props.title}</Title>
+          <Title>{props.name}</Title>
         </Card.Content>
         <Card.Content>
-          <Paragraph>{props.content}</Paragraph>
+          <Paragraph>{props.description}</Paragraph>
         </Card.Content>
         <Card.Actions>
           <Button>Favourite</Button>

@@ -88,7 +88,13 @@ const PostOverviewComponent:React.FC<Props> = ({
         />
       </View>
       <View style={styles.bottomContainer}>
-        <Text>{caption}</Text>
+        <Text>
+          {caption.length > 20 // limit the caption size to 20 char
+            ? caption.substring(0, 20) + "..."
+            : caption.length === 0
+            ? "no caption"
+            :caption.trim()}
+        </Text>
         <View style={styles.bottomView}>
           <Text style={styles.title}>{user?.username}</Text>
           <Text>❤️{likes}</Text>
@@ -118,8 +124,7 @@ const styles = StyleSheet.create({
     height:"20%",
     margin:5,
     justifyContent: 'space-between',
-    padding:5,
-    color:"grey"
+    padding:5
   },
   postContainer: {
     width:"100%",

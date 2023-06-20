@@ -1,9 +1,9 @@
-import { Stack } from 'expo-router';
+import { Stack, useSearchParams } from 'expo-router';
 import React from 'react';
 import { 
   StyleSheet, 
-  View  } from 'react-native';
-import { Button } from 'react-native-paper';
+  View  
+} from 'react-native';
 
 import TabNavigation from '../../../components/TabNavigation';
 import MapComponent from '../../../components/gymComponents/MapComponent';
@@ -56,9 +56,8 @@ const GYM_DATA = [
 
 const GymDetailsPage = () => {
   // does not work for some reason
-  // const { id } = useSearchParams();
+  const { id } = useSearchParams();
 
-  const id = 1
   const data = GYM_DATA[0]
 
   const handleButtonPress = () => {
@@ -73,7 +72,7 @@ const GymDetailsPage = () => {
     },
     ExploreComponent: {
       title: 'Explore',
-      component: <ExploreComponent />,
+      component: <ExploreComponent gymId={id}/>,
     },
     LeaderboardComponent: {
       title: 'Leaderboard',
@@ -88,11 +87,6 @@ const GymDetailsPage = () => {
         headerTitleStyle: {
           fontSize: 25,
         },
-        headerRight: () => (
-          <Button icon="bookmark-outline" mode="contained" onPress={handleButtonPress}>
-            {data.followerCount}
-          </Button>
-        ),
         headerStyle: {
           backgroundColor: '#576CBC', // Replace with your desired color
         },
