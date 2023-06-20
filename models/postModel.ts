@@ -1,7 +1,7 @@
 export type postModel = {
   id: string | undefined;
   caption: string,
-  post_image_url: string,
+  post_video_url: string,
   profile_id: string
   created_at: Date,
   updated_at: Date,

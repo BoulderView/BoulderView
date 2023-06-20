@@ -56,7 +56,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           keyExtractor={(item) => item.id as string}
           renderItem={({ item }) =>
             <PostOverviewComponent
-              imageUrl={item.post_image_url}
+              videoUrl={item.post_video_url}
               caption={item.caption}
               profileId={item.profile_id}
               likes={item.likes}

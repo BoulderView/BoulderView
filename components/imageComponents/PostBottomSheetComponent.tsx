@@ -33,7 +33,6 @@ const PostBottomSheetComponent: React.FC<Props> = ({
   useEffect(() => {
     if (value === "public") {
       setIsPrivate(false);
-      console.log("change");
     } else if (value === "private") {
       setIsPrivate(true);
     }
@@ -101,7 +100,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       if (error) throw new Error(error.message);
       
       // Success case
-      Alert.alert("Image uploaded");
+      Alert.alert("Video uploaded");
       setMediaUri("");
 
     } catch (error) {
@@ -131,7 +130,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       const uploads:postModel = {
         id:undefined,
         caption: descText,
-        post_image_url: postVideoUrl,
+        post_video_url: postVideoUrl,
         profile_id: session?.user.id,
         gym_id: selectedGymId,
         created_at: new Date(),

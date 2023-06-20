@@ -9,7 +9,7 @@ const containerWidth = width * 0.45;
 const containerHeight = containerWidth * (16 / 9);
 
 interface Props {
-  imageUrl:string;
+  videoUrl:string;
   caption:string;
   profileId:string;
   likes:number;
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const PostOverviewComponent:React.FC<Props> = ({
-  imageUrl,
+  videoUrl,
   caption,
   profileId,
   likes,
@@ -27,7 +27,7 @@ const PostOverviewComponent:React.FC<Props> = ({
 }) => {
 
   const [user, setUser] = useState<profileModel>();
-  const [postImageUrl, setPostImageUrl] = useState<string>()
+  const [postvideoUrl, setPostvideoUrl] = useState<string>()
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -56,7 +56,7 @@ const PostOverviewComponent:React.FC<Props> = ({
 
     const fetchPostImage = async () => {
       try {
-        const { data, error } = await supabase.storage.from('postVideos').download(imageUrl);
+        const { data, error } = await supabase.storage.from('postVideos').download(videoUrl);
   
         if (error) {
           throw error
@@ -65,7 +65,7 @@ const PostOverviewComponent:React.FC<Props> = ({
         const fr = new FileReader()
         fr.readAsDataURL(data)
         fr.onload = () => {
-          setPostImageUrl(fr.result as string)
+          setPostvideoUrl(fr.result as string)
         }
       } catch (error) {
         if (error instanceof Error) {
@@ -82,7 +82,7 @@ const PostOverviewComponent:React.FC<Props> = ({
     <View style={styles.container}>
       <View style={styles.postContainer}>
         <Image 
-          source={{ uri:postImageUrl}}
+          source={{ uri:postvideoUrl}}
           style={styles.image}
           resizeMode="cover"
         />
