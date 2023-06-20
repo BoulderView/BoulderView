@@ -1,67 +1,68 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, FlatList, StyleSheet, Alert } from 'react-native';
 
 import { SearchBar } from '../SearchBar';
-import PostOverviewComponent from '../post/PostOverviewComponent';
+import PostOverviewComponent from '../postComponents/PostOverviewComponent';
+import { supabase } from '../../lib/supabase';
+import { postModel } from '../../models/postModel';
 
-const POST_DATA = [
-  {
-    id: 1,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is cool",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 2,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is hot",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 3,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is sexy",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 4,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is life",
-    name: "Alex Honnold",
-    likes: 1500
-  },
-  {
-    id: 5,
-    image: require("./../../assets/postImages/climbing-sample.jpg"),
-    caption: "Climbing is everything",
-    name: "Alex Honnold",
-    likes: 1500
-  }
-]
+interface Props {
+  gymId:string|string[]|undefined;
+  postData?:postModel[]
+}
 
-const ExploreComponent: React.FC = () => {
+const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   // Do something on submit
   const onSubmitSearch = (query: string) => {
     console.log("hello");
   }
 
+  const [postData, setPostData] = useState<postModel[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let { data, error, status } = await supabase
+          .from('post')
+          .select()
+          .eq('gym_id', gymId);
+  
+        // If there is any form of error
+        if (error || status !== 200) {
+          throw error;
+        }
+  
+        if (data) {
+          // Casting data to gymModel
+          const updatedData = data as postModel[];
+          setPostData(updatedData);
+        }
+  
+      } catch (error: any) {
+        Alert.alert(error.message);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <SearchBar searchFunction={onSubmitSearch} />
+      <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
       <View style={styles.flatListContainer}>
         <FlatList
-          data={POST_DATA}
+          data={postData}
           numColumns={2}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id as string}
           renderItem={({ item }) =>
             <PostOverviewComponent
-              image={item.image}
+              videoUrl={item.post_video_url}
+              thumbnailUrl={item.post_thumbnail_url}
               caption={item.caption}
-              name={item.name}
+              profileId={item.profile_id}
               likes={item.likes}
+              selectedGrade={item.selected_grade}
+              createdAt={item.created_at}
             />}
         />
       </View>
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
     flex:1,
   },
   flatListContainer: {
-    alignItems:"center"
+    alignItems:"center",
+    flex:1
   }
 })

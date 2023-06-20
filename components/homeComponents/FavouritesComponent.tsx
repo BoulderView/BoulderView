@@ -1,13 +1,9 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import NoContentComponent from '../NoContentComponent';
 
 const FavouritesComponent = () => {
   return (
-    <View>
-      <Text>
-        This is the favourites component
-      </Text>
-    </View>
+    <NoContentComponent />
   )
 }
 

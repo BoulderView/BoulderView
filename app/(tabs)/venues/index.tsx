@@ -7,7 +7,7 @@ import Constants from "expo-constants";
 import { useCallback, useRef, useState } from 'react';
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
-import { BottomSheetComponent } from "../../../components/BottomSheet/BottomSheetComponent";
+import BottomSheetComponent from "../../../components/BottomSheet/BottomSheetComponent";
 
 const { width, height } = Dimensions.get("window");
 
@@ -82,7 +82,7 @@ const VenueScreen = () => {
         })}
       </MapView>
       <View style={styles.searchBarContainer}>
-        <SearchBar searchFunction={onSubmitSearch}/>
+        <SearchBar searchFunction={onSubmitSearch} placeholder="Search"/>
       </View>
       <BottomSheet
         ref={bottomSheetRef}

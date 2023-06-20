@@ -9,12 +9,12 @@ interface Props {
   requestCameraPermission: () => void;
   requestGalleryPermission: () => void;
 }
-const NoPermissionsComponent = ({ 
+const NoPermissionsComponent:React.FC<Props> = ({ 
   cameraPermission, 
   galleryPermission,
   requestCameraPermission,
   requestGalleryPermission
-}:Props) => {
+}) => {
   return (
     <View style={{
       flex:1,

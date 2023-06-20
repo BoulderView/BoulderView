@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet } from "react-native";
-import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera';
 import { IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
@@ -20,8 +20,8 @@ const PostScreen= () => {
   const [type, setType] = useState(CameraType.back);
 
   // Media
-  const [media, setMedia] = useState<ImagePicker.ImagePickerAsset | CameraCapturedPicture>();
-
+  const [mediaUri, setMediaUri] = useState<string>("");
+  
   // Permissions
   const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
   const [galleryPermission, requestGalleryPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -48,11 +48,11 @@ const PostScreen= () => {
   }
 
   // Preview the media
-  if (media) {
+  if (mediaUri !== "") {
     return (
       <PreviewMediaComponent
-        media={media}
-        setMedia={setMedia}
+        mediaUri={mediaUri}
+        setMediaUri={setMediaUri}
       />
     );
   }
@@ -77,11 +77,11 @@ const PostScreen= () => {
           </View>
           <View style={styles.bottomSubContainer}>
             <PickMediaComponent
-              setMedia={setMedia}
+              setMediaUri={setMediaUri}
             />
             <CameraActionComponent
               cameraRef={cameraRef}
-              setMedia={setMedia}
+              setMediaUri={setMediaUri}
             />
             <FlipCameraComponent 
               setType={setType}
