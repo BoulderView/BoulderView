@@ -1,13 +1,12 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import * as ImagePicker from "expo-image-picker";
-import { CameraCapturedPicture } from 'expo-camera';
 import { IconButton } from 'react-native-paper';
 
 interface Props {
-  setMedia: Dispatch<React.SetStateAction<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>>;
+  setMediaUri: Dispatch<SetStateAction<string>>;
 }
 
-const PickMediaComponent:React.FC<Props> = ({ setMedia }) => { 
+const PickMediaComponent:React.FC<Props> = ({ setMediaUri }) => { 
   // Pick image or videos
   const pickMedia = async () => {
     /*
@@ -16,10 +15,9 @@ const PickMediaComponent:React.FC<Props> = ({ setMedia }) => {
       exif: remove shutter speed and other camera options
     */
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:ImagePicker.MediaTypeOptions.All,
+      mediaTypes:ImagePicker.MediaTypeOptions.Videos,
       allowsEditing:true,
       quality:1,
-      base64:true,
       allowsMultipleSelection:false,
       exif:false,
       aspect:[9,16]
@@ -27,7 +25,7 @@ const PickMediaComponent:React.FC<Props> = ({ setMedia }) => {
 
     // When image was picked
     if (!result.canceled) {
-      setMedia(result.assets[0]);
+      setMediaUri(result.assets[0].uri);
     }
   }
   

@@ -1,52 +1,50 @@
-import { Camera, CameraCapturedPicture, CameraPictureOptions } from 'expo-camera';
-import { ImagePickerAsset } from 'expo-image-picker';
-import React, { Dispatch, RefObject } from 'react';
+import { Camera } from 'expo-camera';
+import React, { Dispatch, RefObject, useState } from 'react';
+import { Alert } from 'react-native';
 import { IconButton } from 'react-native-paper';
 
 interface Props {
   cameraRef: RefObject<Camera>;
-  setMedia: Dispatch<React.SetStateAction<ImagePickerAsset | CameraCapturedPicture | undefined>>;
+  setMediaUri: Dispatch<string>;
+  mediaUri:string|undefined;
 }
 
 const CameraActionComponent: React.FC<Props> = ({
   cameraRef,
-  setMedia
+  setMediaUri,
+  mediaUri
 }) => {
-  // handles taking pictures
-  const takePhoto = async () => {
-    /*
-      Options for the pictures 
-      quality: 1 for best quality pictures
-      exif: remove shutter speed and other camera options
-    */
-    const options: CameraPictureOptions = {
-      quality: 1,
-      base64: true,
-      exif: false
-    };
   
-    if (cameraRef?.current) {
-      const newPhoto = await cameraRef.current.takePictureAsync(options);
-      setMedia(newPhoto);
-      console.log("photo taken");
-    }
-  }
+  const [isRecording, setIsRecording] = useState<boolean>(false);
 
   // handles taking videos
   const takeVideo = async () => {
-    console.log("taking video")
+    if (!isRecording) {
+      console.log("taking video")
+
+      setIsRecording(true);
+      const newVideo = await cameraRef.current?.recordAsync();
+  
+      if (newVideo) {
+        setMediaUri(newVideo.uri);
+        console.log(mediaUri);
+      } else {
+        Alert.alert("video capture failed");
+      }
+    } else {
+      cameraRef.current?.stopRecording();
+      setIsRecording(false);
+    }
   }
 
   return (
     <IconButton
-      icon="radiobox-marked"
-      iconColor="white"
+      icon={!isRecording ? "radiobox-marked" : "stop-circle"}
+      iconColor="red"
       containerColor="transparent"
       size={60}
       mode="contained"
-      onPress={takePhoto}
-      onLongPress={takeVideo} // for video
-      delayLongPress={200}
+      onPress={takeVideo}
     />
   )
 }

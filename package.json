@@ -45,7 +45,8 @@
     "react-router-native": "^6.11.2",
     "victory-native": "^36.6.10",
     "expo-document-picker": "~11.2.2",
-    "expo-video-thumbnails": "~7.2.1"
+    "expo-video-thumbnails": "~7.2.1",
+    "expo-av": "~13.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

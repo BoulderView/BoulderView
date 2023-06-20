@@ -21,7 +21,7 @@ const PostScreen= () => {
 
   // Media
   const [media, setMedia] = useState<ImagePicker.ImagePickerAsset | CameraCapturedPicture>();
-
+  const [mediaUri, setMediaUri] = useState<string>("");
   // Permissions
   const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
   const [galleryPermission, requestGalleryPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -48,11 +48,11 @@ const PostScreen= () => {
   }
 
   // Preview the media
-  if (media) {
+  if (media || mediaUri !== "") {
     return (
       <PreviewMediaComponent
-        media={media}
-        setMedia={setMedia}
+        mediaUri={mediaUri}
+        setMediaUri={setMediaUri}
       />
     );
   }
@@ -77,11 +77,12 @@ const PostScreen= () => {
           </View>
           <View style={styles.bottomSubContainer}>
             <PickMediaComponent
-              setMedia={setMedia}
+              setMediaUri={setMediaUri}
             />
             <CameraActionComponent
               cameraRef={cameraRef}
-              setMedia={setMedia}
+              setMediaUri={setMediaUri}
+              mediaUri={mediaUri}
             />
             <FlipCameraComponent 
               setType={setType}

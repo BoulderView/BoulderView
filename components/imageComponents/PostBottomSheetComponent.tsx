@@ -1,26 +1,24 @@
-import React, { Dispatch, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { Button, Divider, TextInput, SegmentedButtons } from 'react-native-paper';
 import { useState } from 'react';
-import * as ImagePicker from 'expo-image-picker';
+import { PostgrestError, Session } from '@supabase/supabase-js';
 
 import { SearchBar } from '../SearchBar';
-import { PostgrestError, Session } from '@supabase/supabase-js';
 import { postModel } from '../../models/postModel';
 import { supabase } from '../../lib/supabase';
-import { CameraCapturedPicture } from 'expo-camera';
 import { gymModel } from '../../models/gymModel';
 
 interface Props {
   session:Session | null;
-  media:ImagePicker.ImagePickerAsset | CameraCapturedPicture;
-  setMedia:Dispatch<React.SetStateAction<ImagePicker.ImagePickerAsset | CameraCapturedPicture | undefined>>;
+  mediaUri:string;
+  setMediaUri: Dispatch<SetStateAction<string>>;
 }
 
 const PostBottomSheetComponent: React.FC<Props> = ({
   session,
-  media,
-  setMedia,
+  mediaUri,
+  setMediaUri,
 }) => {
 
   // States
@@ -73,19 +71,19 @@ const PostBottomSheetComponent: React.FC<Props> = ({
 
   // Adding the image to storage and updates post table
   const uploadMedia = async (
-    media:ImagePicker.ImagePickerAsset,
+    media:string,
   ) => {
     try {
       setIsLoading(true);
-      const ext = media.uri.substring(media.uri.lastIndexOf(".") + 1);
+      const ext = media.substring(media.lastIndexOf(".") + 1);
 
-      const fileName:string = media.uri.replace(/^.*[\\/]/, "");
+      const fileName:string = media.replace(/^.*[\\/]/, "");
   
       const formData = new FormData();
       formData.append("files", JSON.parse(JSON.stringify({
-        uri: media.uri,
+        uri: media,
         name: fileName,
-        type: media.type ? `image/${ext}` : `video/${ext}`,
+        type: `video/${ext}`,
       })));
   
       // Creating new entry on the 
@@ -104,7 +102,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       
       // Success case
       Alert.alert("Image uploaded");
-      setMedia(undefined);
+      setMediaUri("");
 
     } catch (error) {
       if (error instanceof Error) {
@@ -194,7 +192,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
             mode="contained" 
             style={styles.button} 
             onPress={() => {
-              uploadMedia(media)
+              uploadMedia(mediaUri)
             }}
             loading={isLoading}
           >

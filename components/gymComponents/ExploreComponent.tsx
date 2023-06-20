@@ -8,6 +8,7 @@ import { postModel } from '../../models/postModel';
 
 interface Props {
   gymId:string|string[]|undefined;
+  postData?:postModel[]
 }
 
 const ExploreComponent: React.FC<Props> = ({ gymId }) => {
