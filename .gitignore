@@ -12,7 +12,7 @@ web-build/
 .eslintrc.js
 .vscode
 .env
-__snapshots__/**/*
+**/*__snapshots__/**/*
 coverage/**/*
 
 # macOS
