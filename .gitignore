@@ -12,8 +12,8 @@ web-build/
 .eslintrc.js
 .vscode
 .env
-__snapshots__
-coverage
+__snapshots__/**/*
+coverage/**/*
 
 # macOS
 .DS_Store
