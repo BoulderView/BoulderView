@@ -1,34 +1,41 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
-import { Button, Divider, TextInput, SegmentedButtons } from 'react-native-paper';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Button, Divider, TextInput, SegmentedButtons, List } from 'react-native-paper';
 import { useState } from 'react';
-import { PostgrestError, Session } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
-import { SearchBar } from '../SearchBar';
 import { postModel } from '../../models/postModel';
 import { supabase } from '../../lib/supabase';
 import { gymModel } from '../../models/gymModel';
+import TagGymComponent from './TagGymComponent';
+import PickGradeComponent from './PickGradeComponent';
 
 interface Props {
   session:Session | null;
   mediaUri:string;
   setMediaUri: Dispatch<SetStateAction<string>>;
+  setShowSnackBar: Dispatch<SetStateAction<boolean>>;
 }
 
 const PostBottomSheetComponent: React.FC<Props> = ({
   session,
   mediaUri,
   setMediaUri,
+  setShowSnackBar
 }) => {
 
   // States
   const [descText, setDescText] = useState("");
-  const [selectedGym, setSelectedGym] = useState<gymModel>();
   const [isPrivate, setIsPrivate] = useState(true);
-  const [selectedGrade, setSelectedGrade] = useState("Q1");
   const [isLoading, setIsLoading] = useState(false);
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = useState("public");
+
+  const [isSelectingGym, setIsSelectingGym] = useState(false);
+  const [selectedGym, setSelectedGym] = useState<gymModel|undefined>();
+
+  const [isSelectingGrade, setIsSelectingGrade] = useState(false);
+  const [selectedGrade, setSelectedGrade] = useState<string|null>(null);
 
   // This effect runs after every render
   useEffect(() => {
@@ -39,34 +46,9 @@ const PostBottomSheetComponent: React.FC<Props> = ({
     }
   }, [value]);
 
-  // Do something on submit
-  const onSubmitSearch = async (query: string) => {
-    try {
-      let { data, error, status } = await supabase
-        .from('gym')
-        .select()
-        .eq("name", query)
-        .single();
-      
-      console.log(data);
-
-      // If there is any form of error
-      if (error || status !== 200) {
-        throw error;
-      }
-
-      if (data) {
-        // Casting data to gymModel
-        const updatedData = data as gymModel;
-        setSelectedGym(updatedData);
-      }
-
-      console.log("Selected gym:" + selectedGym?.cover_image_url);
-
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
-  }
+  useEffect(() => {
+    setSelectedGrade(null); // Set selectedGrade to null when selectedGym changes
+  }, [selectedGym]);
 
   const uploadThumbnail = async (): Promise<string | undefined> => {
     try {
@@ -182,7 +164,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
       setMediaUri("");
 
       // Success case
-      Alert.alert("Video uploaded");
+      setShowSnackBar(true);
       
     } catch (error:any) {
       if (error instanceof Error) {
@@ -194,15 +176,33 @@ const PostBottomSheetComponent: React.FC<Props> = ({
     }
   }
 
+  if (isSelectingGym) {
+    return <TagGymComponent setIsSelectingGym={setIsSelectingGym} setSelectedGym={setSelectedGym}/>;
+  }
+
+  if (isSelectingGrade && selectedGym !== undefined) {
+    return <PickGradeComponent setIsSelectingGrade={setIsSelectingGrade} setSelectedGrade={setSelectedGrade} gymGrades={selectedGym.gym_grade} />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <SearchBar 
-          searchFunction={onSubmitSearch} 
-          placeholder='Tag Gym' 
+        <List.Item
+          title="Tag Gyms"
+          description={selectedGym === undefined ? "No gym selected" : selectedGym.name}
+          right={props => <List.Icon {...props} icon="arrow-right" />}
+          onPress={() => setIsSelectingGym(true)}
         />
         <Divider />
-        {selectedGym && <Text>Selected Gym: {selectedGym.name}</Text>}
+        {selectedGym && 
+          <List.Item
+            title="Select grade"
+            description={selectedGrade === null ? "Select a grade" : selectedGrade}
+            right={props => <List.Icon {...props} icon="arrow-right" />}
+            onPress={() => setIsSelectingGrade(true)}
+          />
+        }
+        <Divider />
         <TextInput
           label="Caption"
           value={descText}
@@ -215,6 +215,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
           <SegmentedButtons
             value={value}
             onValueChange={setValue}
+            style={styles.segmentedButtons}
             buttons={[
               {
                 value: 'private',
@@ -231,6 +232,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
             style={styles.button} 
             onPress={uploadPost}
             loading={isLoading}
+            disabled={selectedGrade === null && selectedGym === undefined}
           >
             upload
           </Button>
@@ -269,10 +271,14 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
+    height:"100%"
   },
   buttonView: {
     flexDirection:"row",
     justifyContent:"space-between",
     margin:5,
+  },
+  segmentedButtons: {
+    width:"50%"
   }
 });

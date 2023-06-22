@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { NativeSyntheticEvent, StyleProp, TextInputSubmitEditingEventData, View, ViewStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, TextInputSubmitEditingEventData, ViewStyle } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
   searchFunction: (query: string) => void;
   onChangefunction?: (query: string) => void;
-  placeholder: string;
+  placeholder?: string;
 }
 
 export const SearchBar = ({ 

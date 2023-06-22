@@ -14,7 +14,6 @@ const FlipCameraComponent:React.FC<Props> = ({ setType, type }) => {
       (current === CameraType.back 
         ? CameraType.front 
         : CameraType.back));
-    console.log(type);
   }
 
   return (

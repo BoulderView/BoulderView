@@ -12,17 +12,18 @@ import PostBottomSheetComponent from './PostBottomSheetComponent';
 interface Props {
   mediaUri:string;
   setMediaUri: Dispatch<SetStateAction<string>>;
+  setShowSnackBar: Dispatch<SetStateAction<boolean>>;
 }
 
-const PreviewMediaComponent: React.FC<Props> = ({ mediaUri, setMediaUri }) => {
+const PreviewMediaComponent: React.FC<Props> = ({ mediaUri, setMediaUri, setShowSnackBar }) => {
   const [session, setSession] = useState<Session | null>(null);
   const video = useRef(null);
-  const [status, setStatus] = React.useState({});
+  
 
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = ['10%', '30%', '85%'];
+  const snapPoints = ['30%', '10%', '85%'];
 
   useEffect(() => {
     // Getting user session
@@ -33,7 +34,7 @@ const PreviewMediaComponent: React.FC<Props> = ({ mediaUri, setMediaUri }) => {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,7 +48,6 @@ const PreviewMediaComponent: React.FC<Props> = ({ mediaUri, setMediaUri }) => {
           onPress={() => setMediaUri("")}
         />
       </SafeAreaView>
-      {/* <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + media.base64 }} /> */}
       <Video
         ref={video}
         style={styles.preview}
@@ -57,7 +57,6 @@ const PreviewMediaComponent: React.FC<Props> = ({ mediaUri, setMediaUri }) => {
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         isLooping
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
         shouldPlay
       />
       <BottomSheet
@@ -65,13 +64,14 @@ const PreviewMediaComponent: React.FC<Props> = ({ mediaUri, setMediaUri }) => {
         snapPoints={snapPoints}
       >
         <BottomSheetView>
-        <PostBottomSheetComponent 
-          session={session}
-          mediaUri={mediaUri}
-          setMediaUri={setMediaUri}
-        />
+          <PostBottomSheetComponent 
+              session={session}
+              mediaUri={mediaUri}
+              setMediaUri={setMediaUri}
+              setShowSnackBar={setShowSnackBar}
+            />
         </BottomSheetView>
-      </BottomSheet>  
+      </BottomSheet>
     </SafeAreaView>
   );
 };
