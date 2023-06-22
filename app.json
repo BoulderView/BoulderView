@@ -1,13 +1,13 @@
 {
   "expo": {
-      "name": "BoulderView",
-        "scheme": "BoulderView",
-          "slug": "BoulderView",
-            "version": "1.0.0",
-              "orientation": "portrait",
-                "icon": "./assets/icon.png",
-                  "userInterfaceStyle": "light",
-                    "splash": {
+    "name": "BoulderView",
+    "scheme": "boulderview",
+    "slug": "BoulderView",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.BoulderView"
     },
     "android": {
       "adaptiveIcon": {
