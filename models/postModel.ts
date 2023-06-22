@@ -8,6 +8,6 @@ export type postModel = {
   updated_at: Date,
   gym_id: string | null,
   is_private: boolean,
-  selected_grade: string,
+  selected_grade: string | null,
   likes:number
 }

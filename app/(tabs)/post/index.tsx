@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Snackbar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
 import * as ImagePicker from "expo-image-picker";
 
 import NoPermissionsComponent from '../../../components/imageComponents/NoPermissionsComponent';
-import PermissionsLoadingComponent from '../../../components/imageComponents/PermissionsLoadingComponent';
+import LoadingComponent from '../../../components/imageComponents/LoadingComponent';
 import CameraActionComponent from '../../../components/imageComponents/CameraActionComponent';
 import FlipCameraComponent from '../../../components/imageComponents/FlipCameraComponent';
 import PickMediaComponent from '../../../components/imageComponents/PickMediaComponent';
@@ -26,12 +26,14 @@ const PostScreen= () => {
   const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
   const [galleryPermission, requestGalleryPermission] = ImagePicker.useMediaLibraryPermissions();
 
+  const [showSnackBar, setShowSnackBar] = useState(true);
+
   const navigation = useNavigation();
 
   // Camera permissions are still loading
   if (!cameraPermission || !galleryPermission) {
     return (
-      <PermissionsLoadingComponent />
+      <LoadingComponent />
     );
   }
 
@@ -53,6 +55,7 @@ const PostScreen= () => {
       <PreviewMediaComponent
         mediaUri={mediaUri}
         setMediaUri={setMediaUri}
+        setShowSnackBar={setShowSnackBar}
       />
     );
   }
@@ -75,6 +78,20 @@ const PostScreen= () => {
               onPress={() => navigation.goBack()}
             />
           </View>
+          <Snackbar
+            visible={showSnackBar}
+            onDismiss={() => setShowSnackBar(false)}
+            action={{
+              label: 'Close',
+              onPress: () => {
+                setShowSnackBar(false)
+              },
+            }}
+            duration={5000}
+            elevation={2}
+            style={styles.snackBar}
+          >Video Uploaded
+          </Snackbar>
           <View style={styles.bottomSubContainer}>
             <PickMediaComponent
               setMediaUri={setMediaUri}
@@ -124,5 +141,8 @@ const styles = StyleSheet.create({
     justifyContent:"space-evenly",
     margin:10,
     alignItems:"center"
+  },
+  snackBar: {
+    bottom:"90%",
   }
 });

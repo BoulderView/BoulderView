@@ -2,18 +2,20 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
-const PermissionsLoadingComponent = () => {
+interface Props {
+  text?:string;
+}
+
+const LoadingComponent:React.FC<Props> = ({ text }) => {
   return (
     <View style={styles.container}>
       <ActivityIndicator animating={true} color={"#A5D7E8"} />
-      <Text style={styles.text}>
-        Getting permissions...
-      </Text>
+      {text && <Text style={styles.text}>{text}</Text>}
     </View>
   )
 }
 
-export default PermissionsLoadingComponent;
+export default LoadingComponent;
 
 const styles = StyleSheet.create({
   container: {
