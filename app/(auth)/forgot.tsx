@@ -6,35 +6,39 @@ import { Link } from "expo-router";
 import { supabase } from "../../lib/supabase";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Auth } from '@supabase/auth-ui-react'
+import * as Linking from "expo-linking";
 
-const LoginPage = () => {
+const ForgotPage = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [errMsg, setErrMsg] = useState('');
+    const resetPasswordURL = Linking.createURL("/ResetPassword");
     const handleSubmit = async () => {
         setErrMsg('');
         if (email == '') {
             setErrMsg("email cannot be empty")
             return;
         }
-        if (password == '') {
-            setErrMsg("password cannot be empty")
-            return;
-        }
         setLoading(true);
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: resetPasswordURL,
+        });
         setLoading(false);
         if (error) {
             setErrMsg(error.message);
+            return;
+        }
+
+        const { error2 } = await supabase.auth.updateUser({ password: "A12323958FG" });
+        if (error2) {
+            setErrMsg(error2.message);
             return;
         }
     }
     return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
             <View style={{ marginBottom: 150 }}>
-                <Text style={{ textAlign: "center", fontSize: 28, fontWeight: '500', color: "#333", marginBottom: 30 }}>Login</Text>
+                <Text style={{ textAlign: "center", fontSize: 28, fontWeight: '500', color: "#333", marginBottom: 30 }}>Please enter your email</Text>
                 <View style={styles.inputContainer}>
                     <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
                     <TextInput
@@ -46,30 +50,13 @@ const LoginPage = () => {
                         value={email}
                         onChangeText={setEmail} />
                 </View>
-                <View style={styles.inputContainer}>
-                    <MaterialIcons name="lock" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
-                    <TextInput
-                        secureTextEntry
-                        style={styles.input}
-                        placeholder="Password"
-                        autoCapitalize='none'
-                        textContentType='password'
-                        value={password}
-                        onChangeText={setPassword} />
-                    <Link href="/forgot">Forgot?</Link>
-                </View>
             </View>
             {errMsg !== "" && <Text>{errMsg}</Text>}
             {loading && <ActivityIndicator />}
             <View style={{ marginTop: 100 }}>
                 <TouchableOpacity style={styles.buttonStyle} onPress={handleSubmit}>
-                    <Text style={styles.buttonTextStyle}>Log In</Text>
+                    <Text style={styles.buttonTextStyle}>Send recovery email</Text>
                 </TouchableOpacity>
-            </View>
-            <View style={{ alignItems: "center", paddingTop: 20 }}>
-                <Link href="/register">
-                    <Text style={{ color: "#576CBC", fontWeight: "700", fontSize: 16 }}>Register</Text>
-                </Link>
             </View>
         </View >
 
@@ -114,4 +101,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginPage;
+export default ForgotPage;
