@@ -1,17 +1,42 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from "react-native";
+import { View, Easing, StyleSheet, Button } from "react-native";
+import TabNavigation from '../../../components/TabNavigation';
+import HistoryComponent from '../../../components/statsComponents/HistoryComponent';
+import { TabObject } from '../../../models/TabObject';
+import WorkoutComponent from '../../../components/statsComponents/WorkoutComponent';
+import DashboardComponent from '../../../components/statsComponents/DashboardComponent';
 
-import { MonthlyBarChart } from '../../../components/MonthlyBarChart';
+
+
+const GRAPH_MARGIN = 20;
+const GRAPH_BAR_WIDTH = 8;
+
+const CanvasHeight = 350;
+const CanvasWidth = 350;
+const tabObject: TabObject = {
+  DashboardComponent: {
+    title: 'Dashboard',
+    component: <DashboardComponent />
+  },
+  HistoryComponent: {
+    title: 'Locations',
+    component: <HistoryComponent />,
+  },
+  WorkoutComponent: {
+    title: 'Favourites',
+    component: <WorkoutComponent />,
+  },
+};
 
 // Still a work in progress
 const ClimbsScreen = () => {
   return (
     <View style={styles.container}>
-      <MonthlyBarChart />
-      <Text
-        onPress={() => alert("This is the climbs screen")}
-        style={styles.text}>Climbs Screen</Text>
+      <View>
+        <TabNavigation tabObject={tabObject} />
+      </View>
     </View>
+
   );
 };
 
@@ -19,12 +44,13 @@ export default ClimbsScreen;
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "white",
   },
-  text: {
-    fontSize: 26
-  }
+  canvas: {
+    height: CanvasHeight,
+    width: CanvasWidth,
+  },
 });

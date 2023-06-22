@@ -21,7 +21,7 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TabNavigation tabObject={tabObject}/>
+      <TabNavigation tabObject={tabObject} />
     </View>
   );
 }

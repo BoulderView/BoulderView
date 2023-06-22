@@ -6,7 +6,7 @@ import { Session } from '@supabase/supabase-js';
 import LoginPage from '../../(auth)/login';
 import Account from '../../../components/Account';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { TabObject } from '../../../models/TabObject';
 
 
 const ProfileScreen = () => {
