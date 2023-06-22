@@ -8,6 +8,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 
@@ -20,11 +22,27 @@ export default function Register() {
       setErrMsg("password cannot be empty")
       return;
     }
+    if (username == '') {
+      setErrMsg("username cannot be empty")
+      return;
+    }
+    if (fullName == '') {
+      setErrMsg("Name cannot be empty")
+      return;
+    }
+
     setLoading(true);
     const { error } = await supabase.auth.signUp({ email, password });
     setLoading(false);
+    const { error2 } = await supabase
+      .from('profiles')
+      .insert({ username: username, full_name: fullName })
     if (error) {
       setErrMsg(error.message);
+      return;
+    }
+    if (error2) {
+      setErrMsg(error2.message);
       return;
     }
   }
@@ -33,6 +51,26 @@ export default function Register() {
     <View style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ marginBottom: 150 }}>
         <Text style={{ textAlign: "center", fontSize: 28, fontWeight: '500', color: "#333", marginBottom: 30 }}>Register</Text>
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            mode="flat"
+            autoCapitalize='none'
+            value={username}
+            onChangeText={setUsername} />
+        </View>
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
+          <TextInput
+            style={styles.input}
+            placeholder="Full Name"
+            mode="flat"
+            autoCapitalize='none'
+            value={fullName}
+            onChangeText={setFullName} />
+        </View>
         <View style={styles.inputContainer}>
           <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
           <TextInput
