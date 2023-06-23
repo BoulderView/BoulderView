@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../lib/supabase';
 import { gymModel } from '../../models/gymModel';
 import LoadingComponent from './LoadingComponent';
+import { RootState } from '../../store';
 
 interface Props {
   setIsSelectingGym: Dispatch<SetStateAction<boolean>>;
@@ -44,7 +45,7 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
   // Do something on submit
   const filterGyms = async () => {
     if (gymListState.gymList !== undefined) {
-      let filteredData = gymListState.gymList;
+      let filteredData:gymModel[] | undefined = gymListState.gymList;
       if (searchGyms !== "") {
         filteredData = gymListState.gymList?.filter((gym) =>
           gym.name.toLowerCase().includes(searchGyms.toLowerCase())
@@ -56,6 +57,7 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
 
   useEffect(() => {
     if (gymListState.gymList === undefined) {
+      console.log("fetch data")
       fetchData();
     }
     filterGyms();

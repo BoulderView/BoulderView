@@ -1,4 +1,4 @@
-import { Camera } from 'expo-camera';
+import { Camera, CameraRecordingOptions } from 'expo-camera';
 import React, { Dispatch, RefObject, useState } from 'react';
 import { Alert } from 'react-native';
 import { IconButton } from 'react-native-paper';
@@ -20,7 +20,10 @@ const CameraActionComponent: React.FC<Props> = ({
     if (!isRecording) {
 
       setIsRecording(true);
-      const newVideo = await cameraRef.current?.recordAsync();
+      const recordingOptions:CameraRecordingOptions = {
+        quality:"720p" // Up the quality in the future
+      }
+      const newVideo = await cameraRef.current?.recordAsync(recordingOptions);
   
       if (newVideo) {
         setMediaUri(newVideo.uri);

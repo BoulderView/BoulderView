@@ -17,7 +17,7 @@ const PickMediaComponent:React.FC<Props> = ({ setMediaUri }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes:ImagePicker.MediaTypeOptions.Videos,
       allowsEditing:true,
-      quality:1,
+      quality:0.2, //default is 0.2
       allowsMultipleSelection:false,
       exif:false,
       aspect:[9,16]

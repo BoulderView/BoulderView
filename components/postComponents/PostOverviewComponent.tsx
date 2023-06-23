@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Dimensions, Alert } from 'react-native';
 import { supabase } from '../../lib/supabase';
 
 import { profileModel } from '../../models/profileModel';
-import { ActivityIndicator } from 'react-native-paper';
+import LoadingComponent from '../imageComponents/LoadingComponent';
 
 // Calculating the screen and maintaining an aspect ratio
 const { width } = Dimensions.get('window');
@@ -16,7 +16,7 @@ interface Props {
   caption:string;
   profileId:string;
   likes:number;
-  selectedGrade:string;
+  selectedGrade:string | null;
   createdAt: Date;
 }
 
@@ -114,7 +114,7 @@ const PostOverviewComponent:React.FC<Props> = ({
           resizeMode="cover"
         />
       ) : (
-        <ActivityIndicator size="small" color="gray" style={{flex:1, justifyContent:"center"}}/>
+        <LoadingComponent />
       )}
       </View>
       <View style={styles.bottomContainer}>

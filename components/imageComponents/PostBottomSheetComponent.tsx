@@ -56,6 +56,7 @@ const PostBottomSheetComponent: React.FC<Props> = ({
         mediaUri,
         {
           time: 100,
+          quality: 0.2
         }
       );
       const ext = uri.substring(uri.lastIndexOf(".") + 1);

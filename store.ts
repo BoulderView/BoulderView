@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import gymListSliceReducer from './features/gyms/gymListSlice';
+import gymImageSliceReducer from './features/gyms/gymImageSlice';
 
 /* global store for states */
 
 export const store = configureStore({
   reducer: {
     gymList: gymListSliceReducer,
+    gymImage: gymImageSliceReducer
   }
 });
 

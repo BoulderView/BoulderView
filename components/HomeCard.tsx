@@ -1,9 +1,12 @@
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { View, StyleSheet, ImageSourcePropType, Alert } from "react-native";
+import { useEffect } from 'react';
+import { View, StyleSheet, Alert } from "react-native";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
 import { supabase } from '../lib/supabase';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectGymImage, updateGymImage } from '../features/gyms/gymImageSlice';
+import LoadingComponent from './imageComponents/LoadingComponent';
 
 export const HomeCard = (props: {
   id: string;
@@ -12,11 +15,8 @@ export const HomeCard = (props: {
   description: string;
 }) => {
 
-  const [coverImageUrl, setCoverImageUrl] = useState<string>();
-
-  useEffect(() => {
-    if (props.coverImage) downloadImage(props.coverImage);
-  }, [props.coverImage])
+  const gymImageState = useSelector(selectGymImage);
+  const dispatch = useDispatch();
 
   // Retrieving image directly from supabase
   const downloadImage = async  (coverImage: string) => {
@@ -30,7 +30,9 @@ export const HomeCard = (props: {
       const fr = new FileReader();
       fr.readAsDataURL(data);
       fr.onload = () => {
-        setCoverImageUrl(fr.result as string);
+        const value = fr.result as string;
+        const key = props.name;
+        dispatch(updateGymImage({key, value}));
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -38,6 +40,14 @@ export const HomeCard = (props: {
       }
     }
   }
+
+  useEffect(() => {
+    // Only download when not downloaded before
+    if (!(props.name in gymImageState.gymImage)) {
+      downloadImage(props.coverImage);
+      console.log("downloading image");
+    }
+  }, [])
 
   const router = useRouter();
 
@@ -47,7 +57,11 @@ export const HomeCard = (props: {
       <Card onPress={() => {
         router.push({pathname: `/home/${props.id}`})
       }}>
-        <Card.Cover source={{ uri:coverImageUrl}}></Card.Cover>
+        {
+          props.name in gymImageState.gymImage
+            ? <Card.Cover source={{ uri:gymImageState.gymImage[props.name]}}></Card.Cover>
+            : <LoadingComponent />
+        }
         <Card.Content>
           <Title>{props.name}</Title>
         </Card.Content>
