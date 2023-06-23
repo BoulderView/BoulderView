@@ -22,14 +22,17 @@ const LoginPage = () => {
       setErrMsg("password cannot be empty")
       return;
     }
+    
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
+
     if (error) {
       setErrMsg(error.message);
       return;
     }
   }
+
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ marginBottom: 150 }}>

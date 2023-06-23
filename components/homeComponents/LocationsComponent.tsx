@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { supabase } from '../../lib/supabase';
 import { Alert } from 'react-native';
@@ -18,6 +18,8 @@ const LocationsComponent = () => {
 
   const gymListState = useSelector(selectGymList);
   const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -39,12 +41,14 @@ const LocationsComponent = () => {
 
     } catch (error: any) {
       Alert.alert(error.message);
-    };
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (gymListState.gymList === undefined) {
-      console.log("fetching data")
+    if (gymListState.gymList === undefined && !isLoading) {
+      setIsLoading(true);
       fetchData();
     }
   }, []);

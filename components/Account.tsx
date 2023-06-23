@@ -3,20 +3,27 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { StyleSheet, View, Alert } from 'react-native'
 import { Button, Input } from 'react-native-elements'
-import { Session } from '@supabase/supabase-js'
 import Avatar from './Avatar'
 import { profileModel } from '../models/profileModel'
 
-export default function Account({ session }: { session: Session }) {
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState('');
-  const [description, setDescription] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [fullName, setFullName] = useState("");
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSession, selectProfile, updateProfile, updateSession } from '../features/profile/profileSlice';
+
+export default function Account() {
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState<string>();
+  const [description, setDescription] = useState<string>();
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+
+  const dispatch = useDispatch();
+  const profile = useSelector(selectProfile);
+  const session = useSelector(selectSession);
 
   useEffect(() => {
-    if (session) getProfile();
-  }, [session])
+    if (session !== null && profile === null && !loading) {
+      getProfile();
+    }
+  }, [profile, session])
 
   async function getProfile() {
     try {
@@ -25,40 +32,45 @@ export default function Account({ session }: { session: Session }) {
 
       let { data, error, status } = await supabase
         .from('profiles')
-        .select(`username, description, avatar_url, full_name`)
+        .select()
         .eq('id', session?.user.id)
         .single();
+
       if (error && status !== 406) {
         throw error;
       }
 
       if (data) {
-        setUsername(data.username);
-        setDescription(data.description);
-        setAvatarUrl(data.avatar_url);
-        setFullName(data.full_name);
+        const updatedData = data as profileModel;
+        dispatch(updateProfile(updatedData));
+        setUsername(profile?.username);
+        setDescription(profile?.description);
+        setAvatarUrl(profile?.avatar_url);
       }
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
+        
       }
     } finally {
       setLoading(false);
     }
   }
 
-  async function updateProfile() {
+  async function updateProfileUpload() {
     try {
       setLoading(true);
       if (!session?.user) throw new Error('No user on the session!');
 
+      if (profile === null) throw new Error('Unable to store profile...');
+
       const updates:profileModel = {
-        id: session?.user.id,
-        full_name: fullName,
-        username: username,
-        description: description,
-        avatar_url: avatarUrl,
-        updated_at: new Date(),
+        id: profile.id,
+        full_name: profile.full_name,
+        username: username ? username : profile.username,
+        description: description ? description : profile.description,
+        avatar_url: avatarUrl ? avatarUrl : profile.avatar_url,
+        updated_at: String(new Date()),
       }
 
       let { error } = await supabase.from('profiles').upsert(updates);
@@ -66,6 +78,10 @@ export default function Account({ session }: { session: Session }) {
       if (error) {
         throw error;
       }
+
+      // Only update the global state when the user confirms update
+      dispatch(updateProfile(updates));
+
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
@@ -80,10 +96,10 @@ export default function Account({ session }: { session: Session }) {
       <View>
         <Avatar
           size={200}
-          url={avatarUrl}
+          url={avatarUrl ||  profile?.avatar_url || ""}
           onUpload={(url: string) => {
             setAvatarUrl(url)
-            updateProfile()
+            updateProfileUpload()
           }}
         />
       </View>
@@ -91,22 +107,26 @@ export default function Account({ session }: { session: Session }) {
         <Input label="Email" value={session?.user?.email} disabled />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input label="Username" value={username || ''} onChangeText={(text) => setUsername(text)} />
+        <Input label="Username" value={username || profile?.username} onChangeText={(text) => setUsername(text)} />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input label="Description" value={description || ''} onChangeText={(text) => setDescription(text)} />
+        <Input label="Description" value={description || profile?.description} onChangeText={(text) => setDescription(text)} />
       </View>
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
           title={loading ? 'Loading ...' : 'Update'}
-          onPress={() => updateProfile()}
+          onPress={() => updateProfileUpload()}
           disabled={loading}
         />
       </View>
 
       <View style={styles.verticallySpaced}>
-        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
+        <Button title="Sign Out" onPress={() => {
+          supabase.auth.signOut();
+          dispatch(updateProfile(null));
+          dispatch(updateSession(null));
+        }} />
       </View>
     </View>
   )
