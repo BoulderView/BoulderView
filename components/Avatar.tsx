@@ -4,6 +4,9 @@ import { supabase } from '../lib/supabase'
 import { StyleSheet, View, Alert, Image, Button } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAvatar, updateAvatar } from '../features/profile/profileSlice';
+
 interface Props {
     size: number
     url: string | null
@@ -12,13 +15,15 @@ interface Props {
 
 export default function Avatar({ url, size = 100, onUpload }: Props) {
   const [uploading, setUploading] = useState(false)
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-  const [image, setImage] = useState(null);
-  const [imageData, setImageData] = useState(null);
   const avatarSize = { height: size, width: size }
 
+  const dispatch = useDispatch();
+  const avatar = useSelector(selectAvatar);
+
   useEffect(() => {
-    if (url) downloadImage(url)
+    if (url && avatar === null) {
+      downloadImage(url);
+    }
   }, [url])
 
   // Retrieving image directly from supabase
@@ -33,7 +38,8 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
       const fr = new FileReader()
       fr.readAsDataURL(data)
       fr.onload = () => {
-        setAvatarUrl(fr.result as string)
+        const result = fr.result as string
+        dispatch(updateAvatar(result));
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -42,68 +48,43 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
     }
   }
 
-  const uploadFromUri = async (photo: ImagePicker.ImagePickerResult) => {
-    if (!photo.canceled) {
-      const ext = photo.assets[0].uri.substring(photo.assets[0].uri.lastIndexOf(".") + 1);
+  const uploadFromUri = async (uri : string) => {
+    const ext = uri.substring(uri.lastIndexOf(".") + 1);
 
-      const fileName = photo.assets[0].uri.replace(/^.*[\\/]/, "");
+    const fileName = uri.replace(/^.*[\\/]/, "");
 
-      const formData = new FormData();
-      formData.append("files", JSON.parse(JSON.stringify({
-        uri: photo.assets[0].uri,
-        name: fileName,
-        type: photo.assets[0].type ? `image/${ext}` : `video/${ext}`,
-      })));
+    const formData = new FormData();
+    formData.append("files", JSON.parse(JSON.stringify({
+      uri: uri,
+      name: fileName,
+      type: `image/${ext}`,
+    })));
 
-      const { data, error } = await supabase.storage.from('avatars').upload(fileName, formData);
-      console.log(error)
+    const { data, error } = await supabase.storage.from('avatars').upload(fileName, formData);
 
-      if (error) throw new Error(error.message);
-      onUpload(fileName);
-      return { ...photo, imageData: data };
-    } else {
-      return photo;
-    }
+    if (error) throw new Error(error.message);
+    dispatch(updateAvatar(uri));
+    onUpload(fileName);
   }
 
   const uploadAvatar = async () => {
     const file = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
+      quality: 0.2,
     })
     try {
       setUploading(true)
-      return await uploadFromUri(file);
-      console.log("failed to upload avatar")
-      // const file_assets = file.assets;
-
-      // if (file_assets != null) {
-      //     const photo = {
-      //         uri: file_assets[0]?.uri,
-      //         type: file_assets[0]?.type,
-      //         name: "random",
-      //     }
-      //     const formData = new FormData()
-      //     formData.append('file', photo)
-
-      //     const fileExt = photo.name?.split('.').pop()
-      //     const filePath = `${Math.random()}.${fileExt}`
-
-      //     const { data, error } = await supabase.storage.from('avatars').upload(filePath, formData)
-
-      //     if (error) {
-      //         throw error
-      //     }
-
-      //     const filepath = data.path;
-      //     onUpload(filepath)
-      // }
+      if (!file.canceled) {
+        await uploadFromUri(file.assets[0].uri);
+      }
+    
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message)
         console.log(error + "WTF")
+
       } else {
         throw error
       }
@@ -114,9 +95,9 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
 
   return (
     <View>
-      {avatarUrl ? (
+      {avatar ? (
         <Image
-            source={{ uri: avatarUrl }}
+            source={{ uri: avatar }}
             accessibilityLabel="Avatar"
             style={[avatarSize, styles.avatar, styles.image]}
         />
@@ -127,11 +108,7 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
         <Button
           title={uploading ? 'Uploading ...' : 'Upload'}
           onPress={async () => {
-            const response = await uploadAvatar();
-            if (response?.imageData) {
-              setImage(response.uri);
-              setImageData(response?.imageData);
-            }
+            await uploadAvatar();
           }}
           disabled={uploading}
         />

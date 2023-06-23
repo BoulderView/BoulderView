@@ -39,10 +39,13 @@ const PostBottomSheetComponent: React.FC<Props> = ({
 
   // This effect runs after every render
   useEffect(() => {
-    if (value === "public") {
-      setIsPrivate(false);
-    } else if (value === "private") {
-      setIsPrivate(true);
+    switch(value) {
+      case "public":
+        setIsPrivate(false);
+      case "private":
+        setIsPrivate(false);
+      default:
+        setIsPrivate(false);
     }
   }, [value]);
 

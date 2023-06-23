@@ -18,32 +18,38 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   }
 
   const [postData, setPostData] = useState<postModel[]>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      let { data, error, status } = await supabase
+        .from('post')
+        .select()
+        .eq('gym_id', gymId);
+
+      // If there is any form of error
+      if (error || status !== 200) {
+        throw error;
+      }
+
+      if (data) {
+        // Casting data to gymModel
+        const updatedData = data as postModel[];
+        setPostData(updatedData);
+      }
+
+    } catch (error: any) {
+      Alert.alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let { data, error, status } = await supabase
-          .from('post')
-          .select()
-          .eq('gym_id', gymId);
-  
-        // If there is any form of error
-        if (error || status !== 200) {
-          throw error;
-        }
-  
-        if (data) {
-          // Casting data to gymModel
-          const updatedData = data as postModel[];
-          setPostData(updatedData);
-        }
-  
-      } catch (error: any) {
-        Alert.alert(error.message);
-      }
-    };
-  
-    fetchData();
+    if (!isLoading) {
+      setIsLoading(true);
+      fetchData();
+    }
   }, []);
 
   return (

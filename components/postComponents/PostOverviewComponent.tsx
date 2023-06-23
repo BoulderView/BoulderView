@@ -34,75 +34,75 @@ const PostOverviewComponent:React.FC<Props> = ({
   const [postvideoUri, setPostvideoUri] = useState<string|null>(null)
   const [thumbnailUri, setThumbnailUri] = useState<string|null>(null);
 
+  const fetchUserData = async () => {
+    try {
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select()
+        .eq("id", profileId)
+        .single()
+
+      // If there is any form of error
+      if (error || status !== 200) {
+        throw error;
+      }
+
+      if (data) {
+        // Casting data to gymModel
+        const updatedData = data as profileModel;
+        setUser(updatedData);
+      }
+
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
+
+  const fetchPostVideo = async () => {
+    try {
+      const { data, error } = await supabase.storage.from('postVideos').download(videoUrl);
+
+      if (error) {
+        throw error
+      }
+
+      const fr = new FileReader()
+      fr.readAsDataURL(data)
+      fr.onload = () => {
+        setPostvideoUri(fr.result as string)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('Error downloading image: ', error.message)
+      }
+    }
+  }
+
+  const fetchThumbnail = async () => {
+    try {
+      const { data, error } = await supabase.storage.from('postThumbnails').download(thumbnailUrl);
+
+      if (error) {
+        throw error
+      }
+
+      const fr = new FileReader()
+      fr.readAsDataURL(data)
+      fr.onload = () => {
+        setThumbnailUri(fr.result as string)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('Error downloading image: ', error.message)
+      }
+    }
+  }
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        let { data, error, status } = await supabase
-          .from('profiles')
-          .select()
-          .eq("id", profileId)
-          .single()
-  
-        // If there is any form of error
-        if (error || status !== 200) {
-          throw error;
-        }
-  
-        if (data) {
-          // Casting data to gymModel
-          const updatedData = data as profileModel;
-          setUser(updatedData);
-        }
-  
-      } catch (error: any) {
-        Alert.alert(error.message);
-      }
-    };
-
-    const fetchPostVideo = async () => {
-      try {
-        const { data, error } = await supabase.storage.from('postVideos').download(videoUrl);
-  
-        if (error) {
-          throw error
-        }
-  
-        const fr = new FileReader()
-        fr.readAsDataURL(data)
-        fr.onload = () => {
-          setPostvideoUri(fr.result as string)
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.log('Error downloading image: ', error.message)
-        }
-      }
-    }
-
-    const fetchThumbnail = async () => {
-      try {
-        const { data, error } = await supabase.storage.from('postThumbnails').download(thumbnailUrl);
-  
-        if (error) {
-          throw error
-        }
-  
-        const fr = new FileReader()
-        fr.readAsDataURL(data)
-        fr.onload = () => {
-          setThumbnailUri(fr.result as string)
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.log('Error downloading image: ', error.message)
-        }
-      }
-    }
-  
     fetchUserData();
     fetchPostVideo();
-    fetchThumbnail()
-  }, [thumbnailUri, postvideoUri]);
+    fetchThumbnail();
+  }, []);
 
   return (
     <View style={styles.container}>

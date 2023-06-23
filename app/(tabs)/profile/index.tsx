@@ -1,29 +1,36 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { View, StyleSheet } from "react-native";
+import { useEffect } from 'react';
+import { StyleSheet } from "react-native";
 import { supabase } from '../../../lib/supabase';
-import { Session } from '@supabase/supabase-js';
 import LoginPage from '../../(auth)/login';
 import Account from '../../../components/Account';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSession, updateSession } from '../../../features/profile/profileSlice';
 
 
 const ProfileScreen = () => {
-  const [session, setSession] = useState<Session | null>(null)
+  // const [session, setSession] = useState<Session | null>(null)
+  const dispatch = useDispatch();
+  const session = useSelector(selectSession);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
-
+    if (session === null) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        dispatch(updateSession(session));
+      })
+    }
     supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
+      dispatch(updateSession(session));
     })
   }, [])
+
   return (
     <ScrollView>
-      {session && session.user ? <Account key={session.user.id} session={session} /> : <LoginPage />}
+      {session && session.user 
+        ? <Account key={session.user.id} /> 
+        : <LoginPage />
+      }
     </ScrollView>
   )
 };

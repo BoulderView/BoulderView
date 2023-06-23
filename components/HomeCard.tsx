@@ -6,7 +6,6 @@ import { Button, Card, Paragraph, Title } from "react-native-paper";
 import { supabase } from '../lib/supabase';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGymImage, updateGymImage } from '../features/gyms/gymImageSlice';
-import LoadingComponent from './imageComponents/LoadingComponent';
 
 export const HomeCard = (props: {
   id: string;
@@ -45,7 +44,6 @@ export const HomeCard = (props: {
     // Only download when not downloaded before
     if (!(props.name in gymImageState.gymImage)) {
       downloadImage(props.coverImage);
-      console.log("downloading image");
     }
   }, [])
 
@@ -57,11 +55,7 @@ export const HomeCard = (props: {
       <Card onPress={() => {
         router.push({pathname: `/home/${props.id}`})
       }}>
-        {
-          props.name in gymImageState.gymImage
-            ? <Card.Cover source={{ uri:gymImageState.gymImage[props.name]}}></Card.Cover>
-            : <LoadingComponent />
-        }
+        <Card.Cover source={{ uri:gymImageState.gymImage[props.name]}}></Card.Cover>
         <Card.Content>
           <Title>{props.name}</Title>
         </Card.Content>
