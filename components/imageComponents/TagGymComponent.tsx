@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { View, StyleSheet, Alert, FlatList } from 'react-native';
 import { List, Divider, IconButton, Searchbar } from 'react-native-paper';
+import { selectGymList, updateGymList } from '../../features/gyms/gymListSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { supabase } from '../../lib/supabase';
 import { gymModel } from '../../models/gymModel';
@@ -15,42 +17,49 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
 
   const [displayGyms, setDisplayGyms] = useState<gymModel[]>();
   const [searchGyms, setSearchGyms] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Do something on submit
-  const fetchGyms = async () => {
+  const gymListState = useSelector(selectGymList);
+  const dispatch = useDispatch();
+
+  const fetchData = async () => {
     try {
       let { data, error, status } = await supabase
         .from('gym')
         .select();
-
       // If there is any form of error
       if (error || status !== 200) {
         throw error;
       }
-
       if (data) {
         // Casting data to gymModel
         const updatedData = data as gymModel[];
-        let filteredData = updatedData
-        if (searchGyms !== "") {
-          filteredData = filteredData?.filter((gym) =>
-            gym.name.toLowerCase().includes(searchGyms.toLowerCase())
-          );
-        }
-        setDisplayGyms(filteredData);
+        // Updating the state in store
+        dispatch(updateGymList(updatedData));
       }
-
     } catch (error: any) {
       Alert.alert(error.message);
-    } finally {
-      setIsLoading(false);
+    };
+  };
+
+  // Do something on submit
+  const filterGyms = async () => {
+    if (gymListState.gymList !== undefined) {
+      let filteredData = gymListState.gymList;
+      if (searchGyms !== "") {
+        filteredData = gymListState.gymList?.filter((gym) =>
+          gym.name.toLowerCase().includes(searchGyms.toLowerCase())
+        );
+      }
+      setDisplayGyms(filteredData);
     }
   }
 
   useEffect(() => {
-    fetchGyms();
-  }, [searchGyms])
+    if (gymListState.gymList === undefined) {
+      fetchData();
+    }
+    filterGyms();
+  }, [searchGyms]);
 
   const selectGym = (selectedGym:gymModel) => {
     setSelectedGym(selectedGym);
@@ -68,14 +77,6 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
       <Divider />
     </>
   );
-
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <LoadingComponent />
-      </View>
-    )
-  }
 
   return (
     <View style={styles.container}>
@@ -95,14 +96,17 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
           style={styles.searchBar}
         />
       </View>
-      <View style={styles.scrollView}>
-        <Divider />
-        <FlatList
-          data={displayGyms}
-          renderItem={renderGym}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
+      {gymListState.gymList === undefined && displayGyms === undefined
+        ? <LoadingComponent />
+        : <View style={styles.scrollView}>
+            <Divider />
+            <FlatList
+              data={displayGyms}
+              renderItem={renderGym}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          </View>
+      }
     </View>
   )
 }
