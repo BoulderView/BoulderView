@@ -4,5 +4,5 @@ export type profileModel = {
   full_name: string,
   description: string,
   avatar_url: string,
-  updated_at: string,
+  updated_at: Date,
 }

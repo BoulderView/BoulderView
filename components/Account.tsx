@@ -8,6 +8,7 @@ import { profileModel } from '../models/profileModel'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSession, selectProfile, updateProfile, updateSession } from '../features/profile/profileSlice';
+import { Snackbar } from 'react-native-paper'
 
 export default function Account() {
   const [loading, setLoading] = useState(false);
@@ -15,20 +16,23 @@ export default function Account() {
   const [description, setDescription] = useState<string>();
   const [avatarUrl, setAvatarUrl] = useState<string>();
 
+  const [showSnackBar, setShowSnackBar] = useState(false);
+
   const dispatch = useDispatch();
   const profile = useSelector(selectProfile);
   const session = useSelector(selectSession);
 
   useEffect(() => {
     if (session !== null && profile === null && !loading) {
+      console.log("getting profile");
       getProfile();
     }
   }, [profile, session])
 
   async function getProfile() {
     try {
-      setLoading(true)
-      if (!session?.user) throw new Error('No user on the session!')
+      setLoading(true);
+      if (!session?.user) throw new Error('No user on the session!');
 
       let { data, error, status } = await supabase
         .from('profiles')
@@ -70,7 +74,7 @@ export default function Account() {
         username: username ? username : profile.username,
         description: description ? description : profile.description,
         avatar_url: avatarUrl ? avatarUrl : profile.avatar_url,
-        updated_at: String(new Date()),
+        updated_at: new Date(),
       }
 
       let { error } = await supabase.from('profiles').upsert(updates);
@@ -80,12 +84,13 @@ export default function Account() {
       }
 
       // Only update the global state when the user confirms update
-      dispatch(updateProfile(updates));
+      getProfile();
 
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
       }
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -98,8 +103,9 @@ export default function Account() {
           size={200}
           url={avatarUrl ||  profile?.avatar_url || ""}
           onUpload={(url: string) => {
-            setAvatarUrl(url)
-            updateProfileUpload()
+            setAvatarUrl(url);
+            updateProfileUpload();
+            setShowSnackBar(true);
           }}
         />
       </View>
@@ -120,13 +126,28 @@ export default function Account() {
           disabled={loading}
         />
       </View>
-
       <View style={styles.verticallySpaced}>
         <Button title="Sign Out" onPress={() => {
           supabase.auth.signOut();
           dispatch(updateProfile(null));
           dispatch(updateSession(null));
         }} />
+      </View>
+      <View style={{width:"100%", alignItems:"center"}}>
+        <Snackbar
+          visible={showSnackBar}
+          onDismiss={() => setShowSnackBar(false)}
+          action={{
+            label: 'Close',
+            onPress: () => {
+              setShowSnackBar(false)
+            },
+          }}
+          duration={5000}
+          elevation={2}
+        >
+          Profile Updated
+        </Snackbar>
       </View>
     </View>
   )
@@ -136,6 +157,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     padding: 12,
+    flex:1
   },
   verticallySpaced: {
     paddingTop: 4,
@@ -144,5 +166,5 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20,
-  },
+  }
 })

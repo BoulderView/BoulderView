@@ -79,19 +79,20 @@ const PostScreen= () => {
             />
           </View>
           <Snackbar
-            visible={showSnackBar}
-            onDismiss={() => setShowSnackBar(false)}
-            action={{
-              label: 'Close',
-              onPress: () => {
-                setShowSnackBar(false)
-              },
-            }}
-            duration={5000}
-            elevation={2}
-            style={styles.snackBar}
-          >Video Uploaded
-          </Snackbar>
+              visible={showSnackBar}
+              onDismiss={() => setShowSnackBar(false)}
+              action={{
+                label: 'Close',
+                onPress: () => {
+                  setShowSnackBar(false)
+                },
+              }}
+              duration={5000}
+              elevation={2}
+              style={styles.snackBar}
+            >
+              Video Uploaded
+            </Snackbar>
           <View style={styles.bottomSubContainer}>
             <PickMediaComponent
               setMediaUri={setMediaUri}
