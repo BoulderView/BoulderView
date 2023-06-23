@@ -15,7 +15,9 @@
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@react-native-async-storage/async-storage)"
     ],
-    "setupFiles": ["./jestSetupFile.js"],
+    "setupFiles": [
+      "./jestSetupFile.js"
+    ],
     "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.{js,jsx,tsx,ts}",
@@ -32,6 +34,7 @@
     "@react-navigation/material-top-tabs": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "@reduxjs/toolkit": "^1.9.5",
     "@supabase/auth-ui-react": "^0.4.2",
     "@supabase/auth-ui-shared": "^0.1.6",
     "@supabase/supabase-js": "^2.22.0",
@@ -64,8 +67,10 @@
     "react-native-svg": "13.4.0",
     "react-native-url-polyfill": "^1.3.0",
     "react-native-vector-icons": "^9.2.0",
+    "react-redux": "^8.1.1",
     "react-router-native": "^6.11.2",
     "react-test-renderer": "^18.2.0",
+    "redux": "^4.2.1",
     "victory-native": "^36.6.10"
   },
   "devDependencies": {

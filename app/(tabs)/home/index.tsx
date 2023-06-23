@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import LocationsComponent from '../../../components/homeComponents/LocationsComponent';
 import { TabObject } from '../../../models/TabObject';

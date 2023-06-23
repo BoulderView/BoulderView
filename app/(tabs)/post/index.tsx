@@ -26,7 +26,7 @@ const PostScreen= () => {
   const [cameraPermission, requestCameraPermission] = Camera.useCameraPermissions();
   const [galleryPermission, requestGalleryPermission] = ImagePicker.useMediaLibraryPermissions();
 
-  const [showSnackBar, setShowSnackBar] = useState(true);
+  const [showSnackBar, setShowSnackBar] = useState(false);
 
   const navigation = useNavigation();
 

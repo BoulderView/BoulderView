@@ -32,19 +32,30 @@ export default function Register() {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.signUp({ email, password });
+    const error1 = await signUp();
     setLoading(false);
-    const { error2 } = await supabase
-      .from('profiles')
-      .insert({ username: username, full_name: fullName })
-    if (error) {
-      setErrMsg(error.message);
+    const error2 = await insertProfile();
+
+    if (error1) {
+      setErrMsg(error1.message);
       return;
     }
     if (error2) {
       setErrMsg(error2.message);
       return;
     }
+  }
+
+  const signUp = async () => {
+    const { error } = await supabase.auth.signUp({ email, password });
+    return error
+  }
+
+  const insertProfile = async () => {
+    const { error } = await supabase
+      .from('profiles')
+      .insert({ username: username, full_name: fullName })
+    return error
   }
 
   return (
