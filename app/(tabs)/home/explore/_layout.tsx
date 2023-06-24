@@ -1,17 +1,20 @@
+import React from 'react';
 import { Stack } from "expo-router";
 
-const PostLayout = () => {
+const ExploreLayout = () => {
   return (
-    // AuthProvider goes here
-    <Stack 
+    <Stack
       screenOptions={{
         headerShown:false
       }}>
       <Stack.Screen
         name="index"
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack>
   )
 };
 
-export default PostLayout;
+export default ExploreLayout;

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import gymListSliceReducer from './features/gyms/gymListSlice';
 import gymImageSliceReducer from './features/gyms/gymImageSlice';
 import profileSliceReducer from './features/profile/profileSlice';
+import postListSliceReducer from './features/post/postListSlice';
 
 /* global store for states */
 
@@ -9,7 +10,8 @@ export const store = configureStore({
   reducer: {
     gymList: gymListSliceReducer,
     gymImage: gymImageSliceReducer,
-    profile: profileSliceReducer
+    profile: profileSliceReducer,
+    postList: postListSliceReducer
   }
 });
 

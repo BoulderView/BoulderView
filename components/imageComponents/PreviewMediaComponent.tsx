@@ -18,7 +18,7 @@ interface Props {
 const PreviewMediaComponent: React.FC<Props> = ({ mediaUri, setMediaUri, setShowSnackBar }) => {
   const [session, setSession] = useState<Session | null>(null);
   const video = useRef(null);
-  
+
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 

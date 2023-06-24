@@ -22,6 +22,19 @@ const HomeLayout = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="explore"
+        options={{
+          headerTitle: "Explore",
+          headerTitleStyle: {
+            fontSize: 25,
+          },
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: '#576CBC'
+          },
+        }}
+      />
     </Stack>
   )
 };

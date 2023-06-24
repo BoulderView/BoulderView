@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { supabase } from '../../lib/supabase';
 
 import { profileModel } from '../../models/profileModel';
 import LoadingComponent from '../imageComponents/LoadingComponent';
+import { Link, useRouter } from 'expo-router';
 
 // Calculating the screen and maintaining an aspect ratio
 const { width } = Dimensions.get('window');
@@ -31,8 +32,9 @@ const PostOverviewComponent:React.FC<Props> = ({
 }) => {
 
   const [user, setUser] = useState<profileModel>();
-  const [postvideoUri, setPostvideoUri] = useState<string|null>(null)
   const [thumbnailUri, setThumbnailUri] = useState<string|null>(null);
+
+  const router = useRouter();
 
   const fetchUserData = async () => {
     try {
@@ -58,26 +60,6 @@ const PostOverviewComponent:React.FC<Props> = ({
     }
   };
 
-  const fetchPostVideo = async () => {
-    try {
-      const { data, error } = await supabase.storage.from('postVideos').download(videoUrl);
-
-      if (error) {
-        throw error
-      }
-
-      const fr = new FileReader()
-      fr.readAsDataURL(data)
-      fr.onload = () => {
-        setPostvideoUri(fr.result as string)
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log('Error downloading image: ', error.message)
-      }
-    }
-  }
-
   const fetchThumbnail = async () => {
     try {
       const { data, error } = await supabase.storage.from('postThumbnails').download(thumbnailUrl);
@@ -100,7 +82,6 @@ const PostOverviewComponent:React.FC<Props> = ({
 
   useEffect(() => {
     fetchUserData();
-    fetchPostVideo();
     fetchThumbnail();
   }, []);
 
@@ -108,11 +89,16 @@ const PostOverviewComponent:React.FC<Props> = ({
     <View style={styles.container}>
       <View style={styles.postContainer}>
       {thumbnailUri ? (
-        <Image
-          source={{ uri: thumbnailUri }}
-          style={styles.image}
-          resizeMode="cover"
-        />
+        <TouchableOpacity 
+          style={styles.image} 
+          onPress={() => router.push(`home/explore/${videoUrl}`)}
+        >
+          <Image
+            source={{ uri: thumbnailUri }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
       ) : (
         <LoadingComponent />
       )}
@@ -123,7 +109,8 @@ const PostOverviewComponent:React.FC<Props> = ({
             ? caption.substring(0, 20) + "..."
             : caption.length === 0
             ? "no caption"
-            :caption.trim()}
+            : caption.trim()
+          }
         </Text>
         <View style={styles.bottomView}>
           <Text style={styles.title}>{user?.username}</Text>
