@@ -47,7 +47,7 @@ const DashboardComponent = () => {
 
     const xDomain = data.map((dataPoint: DataPoint) => dataPoint.label);
     const xRange = [0, graphWidth];
-    const x = d3.scalePoint().domain(xDomain).range(xRange).padding(1);
+    const x = d3.scalePoint().domain(xDomain).range(xRange).padding(0.5);
 
     const yDomain: number[] = [
         0,

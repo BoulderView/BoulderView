@@ -1,9 +1,9 @@
 import { Stack, useSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { 
+import {
   Alert,
-  StyleSheet, 
-  View  
+  StyleSheet,
+  View
 } from 'react-native';
 
 import TabNavigation from '../../../components/TabNavigation';
@@ -28,23 +28,23 @@ const GymDetailsPage = () => {
           .select()
           .eq('id', id)
           .single();
-  
+
         // If there is any form of error
         if (error || status !== 200) {
           throw error;
         }
-  
+
         if (data) {
           // Casting data to gymModel
           const updatedData = data as gymModel;
           setGymData(updatedData);
         }
-  
+
       } catch (error: any) {
         Alert.alert(error.message);
       }
     };
-  
+
     fetchGymData();
   }, []);
 
@@ -56,7 +56,7 @@ const GymDetailsPage = () => {
     },
     ExploreComponent: {
       title: 'Explore',
-      component: <ExploreComponent gymId={id}/>,
+      component: <ExploreComponent gymId={id} />,
     },
     LeaderboardComponent: {
       title: 'Leaderboard',
@@ -66,8 +66,8 @@ const GymDetailsPage = () => {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ 
-        headerTitle:gymData ? gymData.name : "",
+      <Stack.Screen options={{
+        headerTitle: gymData ? gymData.name : "",
         headerTitleStyle: {
           fontSize: 25,
         },
@@ -76,7 +76,7 @@ const GymDetailsPage = () => {
         },
         headerTintColor: 'white', // Replace with your desired color for the button
       }} />
-      <TabNavigation tabObject={tabObject}/>
+      <TabNavigation tabObject={tabObject} />
     </View>
   )
 };
@@ -85,9 +85,9 @@ export default GymDetailsPage;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent:"center",
+    justifyContent: "center",
   }
 });

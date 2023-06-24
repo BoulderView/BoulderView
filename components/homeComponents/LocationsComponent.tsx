@@ -21,29 +21,28 @@ const LocationsComponent = () => {
         let { data, error, status } = await supabase
           .from('gym')
           .select();
-  
+
         // If there is any form of error
         if (error || status !== 200) {
           throw error;
         }
-  
+
         if (data) {
           // Casting data to gymModel
           const updatedData = data as gymModel[];
           setGymData(updatedData);
         }
-  
+
       } catch (error: any) {
         Alert.alert(error.message);
       };
     };
-  
+
     fetchData();
   }, []);
 
   return (
     <>
-      <SearchBar searchFunction={onSubmitSearch} placeholder='search'/>
       <FlatList
         data={gymData}
         renderItem={({ item }) =>

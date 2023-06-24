@@ -6,24 +6,17 @@ import { TabObject } from '../../../models/TabObject';
 import WorkoutComponent from '../../../components/statsComponents/WorkoutComponent';
 import DashboardComponent from '../../../components/statsComponents/DashboardComponent';
 
-
-
-const GRAPH_MARGIN = 20;
-const GRAPH_BAR_WIDTH = 8;
-
-const CanvasHeight = 350;
-const CanvasWidth = 350;
 const tabObject: TabObject = {
   DashboardComponent: {
     title: 'Dashboard',
     component: <DashboardComponent />
   },
   HistoryComponent: {
-    title: 'Locations',
+    title: 'History',
     component: <HistoryComponent />,
   },
   WorkoutComponent: {
-    title: 'Favourites',
+    title: 'Workouts',
     component: <WorkoutComponent />,
   },
 };
@@ -44,13 +37,9 @@ export default ClimbsScreen;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     flex: 1,
     backgroundColor: "white",
-  },
-  canvas: {
-    height: CanvasHeight,
-    width: CanvasWidth,
   },
 });
