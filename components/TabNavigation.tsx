@@ -44,9 +44,7 @@ const TabBar = ({ tabObject }: Props) => {
           ))}
         </View>
       </View>
-      <View>
-        {tabObject[selectedTab].component}
-      </View>
+      {tabObject[selectedTab].component}
     </View >
   );
 };
