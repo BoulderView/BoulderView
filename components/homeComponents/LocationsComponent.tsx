@@ -55,19 +55,19 @@ const LocationsComponent = () => {
 
   return (
     <>
-      <SearchBar searchFunction={onSubmitSearch} placeholder='Search'/>
+      <SearchBar searchFunction={onSubmitSearch} placeholder='Search' />
       {gymListState.gymList === undefined
         ? <LoadingComponent />
         : <FlatList
-            data={gymListState.gymList}
-            renderItem={({ item }) =>
-              <HomeCard
-                id={item.id}
-                name={item.name}
-                coverImage={item.cover_image_url.trim()}
-                description={item.description}
-              />}
-          />
+          data={gymListState.gymList}
+          renderItem={({ item }) =>
+            <HomeCard
+              id={item.id}
+              name={item.name}
+              coverImage={item.cover_image_url.trim()}
+              description={item.description}
+            />}
+        />
       }
     </>
   )

@@ -7,6 +7,7 @@ import Account from '../../../components/Account';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSession, updateSession } from '../../../features/profile/profileSlice';
+import { TabObject } from '../../../models/TabObject';
 
 
 const ProfileScreen = () => {
@@ -27,8 +28,8 @@ const ProfileScreen = () => {
 
   return (
     <ScrollView>
-      {session && session.user 
-        ? <Account key={session.user.id} /> 
+      {session && session.user
+        ? <Account key={session.user.id} />
         : <LoginPage />
       }
     </ScrollView>
