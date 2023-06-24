@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { updatePostList, selectPostList } from '../../features/post/postListSlice';
 
 import { SearchBar } from '../SearchBar';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
 
+
 interface Props {
   gymId:string|string[]|undefined;
-  postData?:postModel[]
 }
 
 const ExploreComponent: React.FC<Props> = ({ gymId }) => {
@@ -17,8 +19,10 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
     console.log("hello");
   }
 
-  const [postData, setPostData] = useState<postModel[]>();
   const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const postListState = useSelector(selectPostList);
 
   const fetchData = async () => {
     try {
@@ -35,7 +39,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
       if (data) {
         // Casting data to gymModel
         const updatedData = data as postModel[];
-        setPostData(updatedData);
+        dispatch(updatePostList(updatedData));
       }
 
     } catch (error: any) {
@@ -57,7 +61,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
       <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
       <View style={styles.flatListContainer}>
         <FlatList
-          data={postData}
+          data={postListState.postList}
           numColumns={2}
           keyExtractor={(item) => item.id as string}
           renderItem={({ item }) =>
