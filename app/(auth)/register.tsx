@@ -38,6 +38,7 @@ export default function Register() {
 
     if (error1) {
       setErrMsg(error1.message);
+      alert(error1.message);
       return;
     }
     if (error2) {

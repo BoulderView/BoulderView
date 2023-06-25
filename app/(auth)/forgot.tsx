@@ -14,24 +14,23 @@ const ForgotPage = () => {
   const resetPasswordURL = Linking.createURL("/ResetPassword");
 
   const handleSubmit = async () => {
-    setErrMsg('');
-    if (email == '') {
-      setErrMsg("email cannot be empty")
-      return;
-    }
-    setLoading(true);
+    try {
+      setErrMsg('');
+      if (email == '') {
+        setErrMsg("email cannot be empty")
+        return;
+      }
+      setLoading(true);
 
-    const error1 = await resetPasswordForEmail();
-    setLoading(false);
-    if (error1) {
-      setErrMsg(error1.message);
-      return;
-    }
-
-    const error2 = await updateUser();
-    if (error2) {
-      setErrMsg(error2.message);
-      return;
+      const error1 = await resetPasswordForEmail();
+      setLoading(false);
+      if (error1) {
+        alert(error1.message);
+        return;
+      }
+      alert("Recovery email sent!")
+    } catch (error) {
+      if (error instanceof Error) { alert(error.message) }
     }
   }
 
@@ -40,11 +39,6 @@ const ForgotPage = () => {
       redirectTo: resetPasswordURL,
     });
     return error
-  }
-
-  const updateUser = async () => {
-      const { data, error } = await supabase.auth.updateUser({ password: "A12323958FG" });
-      return error
   }
 
   return (
