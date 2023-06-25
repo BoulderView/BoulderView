@@ -15,6 +15,7 @@ export default function Account() {
   const [username, setUsername] = useState<string>();
   const [description, setDescription] = useState<string>();
   const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const [showSnackBar, setShowSnackBar] = useState(false);
 
@@ -61,7 +62,29 @@ export default function Account() {
     }
   }
 
-  async function updateProfileUpload(avatarUrl:string) {
+  async function updatePassword(new_password: string) {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error('No user on the session!');
+
+      if (profile === null) throw new Error('Unable to store profile...');
+      const { data, error } = await supabase.auth.updateUser({ password: new_password })
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+      console.log(error);
+
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function updateProfileUpload(avatarUrl: string) {
     try {
       setLoading(true);
       if (!session?.user) throw new Error('No user on the session!');
@@ -125,6 +148,16 @@ export default function Account() {
         <Button
           title={loading ? 'Loading ...' : 'Update'}
           onPress={() => updateProfileUpload(avatarUrl)}
+          disabled={loading}
+        />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Input label="Change Password" secureTextEntry={true} value={password} onChangeText={(text) => setPassword(text)} />
+      </View>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Button
+          title={loading ? 'Loading ...' : 'Change password'}
+          onPress={() => updatePassword(password)}
           disabled={loading}
         />
       </View>
