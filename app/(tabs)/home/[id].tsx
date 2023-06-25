@@ -68,11 +68,8 @@ const GymDetailsPage = () => {
     <View style={styles.container}>
       <Stack.Screen options={{
         headerTitle: gymData ? gymData.name : "",
-        headerTitleStyle: {
-          fontSize: 25,
-        },
         headerStyle: {
-          backgroundColor: '#576CBC', // Replace with your desired color
+          backgroundColor: '#19376D', // Replace with your desired color
         },
         headerTintColor: 'white', // Replace with your desired color for the button
       }} />
