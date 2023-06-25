@@ -22,7 +22,7 @@ const LoginPage = () => {
       setErrMsg("password cannot be empty")
       return;
     }
-    
+
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
@@ -35,7 +35,7 @@ const LoginPage = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
-      <View style={{ marginBottom: 150 }}>
+      <View style={{ marginBottom: 150, marginTop: 100 }}>
         <Text style={{ textAlign: "center", fontSize: 28, fontWeight: '500', color: "#333", marginBottom: 30 }}>Login</Text>
         <View style={styles.inputContainer}>
           <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>

@@ -1,23 +1,24 @@
+import React from "react";
 import { Stack } from "expo-router";
 
-const VenueLayout = () => {
+const ProfileLayout = () => {
   return (
     // AuthProvider goes here
-    <Stack 
+    <Stack
       screenOptions={{
         headerTitleAlign: 'center',
-        headerShadowVisible:false,
+        headerShadowVisible: false,
       }}>
       <Stack.Screen
         name="index"
         options={{
-          headerTitle:"Profile",
+          headerTitle: "Profile",
           headerTitleStyle: {
             fontSize: 25,
           },
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: '#576CBC'
+            backgroundColor: '#19376D',
           },
         }}
       />
@@ -25,4 +26,4 @@ const VenueLayout = () => {
   )
 };
 
-export default VenueLayout;
+export default ProfileLayout;

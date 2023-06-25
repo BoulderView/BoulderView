@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAvatar, updateAvatar } from '../features/profile/profileSlice';
 
 interface Props {
-    size: number
-    url: string | null
-    onUpload: (filePath: string) => void
+  size: number
+  url: string | null
+  onUpload: (filePath: string) => void
 }
 
 export default function Avatar({ url, size = 100, onUpload }: Props) {
@@ -48,7 +48,7 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
     }
   }
 
-  const uploadFromUri = async (uri : string) => {
+  const uploadFromUri = async (uri: string) => {
     const ext = uri.substring(uri.lastIndexOf(".") + 1);
 
     const fileName = uri.replace(/^.*[\\/]/, "");
@@ -65,6 +65,7 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
     if (error) throw new Error(error.message);
     dispatch(updateAvatar(uri));
     onUpload(fileName);
+
   }
 
   const uploadAvatar = async () => {
@@ -79,7 +80,7 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
       if (!file.canceled) {
         await uploadFromUri(file.assets[0].uri);
       }
-    
+
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message)
@@ -95,15 +96,17 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
 
   return (
     <View>
-      {avatar ? (
-        <Image
+      <View style={styles.container}>
+        {avatar ? (
+          <Image
             source={{ uri: avatar }}
             accessibilityLabel="Avatar"
-            style={[avatarSize, styles.avatar, styles.image]}
-        />
-      ) : (
-        <View style={[avatarSize, styles.avatar, styles.noImage]} />
-      )}
+            style={[avatarSize, styles.avatar]}
+          />
+        ) : (
+          <View style={[avatarSize, styles.avatar, styles.noImage]} />
+        )}
+      </View>
       <View>
         <Button
           title={uploading ? 'Uploading ...' : 'Upload'}
@@ -118,18 +121,20 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
 }
 
 const styles = StyleSheet.create({
-  avatar: {
-    borderRadius: 5,
-    overflow: 'hidden',
-    maxWidth: '100%',
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  image: {
-    objectFit: 'cover',
-    paddingTop: 0,
+  avatar: {
+    borderRadius: 100,
+    borderWidth: 3,
+    borderColor: "#19376D",
+    marginBottom: 10,
   },
   noImage: {
     backgroundColor: '#333',
     border: '1px solid rgb(200, 200, 200)',
-    borderRadius: 5,
-    },
+    borderRadius: 100,
+  },
 })

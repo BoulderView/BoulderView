@@ -43,7 +43,7 @@ const HistoryComponent = () => {
     }, []);
     return (
         <View>
-            <FlatList data={postData} renderItem={({ item }) =>
+            <FlatList data={postData} numColumns={2} keyExtractor={(item) => item.id as string} renderItem={({ item }) =>
                 <PostOverviewComponent
                     videoUrl={item.post_video_url}
                     thumbnailUrl={item.post_thumbnail_url}

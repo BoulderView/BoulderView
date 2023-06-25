@@ -9,6 +9,7 @@ import { profileModel } from '../models/profileModel'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSession, selectProfile, updateProfile, updateSession } from '../features/profile/profileSlice';
 import { Snackbar } from 'react-native-paper'
+import { Text } from 'react-native-paper'
 
 export default function Account() {
   const [loading, setLoading] = useState(false);
@@ -54,7 +55,7 @@ export default function Account() {
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
-        
+
       }
     } finally {
       setLoading(false);
@@ -68,7 +69,7 @@ export default function Account() {
 
       if (profile === null) throw new Error('Unable to store profile...');
 
-      const updates:profileModel = {
+      const updates: profileModel = {
         id: profile.id,
         full_name: profile.full_name,
         username: username ? username : profile.username,
@@ -98,17 +99,15 @@ export default function Account() {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Avatar
-          size={200}
-          url={avatarUrl ||  profile?.avatar_url || ""}
-          onUpload={(url: string) => {
-            setAvatarUrl(url);
-            updateProfileUpload();
-            setShowSnackBar(true);
-          }}
-        />
-      </View>
+      <Avatar
+        size={200}
+        url={avatarUrl || profile?.avatar_url || ""}
+        onUpload={(url: string) => {
+          setAvatarUrl(url);
+          updateProfileUpload();
+          setShowSnackBar(true);
+        }}
+      />
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input label="Email" value={session?.user?.email} disabled />
       </View>
@@ -133,7 +132,7 @@ export default function Account() {
           dispatch(updateSession(null));
         }} />
       </View>
-      <View style={{width:"100%", alignItems:"center"}}>
+      <View style={{ width: "100%", alignItems: "center" }}>
         <Snackbar
           visible={showSnackBar}
           onDismiss={() => setShowSnackBar(false)}
@@ -155,9 +154,9 @@ export default function Account() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
     padding: 12,
-    flex:1
+    flex: 1,
+    backgroundColor: "#FFFFFF",
   },
   verticallySpaced: {
     paddingTop: 4,

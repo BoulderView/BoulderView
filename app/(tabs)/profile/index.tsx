@@ -1,14 +1,12 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { supabase } from '../../../lib/supabase';
 import LoginPage from '../../(auth)/login';
 import Account from '../../../components/Account';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSession, updateSession } from '../../../features/profile/profileSlice';
-import { TabObject } from '../../../models/TabObject';
-
 
 const ProfileScreen = () => {
   // const [session, setSession] = useState<Session | null>(null)

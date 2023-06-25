@@ -10,7 +10,7 @@ import { postModel } from '../../models/postModel';
 
 
 interface Props {
-  gymId:string|string[]|undefined;
+  gymId: string | string[] | undefined;
 }
 
 const ExploreComponent: React.FC<Props> = ({ gymId }) => {
@@ -84,10 +84,10 @@ export default ExploreComponent;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
   },
   flatListContainer: {
-    alignItems:"center",
-    flex:1
+    alignItems: "center",
+    flex: 1
   }
 })
