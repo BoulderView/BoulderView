@@ -28,7 +28,6 @@ export const HomeScreen = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       dispatch(updateSession(session));
-      console.log("hello");
     })
   }, [])
 

@@ -14,7 +14,7 @@ export default function Account() {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState<string>();
   const [description, setDescription] = useState<string>();
-  const [avatarUrl, setAvatarUrl] = useState<string>();
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
 
   const [showSnackBar, setShowSnackBar] = useState(false);
 
@@ -27,6 +27,7 @@ export default function Account() {
       console.log("getting profile");
       getProfile();
     }
+    console.log(avatarUrl);
   }, [profile, session])
 
   async function getProfile() {
@@ -47,9 +48,9 @@ export default function Account() {
       if (data) {
         const updatedData = data as profileModel;
         dispatch(updateProfile(updatedData));
-        setUsername(profile?.username);
-        setDescription(profile?.description);
-        setAvatarUrl(profile?.avatar_url);
+        setUsername(updatedData.username);
+        setDescription(updatedData.description);
+        setAvatarUrl(updatedData.avatar_url);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -61,7 +62,7 @@ export default function Account() {
     }
   }
 
-  async function updateProfileUpload() {
+  async function updateProfileUpload(avatarUrl:string) {
     try {
       setLoading(true);
       if (!session?.user) throw new Error('No user on the session!');
@@ -73,7 +74,7 @@ export default function Account() {
         full_name: profile.full_name,
         username: username ? username : profile.username,
         description: description ? description : profile.description,
-        avatar_url: avatarUrl ? avatarUrl : profile.avatar_url,
+        avatar_url: avatarUrl,
         updated_at: new Date(),
         liked_post_id: []
       }
@@ -103,10 +104,10 @@ export default function Account() {
       <View>
         <Avatar
           size={200}
-          url={avatarUrl ||  profile?.avatar_url || ""}
+          url={avatarUrl || ""}
           onUpload={(url: string) => {
             setAvatarUrl(url);
-            updateProfileUpload();
+            updateProfileUpload(url);
             setShowSnackBar(true);
           }}
         />
@@ -115,16 +116,16 @@ export default function Account() {
         <Input label="Email" value={session?.user?.email} disabled />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input label="Username" value={username || profile?.username} onChangeText={(text) => setUsername(text)} />
+        <Input label="Username" value={username} onChangeText={(text) => setUsername(text)} />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input label="Description" value={description || profile?.description} onChangeText={(text) => setDescription(text)} />
+        <Input label="Description" value={description} onChangeText={(text) => setDescription(text)} />
       </View>
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
           title={loading ? 'Loading ...' : 'Update'}
-          onPress={() => updateProfileUpload()}
+          onPress={() => updateProfileUpload(avatarUrl)}
           disabled={loading}
         />
       </View>

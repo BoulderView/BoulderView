@@ -142,7 +142,6 @@ const VideoIconComponent = () => {
 
     // If it is previously liked by a user, remove the like
     if (isLikedByUser) {
-      console.log("unliked by user")
       newLikes -= 1;
       const index = profileState.liked_post_id.findIndex(
         (item) => item === currentPostState.id
@@ -155,7 +154,6 @@ const VideoIconComponent = () => {
       }
     // Adding a like
     } else {
-      console.log("liked by user")
       newLikes += 1;
       newBasket = newBasket.concat(currentPostState.id);
     }
