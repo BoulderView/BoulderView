@@ -52,11 +52,12 @@ const TabBar = ({ tabObject }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   navContainer: {
     paddingVertical: 8,
     alignItems: 'center',
+    backgroundColor: '#0B2447',
   },
   tabBar: {
     flexDirection: 'row',
@@ -85,10 +86,12 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#000000',
+    fontSize: 16,
   },
   selectedText: {
     color: '#A5D7E8',
     fontWeight: 'bold',
+    fontSize: 16
   },
 });
 

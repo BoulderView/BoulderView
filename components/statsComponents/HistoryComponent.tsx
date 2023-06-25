@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Alert } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPostList } from '../../features/post/postListSlice';
+import { selectPostList, updatePostList } from '../../features/post/postListSlice';
 
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
@@ -32,7 +32,7 @@ const HistoryComponent = () => {
         if (data) {
           // Casting data to gymModel
           const updatedData = data as postModel[];
-          setPostData(updatedData);
+          dispatch(updatePostList(updatedData));
         }
 
       } catch (error: any) {
@@ -42,20 +42,20 @@ const HistoryComponent = () => {
 
     fetchData();
   }, []);
-    return (
-      <View>
-        <FlatList 
-          data={postList} 
-          numColumns={2} 
-          keyExtractor={(item) => item.id as string} 
-          renderItem={({ item }) =>
-            <PostOverviewComponent
-              postInfo={item}
-            />
-          }
-        />
-      </View >
-    )
+  return (
+    <View>
+      <FlatList
+        data={postList}
+        numColumns={2}
+        keyExtractor={(item) => item.id as string}
+        renderItem={({ item }) =>
+          <PostOverviewComponent
+            postInfo={item}
+          />
+        }
+      />
+    </View >
+  )
 }
 
 export default HistoryComponent;

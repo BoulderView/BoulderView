@@ -25,9 +25,7 @@ const tabObject: TabObject = {
 const ClimbsScreen = () => {
   return (
     <View style={styles.container}>
-      <View>
-        <TabNavigation tabObject={tabObject} />
-      </View>
+      <TabNavigation tabObject={tabObject} />
     </View>
 
   );
