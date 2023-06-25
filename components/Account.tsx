@@ -1,14 +1,14 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
-import { StyleSheet, View, Alert } from 'react-native'
-import { Button, Input } from 'react-native-elements'
-import Avatar from './Avatar'
-import { profileModel } from '../models/profileModel'
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+import { StyleSheet, View, Alert } from 'react-native';
+import { Button, Input } from 'react-native-elements';
+import Avatar from './Avatar';
+import { profileModel } from '../models/profileModel';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSession, selectProfile, updateProfile, updateSession } from '../features/profile/profileSlice';
-import { Snackbar } from 'react-native-paper'
+import { Snackbar } from 'react-native-paper';
 
 export default function Account() {
   const [loading, setLoading] = useState(false);
@@ -75,6 +75,7 @@ export default function Account() {
         description: description ? description : profile.description,
         avatar_url: avatarUrl ? avatarUrl : profile.avatar_url,
         updated_at: new Date(),
+        liked_post_id: []
       }
 
       let { error } = await supabase.from('profiles').upsert(updates);
@@ -91,6 +92,7 @@ export default function Account() {
         Alert.alert(error.message);
       }
       console.log(error);
+
     } finally {
       setLoading(false);
     }

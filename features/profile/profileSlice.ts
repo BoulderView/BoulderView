@@ -35,11 +35,43 @@ export const profileSlice = createSlice({
     updateAvatar: (state, action: PayloadAction<string | null>) => {
       state.avatar = action.payload;
     },
+    addToLikeArray: (state, action: PayloadAction<string>) => {
+      if (state.profile) {
+        state.profile.liked_post_id = [...state.profile.liked_post_id, action.payload];
+      }
+    },
+    removeFromLikeArray: (state, action: PayloadAction<string>) => {
+      if (state.profile) {
+        const index = state.profile.liked_post_id.findIndex(
+          (item) => item === action.payload
+        )
+        let newBasket = [...state.profile.liked_post_id];
+
+        if (index >= 0) {
+          newBasket.splice(index, 1);
+        } else {
+          console.warn(`unable to remove like ${action.payload}`);
+        }
+        state.profile.liked_post_id = newBasket;
+      }
+    },
+    updateLike: (state, action: PayloadAction<string[]>) => {
+      if (state.profile) {
+        state.profile.liked_post_id = action.payload;
+      }
+    },
   },
 });
 
 // actions to use
-export const { updateProfile, updateSession, updateAvatar } = profileSlice.actions;
+export const { 
+  updateProfile, 
+  updateSession, 
+  updateAvatar, 
+  updateLike,
+  addToLikeArray,
+  removeFromLikeArray 
+} = profileSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProfile = (state: RootState) => state.profile.profile;

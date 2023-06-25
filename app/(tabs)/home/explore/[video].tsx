@@ -16,7 +16,7 @@ const VideoPage = () => {
     <View style={styles.container}>
       <VideoScrollComponent 
         video_url={video as string}
-        postList={postListState.postList}
+        postList={postListState}
       />
     </View>
   )

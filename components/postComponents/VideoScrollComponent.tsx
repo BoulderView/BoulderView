@@ -48,17 +48,17 @@ const VideoScrollComponent:React.FC<Props> = ({ video_url, postList }) => {
         renderItem={
           ({item}) => <VideoComponent 
             videoLink={`${supabaseUrl}/storage/v1/object/public/postVideos/${item.post_video_url}`}
-            videoKey={item.id || ""}
             visibleVideoKey={visibleVideoKey || null}
+            postInfo={item}
           />
         }
         viewabilityConfig={{
-          itemVisiblePercentThreshold: 80
+          itemVisiblePercentThreshold: 90
         }}
         onViewableItemsChanged={onViewableItemsChanged}
         snapToAlignment="start"
         decelerationRate={"fast"}
-        snapToInterval={Dimensions.get("window").height - useHeaderHeight() - useBottomTabBarHeight()}
+        snapToInterval={Dimensions.get("window").height - useBottomTabBarHeight() - useHeaderHeight()}
         initialScrollIndex={startingIndex}
         onScrollToIndexFailed={handleScrollToIndexFailed}
       />

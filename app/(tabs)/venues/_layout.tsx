@@ -5,8 +5,6 @@ const VenueLayout = () => {
     // AuthProvider goes here
     <Stack 
       screenOptions={{
-        headerTitleAlign: 'center',
-        headerShadowVisible:false,
         headerShown:false
       }}>
     </Stack>

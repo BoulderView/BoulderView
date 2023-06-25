@@ -11,7 +11,7 @@ export const store = configureStore({
     gymList: gymListSliceReducer,
     gymImage: gymImageSliceReducer,
     profile: profileSliceReducer,
-    postList: postListSliceReducer
+    postList: postListSliceReducer,
   }
 });
 
