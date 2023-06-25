@@ -203,8 +203,10 @@ const styles = StyleSheet.create({
   },
   icon1: {
     marginVertical: 5,
+    zIndex: 1,
   },
   icon2: {
     marginVertical: 5,
+    zIndex: 1,
   },
 });

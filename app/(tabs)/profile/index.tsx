@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectSession, updateSession } from '../../../features/profile/profileSlice';
 
 const ProfileScreen = () => {
-  // const [session, setSession] = useState<Session | null>(null)
   const dispatch = useDispatch();
   const session = useSelector(selectSession);
 

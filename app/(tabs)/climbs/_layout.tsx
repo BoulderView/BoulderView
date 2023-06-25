@@ -15,7 +15,7 @@ const HomeLayout = () => {
           headerTitle: "Climbs",
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: '#576CBC'
+            backgroundColor: '#19376D'
           },
         }}
       />

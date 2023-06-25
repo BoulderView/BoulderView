@@ -15,7 +15,7 @@ const HomeLayout = () => {
           headerTitle: "Discover",
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: '#576CBC'
+            backgroundColor: '#19376D'
           },
         }}
       />
@@ -25,7 +25,7 @@ const HomeLayout = () => {
           headerTitle: "Explore",
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: '#576CBC'
+            backgroundColor: '#19376D'
           },
         }}
       />

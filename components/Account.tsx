@@ -24,7 +24,6 @@ export default function Account() {
 
   useEffect(() => {
     if (session !== null && profile === null && !loading) {
-      console.log("getting profile");
       getProfile();
     }
     console.log(avatarUrl);
