@@ -21,7 +21,8 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
   const avatar = useSelector(selectAvatar);
 
   useEffect(() => {
-    if (url && avatar === null) {
+    if (url !== null && avatar === null) {
+      console.log(url);
       downloadImage(url);
     }
   }, [url])

@@ -7,6 +7,7 @@ import { SearchBar } from '../SearchBar';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
+import { selectProfile } from '../../features/profile/profileSlice';
 
 
 interface Props {
@@ -22,7 +23,8 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const postListState = useSelector(selectPostList);
+  const postList = useSelector(selectPostList);
+  const profile = useSelector(selectProfile);
 
   const fetchData = async () => {
     try {
@@ -61,18 +63,12 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
       <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
       <View style={styles.flatListContainer}>
         <FlatList
-          data={postListState.postList}
+          data={postList}
           numColumns={2}
           keyExtractor={(item) => item.id as string}
           renderItem={({ item }) =>
             <PostOverviewComponent
-              videoUrl={item.post_video_url}
-              thumbnailUrl={item.post_thumbnail_url}
-              caption={item.caption}
-              profileId={item.profile_id}
-              likes={item.likes}
-              selectedGrade={item.selected_grade}
-              createdAt={item.created_at}
+              postInfo={item}
             />}
         />
       </View>

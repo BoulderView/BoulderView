@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList } from 'react-native';
 import { postModel } from '../../models/postModel';
 import VideoComponent from './VideoComponent';
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useNavigation } from 'expo-router';
 
 interface Props {
   video_url:string,
@@ -14,14 +17,27 @@ const VideoScrollComponent:React.FC<Props> = ({ video_url, postList }) => {
 
   const postRef = useRef(null);
 
-  const [startingIndex, setStartingIndex] = useState<number>(1);
+  const [startingIndex, setStartingIndex] = useState<number|undefined>();
+  const [visibleVideoKey, setVisibleVideoKey] = useState<string|undefined>();
+
+  const navigation = useNavigation();
+  const handleScrollToIndexFailed = () => {
+    navigation.goBack()
+  };
+
+  // Will give a "on the fly not supported when set up wrong"
+  const onViewableItemsChanged = useCallback(({ viewableItems }:any) => {
+    if (viewableItems.length > 0) {
+      setVisibleVideoKey(viewableItems[0].key);
+    }
+  }, []);
 
   useEffect(() => {
     const index = postList?.findIndex((post) => post.post_video_url === video_url);
     if (index) {
       setStartingIndex(index);
     }
-  })
+  }, [])
 
   return (
     <>
@@ -32,12 +48,19 @@ const VideoScrollComponent:React.FC<Props> = ({ video_url, postList }) => {
         renderItem={
           ({item}) => <VideoComponent 
             videoLink={`${supabaseUrl}/storage/v1/object/public/postVideos/${item.post_video_url}`}
+            visibleVideoKey={visibleVideoKey || null}
+            postInfo={item}
           />
         }
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 90
+        }}
+        onViewableItemsChanged={onViewableItemsChanged}
         snapToAlignment="start"
         decelerationRate={"fast"}
-        snapToInterval={Dimensions.get("window").height}
+        snapToInterval={Dimensions.get("window").height - useBottomTabBarHeight() - useHeaderHeight()}
         initialScrollIndex={startingIndex}
+        onScrollToIndexFailed={handleScrollToIndexFailed}
       />
     </>
   )

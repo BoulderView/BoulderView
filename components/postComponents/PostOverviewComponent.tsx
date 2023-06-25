@@ -4,7 +4,8 @@ import { supabase } from '../../lib/supabase';
 
 import { profileModel } from '../../models/profileModel';
 import LoadingComponent from '../imageComponents/LoadingComponent';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { postModel } from '../../models/postModel';
 
 // Calculating the screen and maintaining an aspect ratio
 const { width } = Dimensions.get('window');
@@ -12,23 +13,11 @@ const containerWidth = width * 0.45;
 const containerHeight = containerWidth * (16 / 9);
 
 interface Props {
-  videoUrl:string;
-  thumbnailUrl:string,
-  caption:string;
-  profileId:string;
-  likes:number;
-  selectedGrade:string | null;
-  createdAt: Date;
+  postInfo:postModel
 }
 
 const PostOverviewComponent:React.FC<Props> = ({
-  videoUrl,
-  thumbnailUrl,
-  caption,
-  profileId,
-  likes,
-  selectedGrade,
-  createdAt
+  postInfo
 }) => {
 
   const [user, setUser] = useState<profileModel>();
@@ -36,12 +25,13 @@ const PostOverviewComponent:React.FC<Props> = ({
 
   const router = useRouter();
 
+  // User that made this post
   const fetchUserData = async () => {
     try {
       let { data, error, status } = await supabase
         .from('profiles')
         .select()
-        .eq("id", profileId)
+        .eq("id", postInfo.profile_id)
         .single()
 
       // If there is any form of error
@@ -62,7 +52,7 @@ const PostOverviewComponent:React.FC<Props> = ({
 
   const fetchThumbnail = async () => {
     try {
-      const { data, error } = await supabase.storage.from('postThumbnails').download(thumbnailUrl);
+      const { data, error } = await supabase.storage.from('postThumbnails').download(postInfo.post_thumbnail_url);
 
       if (error) {
         throw error
@@ -91,7 +81,7 @@ const PostOverviewComponent:React.FC<Props> = ({
       {thumbnailUri ? (
         <TouchableOpacity 
           style={styles.image} 
-          onPress={() => router.push(`home/explore/${videoUrl}`)}
+          onPress={() => router.push(`home/explore/${postInfo.post_video_url}`)}
         >
           <Image
             source={{ uri: thumbnailUri }}
@@ -105,16 +95,16 @@ const PostOverviewComponent:React.FC<Props> = ({
       </View>
       <View style={styles.bottomContainer}>
         <Text>
-          {caption.length > 20 // limit the caption size to 20 char
-            ? caption.substring(0, 20) + "..."
-            : caption.length === 0
+          {postInfo.caption.length > 20 // limit the caption size to 20 char
+            ? postInfo.caption.substring(0, 20) + "..."
+            : postInfo.caption.length === 0
             ? "no caption"
-            : caption.trim()
+            : postInfo.caption.trim()
           }
         </Text>
         <View style={styles.bottomView}>
           <Text style={styles.title}>{user?.username}</Text>
-          <Text>❤️{likes}</Text>
+          <Text>❤️{postInfo.likes}</Text>
         </View>
       </View>
     </View>

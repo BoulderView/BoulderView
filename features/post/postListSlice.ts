@@ -6,11 +6,13 @@ import { postModel } from '../../models/postModel';
 // Define a type for the slice state
 interface postListState {
   postList: postModel[] | undefined;
+  currentPost: postModel | undefined
 }
 
 // Define the initial state using that type
 const initialState: postListState = {
   postList: undefined,
+  currentPost: undefined
 }
 
 export const postListSlice = createSlice({
@@ -23,13 +25,38 @@ export const postListSlice = createSlice({
     updatePostList: (state, action: PayloadAction<postModel[]>) => {
       state.postList = action.payload;
     },
+    updateCurrentPost: (state, action: PayloadAction<postModel>) => {
+      state.currentPost = action.payload;
+    },
+    addCurrentPostLikes: (state) => {
+      if (state.currentPost) {
+        state.currentPost.likes++;
+      }
+    },
+    removeCurrentPostLikes: (state) => {
+      if (state.currentPost) {
+        state.currentPost.likes--;
+      }
+    },
+    updateCurrentPostLikes: (state, action: PayloadAction<number>) => {
+      if (state.currentPost) {
+        state.currentPost.likes = action.payload;
+      }
+    },
   },
 });
 
 // actions to use
-export const { updatePostList } = postListSlice.actions;
+export const { 
+  updatePostList, 
+  updateCurrentPost, 
+  updateCurrentPostLikes,
+  addCurrentPostLikes,
+  removeCurrentPostLikes } = postListSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectPostList = (state: RootState) => state.postList;
+export const selectPostList = (state: RootState) => state.postList.postList;
+
+export const selectCurrentPost = (state: RootState) => state.postList.currentPost;
 
 export default postListSlice.reducer;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, TextInput, ActivityIndicator } from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -54,8 +54,8 @@ export default function Register() {
   const insertProfile = async () => {
     const { error } = await supabase
       .from('profiles')
-      .insert({ username: username, full_name: fullName })
-    return error
+      .insert({ username: username, full_name: fullName, like_post_id: [] })
+    return error;
   }
 
   return (

@@ -13,9 +13,6 @@ const HomeLayout = () => {
         name="index"
         options={{
           headerTitle: "Discover",
-          headerTitleStyle: {
-            fontSize: 25,
-          },
           headerTintColor: "white",
           headerStyle: {
             backgroundColor: '#576CBC'
@@ -26,9 +23,6 @@ const HomeLayout = () => {
         name="explore"
         options={{
           headerTitle: "Explore",
-          headerTitleStyle: {
-            fontSize: 25,
-          },
           headerTintColor: "white",
           headerStyle: {
             backgroundColor: '#576CBC'

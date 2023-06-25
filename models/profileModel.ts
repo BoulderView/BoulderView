@@ -5,4 +5,5 @@ export type profileModel = {
   description: string,
   avatar_url: string,
   updated_at: Date,
+  liked_post_id: string[]
 }

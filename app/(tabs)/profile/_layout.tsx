@@ -12,10 +12,7 @@ const ProfileLayout = () => {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: "Profile",
-          headerTitleStyle: {
-            fontSize: 25,
-          },
+          headerTitle:"Profile",
           headerTintColor: "white",
           headerStyle: {
             backgroundColor: '#19376D',

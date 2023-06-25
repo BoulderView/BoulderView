@@ -5,6 +5,10 @@ import LocationsComponent from '../../../components/homeComponents/LocationsComp
 import { TabObject } from '../../../models/TabObject';
 import FavouritesComponent from '../../../components/homeComponents/FavouritesComponent';
 import TabNavigation from '../../../components/TabNavigation';
+import { useEffect } from 'react';
+import { supabase } from '../../../lib/supabase';
+import { updateSession } from '../../../features/profile/profileSlice';
+import { useDispatch } from 'react-redux';
 
 export const HomeScreen = () => {
   // Define the tab object
@@ -18,6 +22,14 @@ export const HomeScreen = () => {
       component: <FavouritesComponent />,
     },
   };
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      dispatch(updateSession(session));
+    })
+  }, [])
 
   return (
     <View style={styles.container}>
