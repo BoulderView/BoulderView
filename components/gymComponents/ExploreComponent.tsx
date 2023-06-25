@@ -7,7 +7,6 @@ import { SearchBar } from '../SearchBar';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
-import { selectProfile } from '../../features/profile/profileSlice';
 
 
 interface Props {
@@ -24,7 +23,6 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
 
   const dispatch = useDispatch();
   const postList = useSelector(selectPostList);
-  const profile = useSelector(selectProfile);
 
   const fetchData = async () => {
     try {
@@ -69,7 +67,8 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           renderItem={({ item }) =>
             <PostOverviewComponent
               postInfo={item}
-            />}
+            />
+          }
         />
       </View>
     </View>

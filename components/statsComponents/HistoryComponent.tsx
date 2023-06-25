@@ -1,60 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, FlatList, Alert } from 'react-native';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { selectPostList } from '../../features/post/postListSlice';
 
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 
-interface Props {
-    profileId: string | string[] | undefined;
-    postData?: postModel[]
-}
-
 const HistoryComponent = () => {
-    const [postData, setPostData] = useState<postModel[]>();
+  const [postData, setPostData] = useState<postModel[]>();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser()
+  const dispatch = useDispatch();
+  const postList = useSelector(selectPostList);
 
-                let { data, error, status } = await supabase
-                    .from('post')
-                    .select()
-                    .eq('profile_id', user?.id);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
 
-                // If there is any form of error
-                if (error || status !== 200) {
-                    throw error;
-                }
+        let { data, error, status } = await supabase
+          .from('post')
+          .select()
+          .eq('profile_id', user?.id);
 
-                if (data) {
-                    // Casting data to gymModel
-                    const updatedData = data as postModel[];
-                    setPostData(updatedData);
-                }
+        // If there is any form of error
+        if (error || status !== 200) {
+          throw error;
+        }
 
-            } catch (error: any) {
-                Alert.alert(error.message);
-            }
-        };
+        if (data) {
+          // Casting data to gymModel
+          const updatedData = data as postModel[];
+          setPostData(updatedData);
+        }
 
-        fetchData();
-    }, []);
+      } catch (error: any) {
+        Alert.alert(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
     return (
-        <View>
-            <FlatList data={postData} numColumns={2} keyExtractor={(item) => item.id as string} renderItem={({ item }) =>
-                <PostOverviewComponent
-                    videoUrl={item.post_video_url}
-                    thumbnailUrl={item.post_thumbnail_url}
-                    caption={item.caption}
-                    profileId={item.profile_id}
-                    likes={item.likes}
-                    selectedGrade={item.selected_grade}
-                    createdAt={item.created_at}
-                />}
+      <View>
+        <FlatList 
+          data={postList} 
+          numColumns={2} 
+          keyExtractor={(item) => item.id as string} 
+          renderItem={({ item }) =>
+            <PostOverviewComponent
+              postInfo={item}
             />
-        </View >
+          }
+        />
+      </View >
     )
 }
 
