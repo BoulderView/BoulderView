@@ -3,15 +3,17 @@ import { View, StyleSheet } from "react-native";
 import { useState } from "react";
 import { Text, TextInput, ActivityIndicator } from "react-native-paper";
 import { supabase } from "../../lib/supabase";
+import { User } from "@supabase/supabase-js";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Linking from "expo-linking";
+
 
 const ForgotPage = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
-  const resetPasswordURL = Linking.createURL("/ResetPassword");
+  const resetPasswordURL = Linking.createURL("/reset");
 
   const handleSubmit = async () => {
     try {
@@ -36,7 +38,7 @@ const ForgotPage = () => {
 
   const resetPasswordForEmail = async () => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: resetPasswordURL,
+      redirectTo: "boulderview://reset",
     });
     return error
   }
