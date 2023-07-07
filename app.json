@@ -1,29 +1,29 @@
 {
   "expo": {
     "name": "BoulderView",
-    "scheme": "boulderview",
-    "slug": "BoulderView",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
+      "scheme": "boulderview",
+        "slug": "BoulderView",
+          "version": "1.0.0",
+            "orientation": "portrait",
+              "icon": "./assets/icon.png",
+                "userInterfaceStyle": "light",
+                  "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "native",
-      "backgroundColor": "#ffffff"
+        "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
     },
     "owner": "boulderview2023",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
+      "assetBundlePatterns": [
+        "**/*"
+      ],
+        "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.BoulderView"
+        "bundleIdentifier": "com.anonymous.BoulderView"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+          "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.BoulderView"
     },
