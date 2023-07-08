@@ -1,18 +1,23 @@
 import "react-native-gesture-handler";
 import * as React from 'react';
-import { View, StyleSheet, Dimensions } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { SearchBar } from '../../../components/SearchBar';
+import { View, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants from "expo-constants";
 import { useCallback, useRef, useState } from 'react';
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { useSelector } from 'react-redux';
 
 import BottomSheetComponent from "../../../components/BottomSheet/BottomSheetComponent";
+import { selectGymList } from "../../../features/gyms/gymListSlice";
+import { gymModel } from "../../../models/gymModel";
+import { selectGymImageWithName } from "../../../features/gyms/gymImageSlice";
+import { RootState } from "../../../store";
+import { useRouter } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.02;
+const LATITUDE_DELTA = 0.3;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const INITIAL_POSITION = {  // boruda climb's location
   latitude: 1.2741,
@@ -21,44 +26,21 @@ const INITIAL_POSITION = {  // boruda climb's location
   longitudeDelta: LONGITUDE_DELTA
 };
 
-// Dummy data
-const data: { [key : string] : {position : Region }} = {
-  "boruda" : {
-    "position" : {
-      latitude: 1.2741,
-      longitude: 103.8037,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    }
-  },
-  "Fit Bloc" : {
-    "position" : {
-      latitude: 1.287825,
-      longitude: 103.790536,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    }
-  }
-}
-
 const VenueScreen = () => {
-  const [region, setRegion] = useState(INITIAL_POSITION);
-
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [isOpen, setIsOpen] = useState(true);
 
-  const snapPoints = ['30%'];
+  const gymListState = useSelector(selectGymList);
+  const snapPoints = ['25%'];
 
-  const handleSnapPress = useCallback((index:number) => {
+  const [selectedGym, setSelectedGym] = useState<gymModel>();
+
+  const handleSnapPress = useCallback((index:number, gym:gymModel) => {
     bottomSheetRef.current?.snapToIndex(index);
-    setIsOpen(true);
+    setSelectedGym(gym);
   }, [])
 
-  // Do something on submit
-  const onSubmitSearch = (query:string) => {
-    console.log("hello");
-  }
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -66,34 +48,47 @@ const VenueScreen = () => {
         style={styles.map} 
         provider={PROVIDER_GOOGLE} 
         initialRegion={INITIAL_POSITION}
-        onRegionChange={setRegion}
       >
-      {Object.keys(data).map((key) => { // iterating through the dummy data
-          const item = data[key];
-          const position = item.position;
+        {gymListState.gymList && gymListState.gymList.map((gym) => {
+          const position = {
+            latitude: gym.latitude,
+            longitude: gym.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+          }
+          const gymImage = useSelector((state:RootState)=> selectGymImageWithName(state, gym.name));
           return (
             <Marker
-              key={key}
+              key={gym.id}
               coordinate={position}
-              title={key}
-              onPress={() => handleSnapPress(0)}
-            />
-          );
+              title={gym.name}
+              onPress={() => handleSnapPress(0, gym)}
+            >
+              <View style={styles.markerIconStyle}>
+                <Image
+                  source={{ uri: gymImage }} // Replace with the avatar image URL or require the image locally
+                  style={styles.markerImageStyle}
+                />
+              </View>
+            </Marker>
+          )
         })}
       </MapView>
-      <View style={styles.searchBarContainer}>
-        <SearchBar searchFunction={onSubmitSearch} placeholder="Search"/>
-      </View>
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        enablePanDownToClose={true}
-        onClose={() => setIsOpen(false)}
-      >
-        <BottomSheetView>
-          <BottomSheetComponent />
-        </BottomSheetView>
-      </BottomSheet>  
+      {selectedGym && 
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          enablePanDownToClose={true}
+          onClose={() => setSelectedGym(undefined)}
+        >
+          <BottomSheetView>
+            <TouchableOpacity onPress={() => router.push({pathname: `/home/${selectedGym.id}`})}>
+              <BottomSheetComponent gym={selectedGym}/>
+            </TouchableOpacity>
+          </BottomSheetView>
+        </BottomSheet>  
+      }
+      
     </View>
   );
 };
@@ -128,5 +123,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     bottom: 0
+  },
+  markerIconStyle: {
+    width: 50,
+    height: 50,
+    borderRadius: 50 / 2,
+    overflow: 'hidden',
+    borderWidth:1,
+    borderColor:"#19376D"
+  },
+  markerImageStyle: {
+    width: '100%',
+    height: '100%',
   }
 });
