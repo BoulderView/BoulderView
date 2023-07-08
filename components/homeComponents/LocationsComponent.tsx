@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { supabase } from '../../lib/supabase';
-import { Alert } from 'react-native';
+import { Alert, View, StyleSheet, ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { HomeCard } from '../HomeCard';
@@ -9,6 +9,7 @@ import { SearchBar } from '../SearchBar';
 import { gymModel } from '../../models/gymModel';
 import { selectGymList, updateGymList } from '../../features/gyms/gymListSlice';
 import LoadingComponent from '../imageComponents/LoadingComponent';
+import NoContentComponent from '../NoContentComponent';
 
 const LocationsComponent = () => {
   // Do something on submit
@@ -53,24 +54,40 @@ const LocationsComponent = () => {
     }
   }, []);
 
+  const handleEmpty = () => {
+    return <NoContentComponent />
+  }
+
+  const renderItem:ListRenderItem<gymModel> = ({item}) => {
+    return <HomeCard
+            id={item.id}
+            name={item.name}
+            coverImage={item.cover_image_url.trim()}
+            description={item.description}
+          />
+  }
+
   return (
     <>
-      <SearchBar searchFunction={onSubmitSearch} placeholder='Search' />
+      <View style={styles.searchContainer}>
+        <SearchBar searchFunction={onSubmitSearch} placeholder='Search' />
+      </View>
       {gymListState.gymList === undefined
         ? <LoadingComponent />
         : <FlatList
-          data={gymListState.gymList}
-          renderItem={({ item }) =>
-            <HomeCard
-              id={item.id}
-              name={item.name}
-              coverImage={item.cover_image_url.trim()}
-              description={item.description}
-            />}
-        />
+            data={gymListState.gymList}
+            ListEmptyComponent={handleEmpty}
+            renderItem={renderItem}
+          />
       }
     </>
   )
 }
 
 export default LocationsComponent;
+
+const styles = StyleSheet.create({
+  searchContainer: {
+    width:"100%",
+  }
+})

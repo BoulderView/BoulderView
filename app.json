@@ -9,7 +9,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "native",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "owner": "boulderview2023",

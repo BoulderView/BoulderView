@@ -2,26 +2,12 @@ import * as React from 'react';
 import { View, StyleSheet } from "react-native";
 
 import LocationsComponent from '../../../components/homeComponents/LocationsComponent';
-import { TabObject } from '../../../models/TabObject';
-import FavouritesComponent from '../../../components/homeComponents/FavouritesComponent';
-import TabNavigation from '../../../components/TabNavigation';
 import { useEffect } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { updateSession } from '../../../features/profile/profileSlice';
 import { useDispatch } from 'react-redux';
 
 export const HomeScreen = () => {
-  // Define the tab object
-  const tabObject: TabObject = {
-    LocationsComponent: {
-      title: 'Locations',
-      component: <LocationsComponent />,
-    },
-    FavouritesComponent: {
-      title: 'Favourites',
-      component: <FavouritesComponent />,
-    },
-  };
 
   const dispatch = useDispatch();
   
@@ -33,7 +19,7 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TabNavigation tabObject={tabObject} />
+      <LocationsComponent />
     </View>
   );
 }

@@ -7,6 +7,7 @@ import { SearchBar } from '../SearchBar';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
+import NoContentComponent from '../NoContentComponent';
 
 
 interface Props {
@@ -56,6 +57,10 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
     }
   }, []);
 
+  const handleEmpty = () => {
+    return <NoContentComponent />
+  }
+
   return (
     <View style={styles.container}>
       <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
@@ -64,6 +69,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           data={postList}
           numColumns={2}
           keyExtractor={(item) => item.id as string}
+          ListEmptyComponent={handleEmpty}
           renderItem={({ item }) =>
             <PostOverviewComponent
               postInfo={item}
