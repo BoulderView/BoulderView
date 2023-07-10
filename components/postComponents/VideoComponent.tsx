@@ -6,6 +6,7 @@ import LikeButtonComponent from './LikeButtonComponent';
 import { useDispatch } from 'react-redux';
 import { updateCurrentPost } from '../../features/post/postListSlice';
 import CommentButtonComponent from './CommentButtonComponent';
+import { Avatar } from 'react-native-paper';
 
 interface Props {
   videoLink:string,
@@ -66,6 +67,16 @@ const VideoComponent:React.FC<Props> = ({
           {postInfo?.caption}
         </Text>
       </View>
+      <View style={styles.avatarContainer}>
+        <Avatar.Icon 
+          size={100} 
+          icon="play"
+          style={{
+            backgroundColor: "transparent", 
+            opacity: videoPaused ? 0.7 : 0
+          }}
+        />
+      </View>
       <View style={styles.likeContainer}>
         <LikeButtonComponent likes={postInfo ? postInfo.likes : 0}/>
       </View>
@@ -106,5 +117,15 @@ const styles = StyleSheet.create({
   },
   caption: {
     color:"white"
-  }
+  },
+  avatarContainer: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    zIndex: 1,
+    transform: [
+      { translateX: -50 }, // Adjusted to half the icon size
+      { translateY: -50 }, // Adjusted to half the icon size
+    ],
+  },
 })

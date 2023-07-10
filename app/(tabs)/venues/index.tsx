@@ -61,7 +61,6 @@ const VenueScreen = () => {
             <Marker
               key={gym.id}
               coordinate={position}
-              title={gym.name}
               onPress={() => handleSnapPress(0, gym)}
             >
               <View style={styles.markerIconStyle}>

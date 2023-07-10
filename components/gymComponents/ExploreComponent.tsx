@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, FlatList, StyleSheet, Alert, ListRenderItemInfo } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePostList, selectPostList } from '../../features/post/postListSlice';
 
@@ -55,6 +55,10 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
     return <NoContentComponent />
   }
 
+  const renderItem = ({item}: ListRenderItemInfo<postModel>) => {
+    return <PostOverviewComponent postInfo={item}/>
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.flatListContainer}>
@@ -63,14 +67,10 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           numColumns={2}
           keyExtractor={(item) => item.id as string}
           ListEmptyComponent={handleEmpty}
-          onRefresh={() => fetchData()}
+          onRefresh={fetchData}
           refreshing={false}
           maxToRenderPerBatch={4}
-          renderItem={({ item }) =>
-            <PostOverviewComponent
-              postInfo={item}
-            />
-          }
+          renderItem={renderItem}
         />
       </View>
     </View>
