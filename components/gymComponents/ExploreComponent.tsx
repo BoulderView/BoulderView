@@ -3,7 +3,6 @@ import { View, FlatList, StyleSheet, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePostList, selectPostList } from '../../features/post/postListSlice';
 
-import { SearchBar } from '../SearchBar';
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
@@ -63,7 +62,6 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
 
   return (
     <View style={styles.container}>
-      <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
       <View style={styles.flatListContainer}>
         <FlatList
           data={postList}

@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList } from 'react-native';
 import { postModel } from '../../models/postModel';
 import VideoComponent from './VideoComponent';
-import { useHeaderHeight } from '@react-navigation/elements';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useNavigation } from 'expo-router';
 
 interface Props {
@@ -58,7 +56,7 @@ const VideoScrollComponent:React.FC<Props> = ({ video_url, postList }) => {
         onViewableItemsChanged={onViewableItemsChanged}
         snapToAlignment="start"
         decelerationRate={"fast"}
-        snapToInterval={Dimensions.get("window").height - useBottomTabBarHeight() - useHeaderHeight()}
+        snapToInterval={Dimensions.get("window").height}
         initialScrollIndex={startingIndex}
         onScrollToIndexFailed={handleScrollToIndexFailed}
       />

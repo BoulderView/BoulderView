@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Dimensions, Pressable } from 'react-native';
+import { StyleSheet, Dimensions, Pressable, View } from 'react-native';
 import { ResizeMode, Video } from 'expo-av';
-import { useHeaderHeight } from '@react-navigation/elements';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { postModel } from '../../models/postModel';
-import VideoIconComponent from './VideoIconComponent';
+import LikeButtonComponent from './LikeButtonComponent';
 import { useDispatch } from 'react-redux';
 import { updateCurrentPost } from '../../features/post/postListSlice';
+import CommentButtonComponent from './CommentButtonComponent';
 
 interface Props {
   videoLink:string,
@@ -26,12 +25,18 @@ const VideoComponent:React.FC<Props> = ({
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!videoPaused) {
-      videoRef.current?.playAsync();
-    } else {
-      videoRef.current?.pauseAsync();
+  const handleVideoPlayback = async () => {
+    if (videoRef.current) {
+      if (!videoPaused) {
+        await videoRef.current.playAsync().catch((error) => console.log(error)); //ignore this error, bug
+      } else {
+        await videoRef.current.pauseAsync().catch((error) => console.log(error)); // ignore this error, bug
+      }
     }
+  }
+
+  useEffect(() => {
+    handleVideoPlayback();
   }, [videoPaused]);
 
   useEffect(() => {
@@ -44,23 +49,25 @@ const VideoComponent:React.FC<Props> = ({
   }, [visibleVideoKey]);
 
   return (
-    <View style={{
-      height: Dimensions.get("window").height - useBottomTabBarHeight() - useHeaderHeight(),
+    <Pressable onPress={() => setVideoPaused(!videoPaused)} style={{
+      height: Dimensions.get("window").height,
       width: Dimensions.get("window").width,
       backgroundColor:"black"
     }}>
-      <Pressable onPress={() => setVideoPaused(!videoPaused)}>
-        <Video
-          ref={videoRef}
-          style={styles.preview}
-          source={{uri: videoLink}}
-          resizeMode={ResizeMode.CONTAIN}
-          isLooping
-        >
-          <VideoIconComponent />
-      </Video>
-      </Pressable>
-    </View>
+      <Video
+        ref={videoRef}
+        style={styles.preview}
+        source={{uri: videoLink}}
+        resizeMode={ResizeMode.COVER}
+        isLooping
+      />
+      <View style={styles.likeContainer}>
+        <LikeButtonComponent />
+      </View>
+      <View style={styles.commentContainer}>
+        <CommentButtonComponent />
+      </View>
+    </Pressable>
   )
 }
   
@@ -70,5 +77,19 @@ const styles = StyleSheet.create({
   preview: {
     width:"100%",
     height:"100%",
+  },
+  likeContainer: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    zIndex: 1,
+    padding: 10,
+  },
+  commentContainer: {
+    position: 'absolute',
+    bottom: 50,
+    right: 0,
+    zIndex: 1,
+    padding: 10,
   },
 })

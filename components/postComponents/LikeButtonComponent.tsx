@@ -3,16 +3,15 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentPost, updateCurrentPostLikes } from '../../features/post/postListSlice';
-import { selectSession, selectProfile, updateLike, updateProfile, updateSession } from '../../features/profile/profileSlice';
+import { selectSession, selectProfile, updateLike, updateProfile } from '../../features/profile/profileSlice';
 import { supabase } from '../../lib/supabase';
 import { profileModel } from '../../models/profileModel';
 import { postModel } from '../../models/postModel';
 
-const VideoIconComponent = () => {
+const LikeButtonComponent = () => {
 
   const currentPostState = useSelector(selectCurrentPost);
   const profileState = useSelector(selectProfile);
-  const [loading, setLoading] = useState(false);
 
   const [isLikedByUser, setIsLikedByUser] = useState(false);
 
@@ -22,7 +21,6 @@ const VideoIconComponent = () => {
   // update liked_post_id for the profile
   async function updateProfileUpload(likedPostArray:string[]) {
     try {
-      setLoading(true);
       if (!profileState) throw new Error('Unable to store profile...');
 
       if (!currentPostState) throw new Error('Unable to store current post...');
@@ -50,15 +48,12 @@ const VideoIconComponent = () => {
       }
       console.log(error);
 
-    } finally {
-      setLoading(false);
     }
   }
 
   // Update the number of likes for the post
   async function updateCurrentPost(newLikes:number) {
     try {
-      setLoading(true);
       if (!currentPostState) throw new Error('Unable to store current post...');
 
       const updates:postModel = {
@@ -85,14 +80,11 @@ const VideoIconComponent = () => {
         Alert.alert(error.message);
       }
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function getProfile() {
     try {
-      setLoading(true);
       if (!session?.user) throw new Error('No user on the session!');
 
       let { data, error, status } = await supabase
@@ -112,23 +104,9 @@ const VideoIconComponent = () => {
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
-        
       }
-    } finally {
-      setLoading(false);
     }
   }
-
-  // conditionally check if the user has liked this post already of not
-  useEffect(() => {
-    if (!profileState) {
-      getProfile();
-    }
-    
-    if (profileState && currentPostState && currentPostState.id) {
-      setIsLikedByUser(profileState.liked_post_id.includes(currentPostState.id))
-    }
-  }, [profileState, currentPostState])
 
   // handle like and dislike
   const handleLikePressed = () => {
@@ -167,9 +145,19 @@ const VideoIconComponent = () => {
     dispatch(updateCurrentPostLikes(newLikes));
   }
 
+  // conditionally check if the user has liked this post already of not
+  useEffect(() => {
+    if (!profileState) {
+      getProfile();
+    }
+    
+    if (profileState && currentPostState && currentPostState.id) {
+      setIsLikedByUser(profileState.liked_post_id.includes(currentPostState.id))
+    }
+  }, [profileState, currentPostState])
+
   return (
-    <View style={styles.iconsContainer}>
-      <IconButton
+    <IconButton
         icon="heart"
         iconColor={isLikedByUser ? "red" : "white"}
         containerColor="#576CBC"
@@ -177,21 +165,11 @@ const VideoIconComponent = () => {
         style={styles.icon1}
         size={30}
         onPress={() => handleLikePressed()}
-      />
-      <IconButton
-        icon="comment-text-outline"
-        iconColor="white"
-        containerColor="#576CBC"
-        mode="contained"
-        style={styles.icon2}
-        size={30}
-        onPress={() => console.log('Pressed')}
-      />
-    </View>
+    />
   );
 };
 
-export default VideoIconComponent;
+export default LikeButtonComponent;
 
 const styles = StyleSheet.create({
   iconsContainer: {
@@ -202,10 +180,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   icon1: {
-    marginVertical: 5,
-    zIndex: 1,
-  },
-  icon2: {
     marginVertical: 5,
     zIndex: 1,
   },

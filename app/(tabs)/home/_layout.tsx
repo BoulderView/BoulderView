@@ -25,8 +25,9 @@ const HomeLayout = () => {
           headerTitle: "Explore",
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: '#19376D'
+            backgroundColor: 'transparent'
           },
+          headerTransparent: true
         }}
       />
     </Stack>
