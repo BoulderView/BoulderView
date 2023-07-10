@@ -59,6 +59,7 @@ const VideoScrollComponent:React.FC<Props> = ({ video_url, postList }) => {
         snapToInterval={Dimensions.get("window").height}
         initialScrollIndex={startingIndex}
         onScrollToIndexFailed={handleScrollToIndexFailed}
+        maxToRenderPerBatch={1}
       />
     </>
   )

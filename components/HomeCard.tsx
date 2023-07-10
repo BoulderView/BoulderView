@@ -62,9 +62,9 @@ export const HomeCard = (props: {
         <Card.Content>
           <Paragraph>{props.description}</Paragraph>
         </Card.Content>
-        <Card.Actions>
+        {/* <Card.Actions>
           <Button>Favourite</Button>
-        </Card.Actions>
+        </Card.Actions> */}
       </Card>
     </View>
     

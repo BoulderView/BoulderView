@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Dimensions, Pressable, View } from 'react-native';
+import { StyleSheet, Dimensions, Pressable, View, Text } from 'react-native';
 import { ResizeMode, Video } from 'expo-av';
 import { postModel } from '../../models/postModel';
 import LikeButtonComponent from './LikeButtonComponent';
@@ -61,11 +61,16 @@ const VideoComponent:React.FC<Props> = ({
         resizeMode={ResizeMode.COVER}
         isLooping
       />
+      <View style={styles.captionContainer}>
+        <Text style={styles.caption}>
+          {postInfo?.caption}
+        </Text>
+      </View>
       <View style={styles.likeContainer}>
-        <LikeButtonComponent />
+        <LikeButtonComponent likes={postInfo ? postInfo.likes : 0}/>
       </View>
       <View style={styles.commentContainer}>
-        <CommentButtonComponent />
+        <CommentButtonComponent comments={0}/>
       </View>
     </Pressable>
   )
@@ -80,16 +85,26 @@ const styles = StyleSheet.create({
   },
   likeContainer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 80,
     right: 0,
     zIndex: 1,
     padding: 10,
   },
   commentContainer: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 10,
     right: 0,
     zIndex: 1,
     padding: 10,
   },
+  captionContainer: {
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    zIndex: 1,
+    padding: 10,
+  },
+  caption: {
+    color:"white"
+  }
 })

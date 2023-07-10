@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View, Text, Pressable } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentPost, updateCurrentPostLikes } from '../../features/post/postListSlice';
@@ -8,7 +8,11 @@ import { supabase } from '../../lib/supabase';
 import { profileModel } from '../../models/profileModel';
 import { postModel } from '../../models/postModel';
 
-const LikeButtonComponent = () => {
+interface Props {
+  likes:number
+}
+
+const LikeButtonComponent:React.FC<Props> = ({likes}) => {
 
   const currentPostState = useSelector(selectCurrentPost);
   const profileState = useSelector(selectProfile);
@@ -157,30 +161,33 @@ const LikeButtonComponent = () => {
   }, [profileState, currentPostState])
 
   return (
-    <IconButton
-        icon="heart"
+    <View style={styles.container}>
+      <IconButton
+        icon="heart-outline"
         iconColor={isLikedByUser ? "red" : "white"}
         containerColor="#576CBC"
         mode="contained"
-        style={styles.icon1}
+        style={styles.icon}
         size={30}
         onPress={() => handleLikePressed()}
-    />
+      />
+      <Text style={styles.likes}>{likes}</Text>
+    </View>
   );
 };
 
 export default LikeButtonComponent;
 
 const styles = StyleSheet.create({
-  iconsContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    zIndex: 1,
-    padding: 10,
+  container: {
   },
-  icon1: {
-    marginVertical: 5,
+  icon: {
     zIndex: 1,
+    margin:0,
+    backgroundColor:"transparent"
   },
+  likes: {
+    color:"white",
+    textAlign:"center"
+  }
 });

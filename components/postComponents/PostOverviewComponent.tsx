@@ -102,6 +102,7 @@ const PostOverviewComponent:React.FC<Props> = ({
             : postInfo.caption.trim()
           }
         </Text>
+        <Text>Grade: {postInfo.selected_grade}</Text>
         <View style={styles.bottomView}>
           <Text style={styles.title}>{user?.username}</Text>
           <Text>❤️{postInfo.likes}</Text>

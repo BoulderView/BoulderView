@@ -14,11 +14,6 @@ interface Props {
 }
 
 const ExploreComponent: React.FC<Props> = ({ gymId }) => {
-  // Do something on submit
-  const onSubmitSearch = (query: string) => {
-    console.log("hello");
-  }
-
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -68,6 +63,9 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           numColumns={2}
           keyExtractor={(item) => item.id as string}
           ListEmptyComponent={handleEmpty}
+          onRefresh={() => fetchData()}
+          refreshing={false}
+          maxToRenderPerBatch={4}
           renderItem={({ item }) =>
             <PostOverviewComponent
               postInfo={item}
