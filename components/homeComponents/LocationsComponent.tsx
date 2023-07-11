@@ -9,7 +9,6 @@ import { SearchBar } from '../SearchBar';
 import { gymModel } from '../../models/gymModel';
 import { selectGymList, updateGymList } from '../../features/gyms/gymListSlice';
 import LoadingComponent from '../imageComponents/LoadingComponent';
-import NoContentComponent from '../NoContentComponent';
 
 const LocationsComponent = () => {
   // Do something on submit
@@ -55,7 +54,7 @@ const LocationsComponent = () => {
   }, []);
 
   const handleEmpty = () => {
-    return <NoContentComponent />
+    return <LoadingComponent />
   }
 
   const renderItem:ListRenderItem<gymModel> = ({item}) => {
@@ -74,16 +73,13 @@ const LocationsComponent = () => {
       <View style={styles.searchContainer}>
         <SearchBar searchFunction={onSubmitSearch} placeholder='Search' />
       </View>
-      {gymList === undefined
-        ? <LoadingComponent />
-        : <FlatList
-            data={gymList}
-            ListEmptyComponent={handleEmpty}
-            renderItem={renderItem}
-            onRefresh={fetchData}
-            refreshing={false}
-          />
-      }
+      <FlatList
+        data={gymList}
+        ListEmptyComponent={handleEmpty}
+        renderItem={renderItem}
+        onRefresh={fetchData}
+        refreshing={false}
+      />
     </>
   )
 }

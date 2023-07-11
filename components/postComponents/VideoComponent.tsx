@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Dimensions, Pressable, View, Text } from 'react-native';
+import { StyleSheet, Dimensions, Pressable, View, Text, Alert, TouchableOpacity } from 'react-native';
 import { ResizeMode, Video } from 'expo-av';
 import { postModel } from '../../models/postModel';
 import LikeButtonComponent from './LikeButtonComponent';
@@ -7,6 +7,9 @@ import { useDispatch } from 'react-redux';
 import { updateCurrentPost } from '../../features/post/postListSlice';
 import CommentButtonComponent from './CommentButtonComponent';
 import { Avatar } from 'react-native-paper';
+import { supabase } from '../../lib/supabase';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheetComponent from '../BottomSheet/BottomSheetComponent';
 
 interface Props {
   videoLink:string,
@@ -21,8 +24,13 @@ const VideoComponent:React.FC<Props> = ({
 }) => {
   
   const videoRef = useRef<Video | null>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const snapPoints = ['25%'];
 
   const [videoPaused, setVideoPaused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [profileName, setProfileName] = useState<string>();
 
   const dispatch = useDispatch();
 
@@ -35,6 +43,38 @@ const VideoComponent:React.FC<Props> = ({
       }
     }
   }
+
+  const fetchPostUser = async (postInfo: postModel) => {
+    try {
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select("username")
+        .eq('id', postInfo.profile_id)
+        .single();
+
+      // If there is any form of error
+      if (error || status !== 200) {
+        throw error;
+      }
+
+      if (data) {
+        // Casting data to gymModel
+        const profileName = data.username as string;
+        setProfileName(profileName);
+      }
+
+    } catch (error: any) {
+      Alert.alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoading && postInfo) {
+      fetchPostUser(postInfo);
+    }
+  })
 
   useEffect(() => {
     handleVideoPlayback();
@@ -62,6 +102,11 @@ const VideoComponent:React.FC<Props> = ({
         resizeMode={ResizeMode.COVER}
         isLooping
       />
+      <View style={styles.usernameContainer}>
+        <Text style={styles.username}>
+          {profileName}
+        </Text>
+      </View>
       <View style={styles.captionContainer}>
         <Text style={styles.caption}>
           {postInfo?.caption}
@@ -83,6 +128,19 @@ const VideoComponent:React.FC<Props> = ({
       <View style={styles.commentContainer}>
         <CommentButtonComponent comments={0}/>
       </View>
+      <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          enablePanDownToClose={true}
+        >
+          <BottomSheetView>
+            <TouchableOpacity>
+              <View style={{flex:1, alignItems:"center", justifyContent:"center", height:"100%", width:"100%"}}>
+                <Text>No comments yet</Text>
+              </View>
+            </TouchableOpacity>
+          </BottomSheetView>
+        </BottomSheet>  
     </Pressable>
   )
 }
@@ -110,7 +168,7 @@ const styles = StyleSheet.create({
   },
   captionContainer: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 80,
     left: 0,
     zIndex: 1,
     padding: 10,
@@ -128,4 +186,16 @@ const styles = StyleSheet.create({
       { translateY: -50 }, // Adjusted to half the icon size
     ],
   },
+  usernameContainer: {
+    position: 'absolute',
+    bottom: 100,
+    left: 0,
+    zIndex: 1,
+    padding: 10,
+  },
+  username: {
+    color:"white",
+    fontWeight:"bold",
+    textDecorationLine: "underline"
+  }
 })

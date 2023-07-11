@@ -6,7 +6,7 @@ import { updatePostList, selectPostList } from '../../features/post/postListSlic
 import PostOverviewComponent from '../postComponents/PostOverviewComponent';
 import { supabase } from '../../lib/supabase';
 import { postModel } from '../../models/postModel';
-import NoContentComponent from '../NoContentComponent';
+import LoadingComponent from '../imageComponents/LoadingComponent';
 
 
 interface Props {
@@ -19,7 +19,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   const dispatch = useDispatch();
   const postList = useSelector(selectPostList);
 
-  const fetchData = async () => {
+  const fetchPost = async () => {
     try {
       let { data, error, status } = await supabase
         .from('post')
@@ -47,12 +47,12 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
-      fetchData();
+      fetchPost();
     }
   }, []);
 
   const handleEmpty = () => {
-    return <NoContentComponent />
+    return <LoadingComponent />
   }
 
   const renderItem:ListRenderItem<postModel> = ({item}) => {
@@ -67,7 +67,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           numColumns={2}
           keyExtractor={(item) => item.id as string}
           ListEmptyComponent={handleEmpty}
-          onRefresh={fetchData}
+          onRefresh={fetchPost}
           refreshing={false}
           maxToRenderPerBatch={4}
           renderItem={renderItem}

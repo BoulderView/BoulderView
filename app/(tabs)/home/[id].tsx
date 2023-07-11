@@ -18,34 +18,39 @@ const GymDetailsPage = () => {
   const { id } = useSearchParams();
 
   const [gymData, setGymData] = useState<gymModel>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchGymData = async () => {
+    try {
+      let { data, error, status } = await supabase
+        .from('gym')
+        .select()
+        .eq('id', id)
+        .single();
+
+      // If there is any form of error
+      if (error || status !== 200) {
+        throw error;
+      }
+
+      if (data) {
+        // Casting data to gymModel
+        const updatedData = data as gymModel;
+        setGymData(updatedData);
+      }
+
+    } catch (error: any) {
+      Alert.alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-
-    const fetchGymData = async () => {
-      try {
-        let { data, error, status } = await supabase
-          .from('gym')
-          .select()
-          .eq('id', id)
-          .single();
-
-        // If there is any form of error
-        if (error || status !== 200) {
-          throw error;
-        }
-
-        if (data) {
-          // Casting data to gymModel
-          const updatedData = data as gymModel;
-          setGymData(updatedData);
-        }
-
-      } catch (error: any) {
-        Alert.alert(error.message);
-      }
-    };
-
-    fetchGymData();
+    if (!isLoading) {
+      setIsLoading(true);
+      fetchGymData();
+    }
   }, []);
 
   // Define the tab object
