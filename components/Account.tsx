@@ -24,48 +24,17 @@ export default function Account() {
   const session = useSelector(selectSession);
 
   useEffect(() => {
-    if (session !== null && profile === null && !loading) {
-      getProfile();
+    if (profile) {
+      setUsername(profile.username);
+      setDescription(profile.description);
+      setAvatarUrl(profile.avatar_url);
     }
-    console.log(avatarUrl);
   }, [profile, session])
-
-  async function getProfile() {
-    try {
-      setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
-
-      let { data, error, status } = await supabase
-        .from('profiles')
-        .select()
-        .eq('id', session?.user.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        const updatedData = data as profileModel;
-        dispatch(updateProfile(updatedData));
-        setUsername(updatedData.username);
-        setDescription(updatedData.description);
-        setAvatarUrl(updatedData.avatar_url);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function updatePassword(new_password: string) {
     try {
       setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
+      if (!session) throw new Error('No user on the session!');
 
       if (profile === null) throw new Error('Unable to store profile...');
       const { data, error } = await supabase.auth.updateUser({ password: new_password })
@@ -87,7 +56,7 @@ export default function Account() {
   async function updateProfileUpload(avatarUrl: string) {
     try {
       setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
+      if (!session) throw new Error('No user on the session!');
 
       if (profile === null) throw new Error('Unable to store profile...');
 
@@ -107,8 +76,8 @@ export default function Account() {
         throw error;
       }
 
-      // Only update the global state when the user confirms update
-      getProfile();
+      // // Only update the global state when the user confirms update
+      // getProfile();
 
     } catch (error) {
       if (error instanceof Error) {

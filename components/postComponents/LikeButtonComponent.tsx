@@ -11,7 +11,7 @@ import { postModel } from '../../models/postModel';
 const LikeButtonComponent = () => {
 
   const currentPostState = useSelector(selectCurrentPost);
-  const profileState = useSelector(selectProfile);
+  const profile = useSelector(selectProfile);
 
   const [isLikedByUser, setIsLikedByUser] = useState(false);
 
@@ -21,17 +21,17 @@ const LikeButtonComponent = () => {
   // update liked_post_id for the profile
   async function updateProfileUpload(likedPostArray:string[]) {
     try {
-      if (!profileState) throw new Error('Unable to store profile...');
+      if (!profile) throw new Error('Unable to store profile...');
 
       if (!currentPostState) throw new Error('Unable to store current post...');
 
       const updates:profileModel = {
-        id: profileState.id,
-        full_name: profileState.full_name,
-        username: profileState.username,
-        description: profileState.description,
-        avatar_url: profileState.avatar_url,
-        updated_at: profileState.updated_at,
+        id: profile.id,
+        full_name: profile.full_name,
+        username: profile.username,
+        description: profile.description,
+        avatar_url: profile.avatar_url,
+        updated_at: profile.updated_at,
         liked_post_id: likedPostArray,
       }
 
@@ -83,45 +83,20 @@ const LikeButtonComponent = () => {
     }
   }
 
-  async function getProfile() {
-    try {
-      if (!session?.user) throw new Error('No user on the session!');
-
-      let { data, error, status } = await supabase
-        .from('profiles')
-        .select()
-        .eq('id', session?.user.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        const updatedData = data as profileModel;
-        dispatch(updateProfile(updatedData));
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    }
-  }
-
   // handle like and dislike
   const handleLikePressed = () => {
-    if (!profileState || !currentPostState || !currentPostState.id) {
+    if (!profile || !currentPostState || !currentPostState.id) {
       console.log("something went wrong")
       return;
     }
 
     let newLikes = currentPostState.likes
-    let newBasket = [...profileState.liked_post_id];
+    let newBasket = [...profile.liked_post_id];
 
     // If it is previously liked by a user, remove the like
     if (isLikedByUser) {
       newLikes -= 1;
-      const index = profileState.liked_post_id.findIndex(
+      const index = profile.liked_post_id.findIndex(
         (item) => item === currentPostState.id
       )
 
@@ -148,14 +123,10 @@ const LikeButtonComponent = () => {
 
   // conditionally check if the user has liked this post already of not
   useEffect(() => {
-    if (!profileState) {
-      getProfile();
+    if (profile && currentPostState && currentPostState.id) {
+      setIsLikedByUser(profile.liked_post_id.includes(currentPostState.id))
     }
-    
-    if (profileState && currentPostState && currentPostState.id) {
-      setIsLikedByUser(profileState.liked_post_id.includes(currentPostState.id))
-    }
-  }, [profileState, currentPostState])
+  }, [profile, currentPostState])
 
   return (
     <View style={styles.container}>
