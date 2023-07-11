@@ -17,7 +17,7 @@ const LocationsComponent = () => {
     console.log("hello");
   }
 
-  const gymListState = useSelector(selectGymList);
+  const gymList = useSelector(selectGymList);
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +48,7 @@ const LocationsComponent = () => {
   };
 
   useEffect(() => {
-    if (gymListState.gymList === undefined && !isLoading) {
+    if (gymList === undefined && !isLoading) {
       setIsLoading(true);
       fetchData();
     }
@@ -74,10 +74,10 @@ const LocationsComponent = () => {
       <View style={styles.searchContainer}>
         <SearchBar searchFunction={onSubmitSearch} placeholder='Search' />
       </View>
-      {gymListState.gymList === undefined
+      {gymList === undefined
         ? <LoadingComponent />
         : <FlatList
-            data={gymListState.gymList}
+            data={gymList}
             ListEmptyComponent={handleEmpty}
             renderItem={renderItem}
             onRefresh={fetchData}

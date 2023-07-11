@@ -30,7 +30,7 @@ const VenueScreen = () => {
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const gymListState = useSelector(selectGymList);
+  const gymList = useSelector(selectGymList);
   const snapPoints = ['25%'];
 
   const [selectedGym, setSelectedGym] = useState<gymModel>();
@@ -49,7 +49,7 @@ const VenueScreen = () => {
         provider={PROVIDER_GOOGLE} 
         initialRegion={INITIAL_POSITION}
       >
-        {gymListState.gymList && gymListState.gymList.map((gym) => {
+        {gymList && gymList.map((gym) => {
           const position = {
             latitude: gym.latitude,
             longitude: gym.longitude,

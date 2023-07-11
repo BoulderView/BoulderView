@@ -14,7 +14,7 @@ export const HomeCard = (props: {
   description: string;
 }) => {
 
-  const gymImageState = useSelector(selectGymImage);
+  const gymImage = useSelector(selectGymImage);
   const dispatch = useDispatch();
 
   // Retrieving image directly from supabase
@@ -42,7 +42,7 @@ export const HomeCard = (props: {
 
   useEffect(() => {
     // Only download when not downloaded before
-    if (!(props.name in gymImageState.gymImage)) {
+    if (!(props.name in gymImage)) {
       downloadImage(props.coverImage);
     }
   }, [])
@@ -55,7 +55,7 @@ export const HomeCard = (props: {
       <Card onPress={() => {
         router.push({pathname: `/home/${props.id}`})
       }}>
-        <Card.Cover source={{ uri:gymImageState.gymImage[props.name]}}></Card.Cover>
+        <Card.Cover source={{ uri:gymImage[props.name]}}></Card.Cover>
         <Card.Content>
           <Title>{props.name}</Title>
         </Card.Content>

@@ -19,7 +19,7 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
   const [displayGyms, setDisplayGyms] = useState<gymModel[]>();
   const [searchGyms, setSearchGyms] = useState<string>("");
 
-  const gymListState = useSelector(selectGymList);
+  const gymList = useSelector(selectGymList);
   const dispatch = useDispatch();
 
   const fetchData = async () => {
@@ -44,10 +44,10 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
 
   // Do something on submit
   const filterGyms = async () => {
-    if (gymListState.gymList !== undefined) {
-      let filteredData:gymModel[] | undefined = gymListState.gymList;
+    if (gymList !== undefined) {
+      let filteredData:gymModel[] | undefined = gymList;
       if (searchGyms !== "") {
-        filteredData = gymListState.gymList?.filter((gym) =>
+        filteredData = gymList?.filter((gym) =>
           gym.name.toLowerCase().includes(searchGyms.toLowerCase())
         );
       }
@@ -56,7 +56,7 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
   }
 
   useEffect(() => {
-    if (gymListState.gymList === undefined) {
+    if (gymList === undefined) {
       console.log("fetch data")
       fetchData();
     }
@@ -98,7 +98,7 @@ const TagGymComponent:React.FC<Props> = ({ setIsSelectingGym, setSelectedGym }) 
           style={styles.searchBar}
         />
       </View>
-      {gymListState.gymList === undefined && displayGyms === undefined
+      {gymList === undefined && displayGyms === undefined
         ? <LoadingComponent />
         : <View style={styles.scrollView}>
             <Divider />
