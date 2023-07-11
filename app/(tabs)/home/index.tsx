@@ -42,14 +42,16 @@ export const HomeScreen = () => {
   }
   
   useEffect(() => {
-    if (!isLoading) {
-      setIsLoading(true);
+    if (!session) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         dispatch(updateSession(session));
       })
+    }
+    if (!isLoading && session) {
+      setIsLoading(true);
       getProfile();
     }
-  }, [])
+  }, [session])
 
   return (
     <View style={styles.container}>

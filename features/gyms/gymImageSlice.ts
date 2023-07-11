@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
-import { gymModel } from '../../models/gymModel';
 
 // Define a type for the slice state
 interface GymImageState {
@@ -33,7 +32,7 @@ export const gymImageSlice = createSlice({
 export const { updateGymImage } = gymImageSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectGymImage = (state: RootState) => state.gymImage;
+export const selectGymImage = (state: RootState) => state.gymImage.gymImage;
 
 // Will return the url for the gymImage
 export const selectGymImageWithName = (state:RootState, key:string) => state.gymImage.gymImage[key];

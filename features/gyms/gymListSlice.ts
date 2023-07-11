@@ -30,6 +30,6 @@ export const gymListSlice = createSlice({
 export const { updateGymList } = gymListSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectGymList = (state: RootState) => state.gymList;
+export const selectGymList = (state: RootState) => state.gymList.gymList;
 
 export default gymListSlice.reducer;
