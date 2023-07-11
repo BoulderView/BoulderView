@@ -1,20 +1,54 @@
 import * as React from 'react';
-import { View, StyleSheet } from "react-native";
-
+import { View, StyleSheet, Alert } from "react-native";
 import LocationsComponent from '../../../components/homeComponents/LocationsComponent';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
-import { updateSession } from '../../../features/profile/profileSlice';
-import { useDispatch } from 'react-redux';
+import { selectSession, updateProfile, updateSession } from '../../../features/profile/profileSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { profileModel } from '../../../models/profileModel';
 
 export const HomeScreen = () => {
 
   const dispatch = useDispatch();
+  const session = useSelector(selectSession);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function getProfile() {
+    try {
+      if (!session) throw new Error('No user on the session!');
+
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select()
+        .eq('id', session?.user.id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        const updatedData = data as profileModel;
+        dispatch(updateProfile(updatedData));
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
   
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      dispatch(updateSession(session));
-    })
+    if (!isLoading) {
+      setIsLoading(true);
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        dispatch(updateSession(session));
+      })
+      getProfile();
+    }
   }, [])
 
   return (
