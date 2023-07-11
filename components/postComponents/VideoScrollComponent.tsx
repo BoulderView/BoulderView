@@ -23,7 +23,7 @@ const VideoScrollComponent:React.FC<Props> = ({ video_url, postList }) => {
     navigation.goBack()
   };
 
-  // Will give a "on the fly not supported when set up wrong"
+  // Will give a "on the fly not supported" when set up wrong
   const onViewableItemsChanged = useCallback(({ viewableItems }:any) => {
     if (viewableItems.length > 0) {
       setVisibleVideoKey(viewableItems[0].key);

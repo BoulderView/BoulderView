@@ -59,12 +59,14 @@ const LocationsComponent = () => {
   }
 
   const renderItem:ListRenderItem<gymModel> = ({item}) => {
-    return <HomeCard
-            id={item.id}
-            name={item.name}
-            coverImage={item.cover_image_url.trim()}
-            description={item.description}
-          />
+    return (
+      <HomeCard
+        id={item.id}
+        name={item.name}
+        coverImage={item.cover_image_url.trim()}
+        description={item.description}
+      />
+    )
   }
 
   return (
@@ -78,6 +80,8 @@ const LocationsComponent = () => {
             data={gymListState.gymList}
             ListEmptyComponent={handleEmpty}
             renderItem={renderItem}
+            onRefresh={fetchData}
+            refreshing={false}
           />
       }
     </>

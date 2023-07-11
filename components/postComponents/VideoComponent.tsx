@@ -78,7 +78,7 @@ const VideoComponent:React.FC<Props> = ({
         />
       </View>
       <View style={styles.likeContainer}>
-        <LikeButtonComponent likes={postInfo ? postInfo.likes : 0}/>
+        <LikeButtonComponent />
       </View>
       <View style={styles.commentContainer}>
         <CommentButtonComponent comments={0}/>

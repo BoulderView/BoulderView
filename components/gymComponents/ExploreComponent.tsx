@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Alert, ListRenderItemInfo } from 'react-native';
+import { View, FlatList, StyleSheet, Alert, ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePostList, selectPostList } from '../../features/post/postListSlice';
 
@@ -55,7 +55,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
     return <NoContentComponent />
   }
 
-  const renderItem = ({item}: ListRenderItemInfo<postModel>) => {
+  const renderItem:ListRenderItem<postModel> = ({item}) => {
     return <PostOverviewComponent postInfo={item}/>
   }
 
