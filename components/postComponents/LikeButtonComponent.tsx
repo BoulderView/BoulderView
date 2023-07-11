@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, View, Text, Pressable } from 'react-native';
+import { Alert, StyleSheet, View, Text } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentPost, updateCurrentPostLikes } from '../../features/post/postListSlice';
+import { matchCurrentPostList, selectCurrentPost, updateCurrentPostLikes } from '../../features/post/postListSlice';
 import { selectSession, selectProfile, updateLike, updateProfile } from '../../features/profile/profileSlice';
 import { supabase } from '../../lib/supabase';
 import { profileModel } from '../../models/profileModel';
 import { postModel } from '../../models/postModel';
 
-interface Props {
-  likes:number
-}
-
-const LikeButtonComponent:React.FC<Props> = ({likes}) => {
+const LikeButtonComponent = () => {
 
   const currentPostState = useSelector(selectCurrentPost);
   const profileState = useSelector(selectProfile);
@@ -147,6 +143,7 @@ const LikeButtonComponent:React.FC<Props> = ({likes}) => {
     // Updating global states
     dispatch(updateLike(newBasket));
     dispatch(updateCurrentPostLikes(newLikes));
+    dispatch(matchCurrentPostList());
   }
 
   // conditionally check if the user has liked this post already of not
@@ -171,7 +168,7 @@ const LikeButtonComponent:React.FC<Props> = ({likes}) => {
         size={30}
         onPress={() => handleLikePressed()}
       />
-      <Text style={styles.likes}>{likes}</Text>
+      <Text style={styles.likes}>{currentPostState ? currentPostState.likes : 0}</Text>
     </View>
   );
 };

@@ -6,7 +6,7 @@ import { postModel } from '../../models/postModel';
 // Define a type for the slice state
 interface postListState {
   postList: postModel[] | undefined;
-  currentPost: postModel | undefined
+  currentPost: postModel | undefined;
 }
 
 // Define the initial state using that type
@@ -43,6 +43,15 @@ export const postListSlice = createSlice({
         state.currentPost.likes = action.payload;
       }
     },
+    matchCurrentPostList: (state) => {
+      if (state.postList && state.currentPost) {
+        state.postList.map((post) => {
+          if (state.currentPost && post.id && post.id === state.currentPost.id) {
+            post.likes = state.currentPost.likes;
+          }
+        })
+      }
+    },
   },
 });
 
@@ -52,7 +61,9 @@ export const {
   updateCurrentPost, 
   updateCurrentPostLikes,
   addCurrentPostLikes,
-  removeCurrentPostLikes } = postListSlice.actions;
+  removeCurrentPostLikes,
+  matchCurrentPostList
+} = postListSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectPostList = (state: RootState) => state.postList.postList;
