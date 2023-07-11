@@ -16,10 +16,7 @@ interface Props {
   postInfo:postModel
 }
 
-const PostOverviewComponent:React.FC<Props> = ({
-  postInfo
-}) => {
-
+const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
   const [user, setUser] = useState<profileModel>();
   const [thumbnailUri, setThumbnailUri] = useState<string|null>(null);
 
