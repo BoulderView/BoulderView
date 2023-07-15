@@ -24,6 +24,7 @@ const TabLayout = () => {
         headerTitleAlign: "center",
         tabBarHideOnKeyboard: Platform.OS !== "ios", // disabled for ios
       }}
+      backBehavior="history"
     >
       <Tabs.Screen
         name="home"

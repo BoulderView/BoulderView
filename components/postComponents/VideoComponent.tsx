@@ -6,7 +6,6 @@ import {
   View,
   Text,
   Alert,
-  TouchableOpacity,
 } from "react-native";
 import { ResizeMode, Video } from "expo-av";
 import { postModel } from "../../models/postModel";
@@ -16,7 +15,7 @@ import { updateCurrentPost } from "../../features/post/postListSlice";
 import CommentButtonComponent from "./CommentButtonComponent";
 import { Avatar } from "react-native-paper";
 import { supabase } from "../../lib/supabase";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import CommentBottomSheetComponent from "./CommentBottomSheetComponent";
 
 interface Props {
   videoLink: string;
@@ -30,13 +29,12 @@ const VideoComponent: React.FC<Props> = ({
   postInfo,
 }) => {
   const videoRef = useRef<Video | null>(null);
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  const snapPoints = ["25%"];
 
   const [videoPaused, setVideoPaused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [profileName, setProfileName] = useState<string>();
+
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -98,7 +96,10 @@ const VideoComponent: React.FC<Props> = ({
 
   return (
     <Pressable
-      onPress={() => setVideoPaused(!videoPaused)}
+      onPress={() => {
+        setVideoPaused(!videoPaused);
+        setIsCommentsOpen(false);
+      }}
       style={{
         height: Dimensions.get("window").height,
         width: Dimensions.get("window").width,
@@ -132,29 +133,17 @@ const VideoComponent: React.FC<Props> = ({
         <LikeButtonComponent />
       </View>
       <View style={styles.commentContainer}>
-        <CommentButtonComponent comments={0} />
+        <CommentButtonComponent
+          comments={0}
+          setIsCommentsOpen={setIsCommentsOpen}
+        />
       </View>
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        enablePanDownToClose={true}
-      >
-        <BottomSheetView>
-          <TouchableOpacity>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
-                width: "100%",
-              }}
-            >
-              <Text>No comments yet</Text>
-            </View>
-          </TouchableOpacity>
-        </BottomSheetView>
-      </BottomSheet>
+      {postInfo && isCommentsOpen &&
+        <CommentBottomSheetComponent
+          setIsCommentsOpen={setIsCommentsOpen}
+          postId={postInfo.id}
+        />
+      }
     </Pressable>
   );
 };
