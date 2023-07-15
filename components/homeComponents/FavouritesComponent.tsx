@@ -1,5 +1,5 @@
 import React from "react";
-import NoContentComponent from "../NoContentComponent";
+import NoContentComponent from "../miscComponents/NoContentComponent";
 
 const FavouritesComponent = () => {
   return <NoContentComponent />;

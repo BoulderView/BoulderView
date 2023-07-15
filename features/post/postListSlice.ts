@@ -20,29 +20,21 @@ export const postListSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    // Insert add and remove gyms features here
-    // Use the PayloadAction type to declare the contents of `action.payload`
+    // Update the list of posts for this gym
     updatePostList: (state, action: PayloadAction<postModel[]>) => {
       state.postList = action.payload;
     },
+    // Updates the current post
     updateCurrentPost: (state, action: PayloadAction<postModel>) => {
       state.currentPost = action.payload;
     },
-    addCurrentPostLikes: (state) => {
-      if (state.currentPost) {
-        state.currentPost.likes++;
-      }
-    },
-    removeCurrentPostLikes: (state) => {
-      if (state.currentPost) {
-        state.currentPost.likes--;
-      }
-    },
+    // Update the number of likes for the current post
     updateCurrentPostLikes: (state, action: PayloadAction<number>) => {
       if (state.currentPost) {
         state.currentPost.likes = action.payload;
       }
     },
+    // Matching number of likes for the current post and the corresponding post in postList
     matchCurrentPostList: (state) => {
       if (state.postList && state.currentPost) {
         state.postList.map((post) => {
@@ -64,8 +56,6 @@ export const {
   updatePostList,
   updateCurrentPost,
   updateCurrentPostLikes,
-  addCurrentPostLikes,
-  removeCurrentPostLikes,
   matchCurrentPostList,
 } = postListSlice.actions;
 

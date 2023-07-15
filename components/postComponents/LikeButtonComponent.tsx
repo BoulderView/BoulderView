@@ -40,6 +40,7 @@ const LikeButtonComponent = () => {
         avatar_url: profile.avatar_url,
         updated_at: profile.updated_at,
         liked_post_id: likedPostArray,
+        liked_comment_id: profile.liked_comment_id
       };
 
       let { error } = await supabase.from("profiles").upsert(updates);

@@ -1,10 +1,11 @@
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Image, StyleSheet, View } from "react-native";
-import { supabase } from "../lib/supabase";
+import { Avatar } from "react-native-paper";
+import { supabase } from "../../lib/supabase";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectAvatar, updateAvatar } from "../features/profile/profileSlice";
+import { selectAvatar, updateAvatar } from "../../features/profile/profileSlice";
 
 interface Props {
   size: number;
@@ -12,7 +13,7 @@ interface Props {
   onUpload: (filePath: string) => void;
 }
 
-export default function Avatar({ url, size = 100, onUpload }: Props) {
+export default function AvatarComponent({ url, size = 100, onUpload }: Props) {
   const [uploading, setUploading] = useState(false);
   const avatarSize = { height: size, width: size };
 
@@ -109,7 +110,7 @@ export default function Avatar({ url, size = 100, onUpload }: Props) {
             style={[avatarSize, styles.avatar]}
           />
         ) : (
-          <View style={[avatarSize, styles.avatar, styles.noImage]} />
+          <Avatar.Icon size={size} color="#576CBC" icon="account" />
         )}
       </View>
       <View>

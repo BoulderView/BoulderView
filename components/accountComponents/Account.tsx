@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Button, Input } from "react-native-elements";
-import { supabase } from "../lib/supabase";
-import { profileModel } from "../models/profileModel";
-import Avatar from "./Avatar";
+import { supabase } from "../../lib/supabase";
+import { profileModel } from "../../models/profileModel";
+import AvatarComponent from "./AvatarComponent";
 
 import { Snackbar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import {
   selectSession,
   updateProfile,
   updateSession,
-} from "../features/profile/profileSlice";
+} from "../../features/profile/profileSlice";
 
 export default function Account() {
   const [loading, setLoading] = useState(false);
@@ -72,7 +72,8 @@ export default function Account() {
         description: description ? description : profile.description,
         avatar_url: avatarUrl,
         updated_at: new Date(),
-        liked_post_id: [],
+        liked_post_id: profile.liked_post_id,
+        liked_comment_id: profile.liked_comment_id
       };
 
       let { error } = await supabase.from("profiles").upsert(updates);
@@ -96,7 +97,7 @@ export default function Account() {
   return (
     <View style={styles.container}>
       <View>
-        <Avatar
+        <AvatarComponent
           size={200}
           url={avatarUrl || ""}
           onUpload={(url: string) => {

@@ -2,7 +2,7 @@ import { Stack, useSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 
-import TabNavigation from "../../../components/TabNavigation";
+import TabNavigation from "../../../components/miscComponents/TabNavigation";
 import ExploreComponent from "../../../components/gymComponents/ExploreComponent";
 import LeaderboardComponent from "../../../components/gymComponents/LeaderboardComponent";
 import MapComponent from "../../../components/gymComponents/MapComponent";

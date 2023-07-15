@@ -15,11 +15,9 @@ const initialState: GymListState = {
 
 export const gymListSlice = createSlice({
   name: "gymList",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    // Insert add and remove gyms features here
-    // Use the PayloadAction type to declare the contents of `action.payload`
+    // Updates the current list of gyms
     updateGymList: (state, action: PayloadAction<gymModel[]>) => {
       state.gymList = action.payload;
     },

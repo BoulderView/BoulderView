@@ -16,6 +16,7 @@ import CommentButtonComponent from "./CommentButtonComponent";
 import { Avatar } from "react-native-paper";
 import { supabase } from "../../lib/supabase";
 import CommentBottomSheetComponent from "./CommentBottomSheetComponent";
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 interface Props {
   videoLink: string;
@@ -101,7 +102,7 @@ const VideoComponent: React.FC<Props> = ({
         setIsCommentsOpen(false);
       }}
       style={{
-        height: Dimensions.get("window").height,
+        height: Dimensions.get("window").height - useBottomTabBarHeight(),
         width: Dimensions.get("window").width,
         backgroundColor: "black",
       }}
@@ -114,6 +115,7 @@ const VideoComponent: React.FC<Props> = ({
         isLooping
       />
       <View style={styles.usernameContainer}>
+        <Avatar.Icon style={{marginRight:10}} size={24} icon="account"/>
         <Text style={styles.username}>{profileName}</Text>
       </View>
       <View style={styles.captionContainer}>
@@ -134,7 +136,6 @@ const VideoComponent: React.FC<Props> = ({
       </View>
       <View style={styles.commentContainer}>
         <CommentButtonComponent
-          comments={0}
           setIsCommentsOpen={setIsCommentsOpen}
         />
       </View>
@@ -164,14 +165,14 @@ const styles = StyleSheet.create({
   },
   commentContainer: {
     position: "absolute",
-    bottom: 10,
+    bottom: 20,
     right: 0,
     zIndex: 1,
     padding: 10,
   },
   captionContainer: {
     position: "absolute",
-    bottom: 80,
+    bottom: 30,
     left: 0,
     zIndex: 1,
     padding: 10,
@@ -191,10 +192,12 @@ const styles = StyleSheet.create({
   },
   usernameContainer: {
     position: "absolute",
-    bottom: 100,
+    bottom: 50,
     left: 0,
     zIndex: 1,
     padding: 10,
+    flexDirection:"row",
+    alignItems:"center"
   },
   username: {
     color: "white",

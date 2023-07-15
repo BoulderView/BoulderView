@@ -6,8 +6,8 @@ import { supabase } from "../../lib/supabase";
 
 import { selectGymList, updateGymList } from "../../features/gyms/gymListSlice";
 import { gymModel } from "../../models/gymModel";
-import { HomeCard } from "../HomeCard";
-import { SearchBar } from "../SearchBar";
+import { HomeCard } from "./HomeCard";
+import { SearchBar } from "../miscComponents/SearchBar";
 import LoadingComponent from "../imageComponents/LoadingComponent";
 
 const LocationsComponent = () => {

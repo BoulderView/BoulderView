@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
-import TabNavigation from "../../../components/TabNavigation";
+import TabNavigation from "../../../components/miscComponents/TabNavigation";
 import DashboardComponent from "../../../components/statsComponents/DashboardComponent";
 import HistoryComponent from "../../../components/statsComponents/HistoryComponent";
 import WorkoutComponent from "../../../components/statsComponents/WorkoutComponent";

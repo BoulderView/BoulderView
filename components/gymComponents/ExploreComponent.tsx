@@ -78,6 +78,7 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
           refreshing={false}
           maxToRenderPerBatch={4}
           renderItem={renderItem}
+          initialNumToRender={6}
         />
       </View>
     </View>

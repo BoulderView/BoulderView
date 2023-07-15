@@ -4,8 +4,11 @@ import { useEffect } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Card, Paragraph, Title } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGymImage, updateGymImage } from "../features/gyms/gymImageSlice";
-import { supabase } from "../lib/supabase";
+import {
+  selectGymImage,
+  updateGymImage,
+} from "../../features/gyms/gymImageSlice";
+import { supabase } from "../../lib/supabase";
 
 export const HomeCard = (props: {
   id: string;
@@ -65,9 +68,6 @@ export const HomeCard = (props: {
         <Card.Content>
           <Paragraph>{props.description}</Paragraph>
         </Card.Content>
-        {/* <Card.Actions>
-          <Button>Favourite</Button>
-        </Card.Actions> */}
       </Card>
     </View>
   );

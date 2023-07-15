@@ -6,4 +6,5 @@ export type profileModel = {
   avatar_url: string;
   updated_at: Date;
   liked_post_id: string[];
+  liked_comment_id: string[];
 };

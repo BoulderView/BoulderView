@@ -4,6 +4,6 @@ export type commentModel = {
   comment: string;
   post_id: string;
   profile_id: string;
-  likes?: number;
-  commenter_username:string;
+  likes: number;
+  commenter_username: string;
 };
