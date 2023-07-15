@@ -3,11 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
 interface Props {
-  comments: number;
   setIsCommentsOpen: (value:boolean) => void;
 }
 
-const CommentButtonComponent: React.FC<Props> = ({ comments, setIsCommentsOpen }) => {
+const CommentButtonComponent: React.FC<Props> = ({ setIsCommentsOpen }) => {
   return (
     <View style={styles.container}>
       <IconButton
@@ -19,7 +18,6 @@ const CommentButtonComponent: React.FC<Props> = ({ comments, setIsCommentsOpen }
         size={30}
         onPress={() => setIsCommentsOpen(true)}
       />
-      <Text style={styles.comments}>{comments}</Text>
     </View>
   );
 };

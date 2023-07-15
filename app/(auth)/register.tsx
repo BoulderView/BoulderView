@@ -54,7 +54,7 @@ export default function Register() {
   const insertProfile = async () => {
     const { error } = await supabase
       .from("profiles")
-      .insert({ username: username, full_name: fullName, like_post_id: [] });
+      .insert({ username: username, full_name: fullName, like_post_id: [], liked_comment_id: [] });
     return error;
   };
 

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Dimensions, FlatList } from "react-native";
 import { postModel } from "../../models/postModel";
 import VideoComponent from "./VideoComponent";
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 interface Props {
   video_url: string;
@@ -57,10 +58,11 @@ const VideoScrollComponent: React.FC<Props> = ({ video_url, postList }) => {
         onViewableItemsChanged={onViewableItemsChanged}
         snapToAlignment="start"
         decelerationRate={"fast"}
-        snapToInterval={Dimensions.get("window").height}
+        snapToInterval={Dimensions.get("window").height - useBottomTabBarHeight()}
         initialScrollIndex={startingIndex}
         onScrollToIndexFailed={handleScrollToIndexFailed}
         maxToRenderPerBatch={1}
+        initialNumToRender={3}
       />
     </>
   );

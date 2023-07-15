@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { TabObject } from "../models/TabObject";
+import { TabObject } from "../../models/TabObject";
 
 /* 
   Have to provide a tabObject in this manner for it to work

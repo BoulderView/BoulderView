@@ -1,18 +1,14 @@
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Alert,
-  ListRenderItem,
-} from "react-native";
+import { View, Text, StyleSheet, Alert, ListRenderItem } from "react-native";
 import { Portal, PortalHost } from "@gorhom/portal";
 import CommentCardComponent from "./CommentCardComponent";
 import { supabase } from "../../lib/supabase";
 import { commentModel } from "../../models/commentModel";
 import CommentInputComponent from "./CommentInputComponent";
+import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCommentList, updateCommentList } from "../../features/comment/commentListSlice";
 
 interface Props {
   setIsCommentsOpen: (value: boolean) => void;
@@ -26,8 +22,10 @@ const CommentBottomSheetComponent: React.FC<Props> = ({
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [updatedCommentList, setUpdatedCommentList] = useState(true);
 
-  const [commentList, setCommentList] = useState<commentModel[]>();
+  const dispatch = useDispatch();
+  const commentList = useSelector(selectCommentList);
 
   const snapPoints = ["80%"];
 
@@ -46,21 +44,22 @@ const CommentBottomSheetComponent: React.FC<Props> = ({
       if (data) {
         // Casting data to gymModel
         const comments = data as commentModel[];
-        setCommentList(comments);
+        dispatch(updateCommentList(comments));
       }
     } catch (error: any) {
       Alert.alert(error.message);
     } finally {
       setIsLoading(false);
+      setUpdatedCommentList(false);
     }
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && updatedCommentList) {
       setIsLoading(true);
       fetchComments();
     }
-  }, []);
+  }, [updatedCommentList]);
 
   const handleEmpty = () => {
     return (
@@ -71,7 +70,7 @@ const CommentBottomSheetComponent: React.FC<Props> = ({
           alignItems: "center",
         }}
       >
-        <Text>Start a conversation</Text>
+        <Text>Start a conversation!</Text>
       </View>
     );
   };
@@ -89,22 +88,24 @@ const CommentBottomSheetComponent: React.FC<Props> = ({
           enablePanDownToClose={true}
           onClose={() => setIsCommentsOpen(false)}
         >
-          <BottomSheetView>
-            <View style={styles.commentContainer}>
-              <View style={styles.titleContainer}>
-                <Text>Comments</Text>
-              </View>
-              <FlatList
-                data={commentList}
-                ListEmptyComponent={handleEmpty}
-                renderItem={renderItem}
-                onRefresh={fetchComments}
-                refreshing={false}
-              />
-              <CommentInputComponent 
-                postId={postId} 
-                setCommentList={setCommentList}
-                commentList={commentList}
+          <BottomSheetView style={styles.commentContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>Comments</Text>
+            </View>
+            <View style={styles.listContainer}>
+            <BottomSheetFlatList
+              data={commentList}
+              ListEmptyComponent={handleEmpty}
+              renderItem={renderItem}
+              onRefresh={fetchComments}
+              refreshing={false}
+              style={styles.listContainer}
+            />
+            </View>
+            <View style={styles.commentInputContainer}>
+              <CommentInputComponent
+                postId={postId}
+                setUpdatedCommentList={setUpdatedCommentList}
               />
             </View>
           </BottomSheetView>
@@ -124,12 +125,17 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
-    marginBottom: 5,
+    height:"8%"
   },
   commentContainer: {
     height: "100%",
-    backgroundColor: "#fff",
-    alignItems: "center",
+    justifyContent: "space-between",
   },
+  listContainer: {
+    height:"80%"
+  },
+  commentInputContainer: {
+    height:"12%",
+    paddingBottom:10
+  }
 });

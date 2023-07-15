@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { StyleSheet, View } from "react-native";
 import { supabase } from '../../../lib/supabase';
 import LoginPage from '../../(auth)/login';
-import Account from '../../../components/Account';
+import Account from '../../../components/accountComponents/Account';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSession, updateSession } from '../../../features/profile/profileSlice';
