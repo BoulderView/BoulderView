@@ -10,7 +10,7 @@ import {
 import {
   selectProfile,
   selectSession,
-  updateLike
+  updateLike,
 } from "../../features/profile/profileSlice";
 import { supabase } from "../../lib/supabase";
 import { postModel } from "../../models/postModel";
@@ -137,7 +137,7 @@ const LikeButtonComponent = () => {
   return (
     <View style={styles.container}>
       <IconButton
-        icon="heart-outline"
+        icon={isLikedByUser ? "heart" : "heart-outline"}
         iconColor={isLikedByUser ? "red" : "white"}
         containerColor="#576CBC"
         mode="contained"
