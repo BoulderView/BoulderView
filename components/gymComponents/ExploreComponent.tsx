@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Alert, ListRenderItem } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { updatePostList, selectPostList } from '../../features/post/postListSlice';
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  FlatList,
+  ListRenderItem,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPostList,
+  updatePostList,
+} from "../../features/post/postListSlice";
 
-import PostOverviewComponent from '../postComponents/PostOverviewComponent';
-import { supabase } from '../../lib/supabase';
-import { postModel } from '../../models/postModel';
-import LoadingComponent from '../imageComponents/LoadingComponent';
-
+import { supabase } from "../../lib/supabase";
+import { postModel } from "../../models/postModel";
+import LoadingComponent from "../imageComponents/LoadingComponent";
+import PostOverviewComponent from "../postComponents/PostOverviewComponent";
 
 interface Props {
   gymId: string | string[] | undefined;
@@ -22,9 +30,9 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   const fetchPost = async () => {
     try {
       let { data, error, status } = await supabase
-        .from('post')
+        .from("post")
         .select()
-        .eq('gym_id', gymId);
+        .eq("gym_id", gymId);
 
       // If there is any form of error
       if (error || status !== 200) {
@@ -36,7 +44,6 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
         const updatedData = data as postModel[];
         dispatch(updatePostList(updatedData));
       }
-
     } catch (error: any) {
       Alert.alert(error.message);
     } finally {
@@ -52,12 +59,12 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   }, []);
 
   const handleEmpty = () => {
-    return <LoadingComponent />
-  }
+    return <LoadingComponent />;
+  };
 
-  const renderItem:ListRenderItem<postModel> = ({item}) => {
-    return <PostOverviewComponent postInfo={item}/>
-  }
+  const renderItem: ListRenderItem<postModel> = ({ item }) => {
+    return <PostOverviewComponent postInfo={item} />;
+  };
 
   return (
     <View style={styles.container}>
@@ -85,6 +92,6 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     alignItems: "center",
-    flex: 1
-  }
-})
+    flex: 1,
+  },
+});

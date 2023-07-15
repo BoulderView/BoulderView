@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
-import { supabase } from '../../lib/supabase';
-import { Alert, View, StyleSheet, ListRenderItem } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { Alert, ListRenderItem, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
+import { supabase } from "../../lib/supabase";
 
-import { HomeCard } from '../HomeCard';
-import { SearchBar } from '../SearchBar';
-import { gymModel } from '../../models/gymModel';
-import { selectGymList, updateGymList } from '../../features/gyms/gymListSlice';
-import LoadingComponent from '../imageComponents/LoadingComponent';
+import { selectGymList, updateGymList } from "../../features/gyms/gymListSlice";
+import { gymModel } from "../../models/gymModel";
+import { HomeCard } from "../HomeCard";
+import { SearchBar } from "../SearchBar";
+import LoadingComponent from "../imageComponents/LoadingComponent";
 
 const LocationsComponent = () => {
   // Do something on submit
   const onSubmitSearch = (query: string) => {
     console.log("hello");
-  }
+  };
 
   const gymList = useSelector(selectGymList);
   const dispatch = useDispatch();
@@ -23,9 +23,7 @@ const LocationsComponent = () => {
 
   const fetchData = async () => {
     try {
-      let { data, error, status } = await supabase
-        .from('gym')
-        .select();
+      let { data, error, status } = await supabase.from("gym").select();
 
       // If there is any form of error
       if (error || status !== 200) {
@@ -38,7 +36,6 @@ const LocationsComponent = () => {
         // Updating the state in store
         dispatch(updateGymList(updatedData));
       }
-
     } catch (error: any) {
       Alert.alert(error.message);
     } finally {
@@ -54,10 +51,10 @@ const LocationsComponent = () => {
   }, []);
 
   const handleEmpty = () => {
-    return <LoadingComponent />
-  }
+    return <LoadingComponent />;
+  };
 
-  const renderItem:ListRenderItem<gymModel> = ({item}) => {
+  const renderItem: ListRenderItem<gymModel> = ({ item }) => {
     return (
       <HomeCard
         id={item.id}
@@ -65,13 +62,13 @@ const LocationsComponent = () => {
         coverImage={item.cover_image_url.trim()}
         description={item.description}
       />
-    )
-  }
+    );
+  };
 
   return (
     <>
       <View style={styles.searchContainer}>
-        <SearchBar searchFunction={onSubmitSearch} placeholder='Search' />
+        <SearchBar searchFunction={onSubmitSearch} placeholder="Search" />
       </View>
       <FlatList
         data={gymList}
@@ -81,13 +78,13 @@ const LocationsComponent = () => {
         refreshing={false}
       />
     </>
-  )
-}
+  );
+};
 
 export default LocationsComponent;
 
 const styles = StyleSheet.create({
   searchContainer: {
-    width:"100%",
-  }
-})
+    width: "100%",
+  },
+});

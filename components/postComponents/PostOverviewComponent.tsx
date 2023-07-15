@@ -1,24 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, Alert, TouchableOpacity } from 'react-native';
-import { supabase } from '../../lib/supabase';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
+import { supabase } from "../../lib/supabase";
 
-import { profileModel } from '../../models/profileModel';
-import LoadingComponent from '../imageComponents/LoadingComponent';
-import { useRouter } from 'expo-router';
-import { postModel } from '../../models/postModel';
+import { profileModel } from "../../models/profileModel";
+import LoadingComponent from "../imageComponents/LoadingComponent";
+import { useRouter } from "expo-router";
+import { postModel } from "../../models/postModel";
 
 // Calculating the screen and maintaining an aspect ratio
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const containerWidth = width * 0.45;
 const containerHeight = containerWidth * (16 / 9);
 
 interface Props {
-  postInfo:postModel
+  postInfo: postModel;
 }
 
-const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
+const PostOverviewComponent: React.FC<Props> = ({ postInfo }) => {
   const [user, setUser] = useState<profileModel>();
-  const [thumbnailUri, setThumbnailUri] = useState<string|null>(null);
+  const [thumbnailUri, setThumbnailUri] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -26,10 +34,10 @@ const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
   const fetchUserData = async () => {
     try {
       let { data, error, status } = await supabase
-        .from('profiles')
+        .from("profiles")
         .select()
         .eq("id", postInfo.profile_id)
-        .single()
+        .single();
 
       // If there is any form of error
       if (error || status !== 200) {
@@ -41,7 +49,6 @@ const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
         const updatedData = data as profileModel;
         setUser(updatedData);
       }
-
     } catch (error: any) {
       Alert.alert(error.message);
     }
@@ -49,23 +56,25 @@ const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
 
   const fetchThumbnail = async () => {
     try {
-      const { data, error } = await supabase.storage.from('postThumbnails').download(postInfo.post_thumbnail_url);
+      const { data, error } = await supabase.storage
+        .from("postThumbnails")
+        .download(postInfo.post_thumbnail_url);
 
       if (error) {
-        throw error
+        throw error;
       }
 
-      const fr = new FileReader()
-      fr.readAsDataURL(data)
+      const fr = new FileReader();
+      fr.readAsDataURL(data);
       fr.onload = () => {
-        setThumbnailUri(fr.result as string)
-      }
+        setThumbnailUri(fr.result as string);
+      };
     } catch (error) {
       if (error instanceof Error) {
-        console.log('Error downloading image: ', error.message)
+        console.log("Error downloading image: ", error.message);
       }
     }
-  }
+  };
 
   useEffect(() => {
     fetchUserData();
@@ -75,20 +84,22 @@ const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
   return (
     <View style={styles.container}>
       <View style={styles.postContainer}>
-      {thumbnailUri ? (
-        <TouchableOpacity 
-          style={styles.image} 
-          onPress={() => router.push(`home/explore/${postInfo.post_video_url}`)}
-        >
-          <Image
-            source={{ uri: thumbnailUri }}
+        {thumbnailUri ? (
+          <TouchableOpacity
             style={styles.image}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
-      ) : (
-        <LoadingComponent />
-      )}
+            onPress={() =>
+              router.push(`home/explore/${postInfo.post_video_url}`)
+            }
+          >
+            <Image
+              source={{ uri: thumbnailUri }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
+        ) : (
+          <LoadingComponent />
+        )}
       </View>
       <View style={styles.bottomContainer}>
         <Text>
@@ -96,8 +107,7 @@ const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
             ? postInfo.caption.substring(0, 20) + "..."
             : postInfo.caption.length === 0
             ? "no caption"
-            : postInfo.caption.trim()
-          }
+            : postInfo.caption.trim()}
         </Text>
         <Text>Grade: {postInfo.selected_grade}</Text>
         <View style={styles.bottomView}>
@@ -106,42 +116,42 @@ const PostOverviewComponent:React.FC<Props> = ({ postInfo }) => {
         </View>
       </View>
     </View>
-  )
+  );
 };
 
 export default PostOverviewComponent;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems:"center",
-    width:containerWidth,
-    height:containerHeight,
-    padding:5,
-    margin:5
+    alignItems: "center",
+    width: containerWidth,
+    height: containerHeight,
+    padding: 5,
+    margin: 5,
   },
   bottomView: {
-    flexDirection:"row",
-    flex:0,
-    justifyContent:"space-between",
+    flexDirection: "row",
+    flex: 0,
+    justifyContent: "space-between",
   },
   bottomContainer: {
-    width:"100%",
-    height:"20%",
-    margin:5,
-    justifyContent: 'space-between',
-    padding:5
+    width: "100%",
+    height: "20%",
+    margin: 5,
+    justifyContent: "space-between",
+    padding: 5,
   },
   postContainer: {
-    width:"100%",
-    height:"80%",
-    alignItems:"center"
+    width: "100%",
+    height: "80%",
+    alignItems: "center",
   },
   image: {
-    width:"100%",
-    height:"100%",
-    borderRadius:8
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
   },
   title: {
-    fontWeight:"bold"
-  }
-})
+    fontWeight: "bold",
+  },
+});

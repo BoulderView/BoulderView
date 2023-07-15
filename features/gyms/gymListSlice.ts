@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../store';
-import { gymModel } from '../../models/gymModel';
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { gymModel } from "../../models/gymModel";
+import type { RootState } from "../../store";
 
 // Define a type for the slice state
 interface GymListState {
@@ -11,10 +11,10 @@ interface GymListState {
 // Define the initial state using that type
 const initialState: GymListState = {
   gymList: undefined,
-}
+};
 
 export const gymListSlice = createSlice({
-  name: 'gymList',
+  name: "gymList",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {

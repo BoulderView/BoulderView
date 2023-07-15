@@ -1,25 +1,22 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { useState } from "react";
-import { Text, TextInput, ActivityIndicator } from "react-native-paper";
-import { supabase } from "../../lib/supabase";
-import { User } from "@supabase/supabase-js";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Linking from "expo-linking";
-
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { ActivityIndicator, Text, TextInput } from "react-native-paper";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { supabase } from "../../lib/supabase";
 
 const ForgotPage = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
   const resetPasswordURL = Linking.createURL("/reset");
 
   const handleSubmit = async () => {
     try {
-      setErrMsg('');
-      if (email == '') {
-        setErrMsg("email cannot be empty")
+      setErrMsg("");
+      if (email == "") {
+        setErrMsg("email cannot be empty");
         return;
       }
       setLoading(true);
@@ -30,33 +27,51 @@ const ForgotPage = () => {
         alert(error1.message);
         return;
       }
-      alert("Recovery email sent!")
+      alert("Recovery email sent!");
     } catch (error) {
-      if (error instanceof Error) { alert(error.message) }
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     }
-  }
+  };
 
   const resetPasswordForEmail = async () => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: "boulderview://reset",
     });
-    return error
-  }
+    return error;
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
+    <View style={{ flex: 1, justifyContent: "center" }}>
       <View style={{ marginBottom: 150 }}>
-        <Text style={{ textAlign: "center", fontSize: 28, fontWeight: '500', color: "#333", marginBottom: 30 }}>Please enter your email</Text>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 28,
+            fontWeight: "500",
+            color: "#333",
+            marginBottom: 30,
+          }}
+        >
+          Please enter your email
+        </Text>
         <View style={styles.inputContainer}>
-          <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
+          <MaterialIcons
+            name="alternate-email"
+            size={25}
+            color="#666"
+            style={styles.iconStyle}
+          ></MaterialIcons>
           <TextInput
             style={styles.input}
             placeholder="Email"
             mode="flat"
-            autoCapitalize='none'
-            textContentType='emailAddress'
+            autoCapitalize="none"
+            textContentType="emailAddress"
             value={email}
-            onChangeText={setEmail} />
+            onChangeText={setEmail}
+          />
         </View>
       </View>
       {errMsg !== "" && <Text>{errMsg}</Text>}
@@ -66,19 +81,18 @@ const ForgotPage = () => {
           <Text style={styles.buttonTextStyle}>Send recovery email</Text>
         </TouchableOpacity>
       </View>
-    </View >
-
-  )
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     overflow: "hidden",
     borderWidth: 0.1,
-    borderColor: '#000',
+    borderColor: "#000",
     borderRadius: 20,
     height: 50,
     margin: 5,
@@ -88,7 +102,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     overflow: "hidden",
   },
   iconStyle: {
@@ -96,16 +110,16 @@ const styles = StyleSheet.create({
     width: 25,
   },
   buttonStyle: {
-    backgroundColor: '#19376D',
+    backgroundColor: "#19376D",
     padding: 20,
     borderRadius: 20,
     marginHorizontal: 10,
   },
   buttonTextStyle: {
-    textAlign: 'center',
-    fontWeight: '700',
+    textAlign: "center",
+    fontWeight: "700",
     fontSize: 16,
-    color: '#fff'
+    color: "#fff",
   },
 });
 

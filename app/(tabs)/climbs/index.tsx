@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { View, Easing, StyleSheet, Button } from "react-native";
-import TabNavigation from '../../../components/TabNavigation';
-import HistoryComponent from '../../../components/statsComponents/HistoryComponent';
-import { TabObject } from '../../../models/TabObject';
-import WorkoutComponent from '../../../components/statsComponents/WorkoutComponent';
-import DashboardComponent from '../../../components/statsComponents/DashboardComponent';
+import * as React from "react";
+import { StyleSheet, View } from "react-native";
+import TabNavigation from "../../../components/TabNavigation";
+import DashboardComponent from "../../../components/statsComponents/DashboardComponent";
+import HistoryComponent from "../../../components/statsComponents/HistoryComponent";
+import WorkoutComponent from "../../../components/statsComponents/WorkoutComponent";
+import { TabObject } from "../../../models/TabObject";
 
 const tabObject: TabObject = {
   DashboardComponent: {
-    title: 'Dashboard',
-    component: <DashboardComponent />
+    title: "Dashboard",
+    component: <DashboardComponent />,
   },
   HistoryComponent: {
-    title: 'History',
+    title: "History",
     component: <HistoryComponent />,
   },
   WorkoutComponent: {
-    title: 'Workouts',
+    title: "Workouts",
     component: <WorkoutComponent />,
   },
 };
@@ -27,7 +27,6 @@ const ClimbsScreen = () => {
     <View style={styles.container}>
       <TabNavigation tabObject={tabObject} />
     </View>
-
   );
 };
 

@@ -1,12 +1,13 @@
-import React from 'react';
 import { Stack } from "expo-router";
+import React from "react";
 
 const ExploreLayout = () => {
   return (
     <Stack
       screenOptions={{
-        headerShown:false
-      }}>
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{
@@ -14,7 +15,7 @@ const ExploreLayout = () => {
         }}
       />
     </Stack>
-  )
+  );
 };
 
 export default ExploreLayout;

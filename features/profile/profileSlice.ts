@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../store';
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../../store";
 
-import { profileModel } from '../../models/profileModel';
-import { Session } from '@supabase/supabase-js';
+import { Session } from "@supabase/supabase-js";
+import { profileModel } from "../../models/profileModel";
 
 // Define a type for the slice state
 interface ProfileState {
@@ -16,11 +16,11 @@ interface ProfileState {
 const initialState: ProfileState = {
   session: null,
   profile: null,
-  avatar: null
-}
+  avatar: null,
+};
 
 export const profileSlice = createSlice({
-  name: 'profile',
+  name: "profile",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
@@ -37,14 +37,17 @@ export const profileSlice = createSlice({
     },
     addToLikeArray: (state, action: PayloadAction<string>) => {
       if (state.profile) {
-        state.profile.liked_post_id = [...state.profile.liked_post_id, action.payload];
+        state.profile.liked_post_id = [
+          ...state.profile.liked_post_id,
+          action.payload,
+        ];
       }
     },
     removeFromLikeArray: (state, action: PayloadAction<string>) => {
       if (state.profile) {
         const index = state.profile.liked_post_id.findIndex(
           (item) => item === action.payload
-        )
+        );
         let newBasket = [...state.profile.liked_post_id];
 
         if (index >= 0) {
@@ -64,13 +67,13 @@ export const profileSlice = createSlice({
 });
 
 // actions to use
-export const { 
-  updateProfile, 
-  updateSession, 
-  updateAvatar, 
+export const {
+  updateProfile,
+  updateSession,
+  updateAvatar,
   updateLike,
   addToLikeArray,
-  removeFromLikeArray 
+  removeFromLikeArray,
 } = profileSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
