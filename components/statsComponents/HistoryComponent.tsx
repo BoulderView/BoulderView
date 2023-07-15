@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, Alert } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Alert, FlatList, View } from "react-native";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { selectPostList, updatePostList } from '../../features/post/postListSlice';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPostList,
+  updatePostList,
+} from "../../features/post/postListSlice";
 
-import { supabase } from '../../lib/supabase';
-import { postModel } from '../../models/postModel';
-import PostOverviewComponent from '../postComponents/PostOverviewComponent';
+import { supabase } from "../../lib/supabase";
+import { postModel } from "../../models/postModel";
+import PostOverviewComponent from "../postComponents/PostOverviewComponent";
 
 const HistoryComponent = () => {
   const [postData, setPostData] = useState<postModel[]>();
@@ -17,12 +20,14 @@ const HistoryComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
         let { data, error, status } = await supabase
-          .from('post')
+          .from("post")
           .select()
-          .eq('profile_id', user?.id);
+          .eq("profile_id", user?.id);
 
         // If there is any form of error
         if (error || status !== 200) {
@@ -34,7 +39,6 @@ const HistoryComponent = () => {
           const updatedData = data as postModel[];
           dispatch(updatePostList(updatedData));
         }
-
       } catch (error: any) {
         Alert.alert(error.message);
       }
@@ -48,14 +52,10 @@ const HistoryComponent = () => {
         data={postList}
         numColumns={2}
         keyExtractor={(item) => item.id as string}
-        renderItem={({ item }) =>
-          <PostOverviewComponent
-            postInfo={item}
-          />
-        }
+        renderItem={({ item }) => <PostOverviewComponent postInfo={item} />}
       />
-    </View >
-  )
-}
+    </View>
+  );
+};
 
 export default HistoryComponent;

@@ -1,32 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Dimensions, Pressable, View, Text, Alert, TouchableOpacity } from 'react-native';
-import { ResizeMode, Video } from 'expo-av';
-import { postModel } from '../../models/postModel';
-import LikeButtonComponent from './LikeButtonComponent';
-import { useDispatch } from 'react-redux';
-import { updateCurrentPost } from '../../features/post/postListSlice';
-import CommentButtonComponent from './CommentButtonComponent';
-import { Avatar } from 'react-native-paper';
-import { supabase } from '../../lib/supabase';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import BottomSheetComponent from '../BottomSheet/BottomSheetComponent';
+import React, { useEffect, useRef, useState } from "react";
+import {
+  StyleSheet,
+  Dimensions,
+  Pressable,
+  View,
+  Text,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
+import { ResizeMode, Video } from "expo-av";
+import { postModel } from "../../models/postModel";
+import LikeButtonComponent from "./LikeButtonComponent";
+import { useDispatch } from "react-redux";
+import { updateCurrentPost } from "../../features/post/postListSlice";
+import CommentButtonComponent from "./CommentButtonComponent";
+import { Avatar } from "react-native-paper";
+import { supabase } from "../../lib/supabase";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 interface Props {
-  videoLink:string,
-  visibleVideoKey: string | null,
-  postInfo: postModel | null
+  videoLink: string;
+  visibleVideoKey: string | null;
+  postInfo: postModel | null;
 }
 
-const VideoComponent:React.FC<Props> = ({ 
-  videoLink, 
-  visibleVideoKey, 
-  postInfo 
+const VideoComponent: React.FC<Props> = ({
+  videoLink,
+  visibleVideoKey,
+  postInfo,
 }) => {
-  
   const videoRef = useRef<Video | null>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = ['25%'];
+  const snapPoints = ["25%"];
 
   const [videoPaused, setVideoPaused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,17 +45,19 @@ const VideoComponent:React.FC<Props> = ({
       if (!videoPaused) {
         await videoRef.current.playAsync().catch((error) => console.log(error)); //ignore this error, bug
       } else {
-        await videoRef.current.pauseAsync().catch((error) => console.log(error)); // ignore this error, bug
+        await videoRef.current
+          .pauseAsync()
+          .catch((error) => console.log(error)); // ignore this error, bug
       }
     }
-  }
+  };
 
   const fetchPostUser = async (postInfo: postModel) => {
     try {
       let { data, error, status } = await supabase
-        .from('profiles')
+        .from("profiles")
         .select("username")
-        .eq('id', postInfo.profile_id)
+        .eq("id", postInfo.profile_id)
         .single();
 
       // If there is any form of error
@@ -62,19 +70,18 @@ const VideoComponent:React.FC<Props> = ({
         const profileName = data.username as string;
         setProfileName(profileName);
       }
-
     } catch (error: any) {
       Alert.alert(error.message);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (!isLoading && postInfo) {
       fetchPostUser(postInfo);
     }
-  })
+  });
 
   useEffect(() => {
     handleVideoPlayback();
@@ -90,35 +97,34 @@ const VideoComponent:React.FC<Props> = ({
   }, [visibleVideoKey]);
 
   return (
-    <Pressable onPress={() => setVideoPaused(!videoPaused)} style={{
-      height: Dimensions.get("window").height,
-      width: Dimensions.get("window").width,
-      backgroundColor:"black"
-    }}>
+    <Pressable
+      onPress={() => setVideoPaused(!videoPaused)}
+      style={{
+        height: Dimensions.get("window").height,
+        width: Dimensions.get("window").width,
+        backgroundColor: "black",
+      }}
+    >
       <Video
         ref={videoRef}
         style={styles.preview}
-        source={{uri: videoLink}}
+        source={{ uri: videoLink }}
         resizeMode={ResizeMode.COVER}
         isLooping
       />
       <View style={styles.usernameContainer}>
-        <Text style={styles.username}>
-          {profileName}
-        </Text>
+        <Text style={styles.username}>{profileName}</Text>
       </View>
       <View style={styles.captionContainer}>
-        <Text style={styles.caption}>
-          {postInfo?.caption}
-        </Text>
+        <Text style={styles.caption}>{postInfo?.caption}</Text>
       </View>
       <View style={styles.avatarContainer}>
-        <Avatar.Icon 
-          size={100} 
+        <Avatar.Icon
+          size={100}
           icon="play"
           style={{
-            backgroundColor: "transparent", 
-            opacity: videoPaused ? 0.7 : 0
+            backgroundColor: "transparent",
+            opacity: videoPaused ? 0.7 : 0,
           }}
         />
       </View>
@@ -126,55 +132,63 @@ const VideoComponent:React.FC<Props> = ({
         <LikeButtonComponent />
       </View>
       <View style={styles.commentContainer}>
-        <CommentButtonComponent comments={0}/>
+        <CommentButtonComponent comments={0} />
       </View>
       <BottomSheet
-          ref={bottomSheetRef}
-          snapPoints={snapPoints}
-          enablePanDownToClose={true}
-        >
-          <BottomSheetView>
-            <TouchableOpacity>
-              <View style={{flex:1, alignItems:"center", justifyContent:"center", height:"100%", width:"100%"}}>
-                <Text>No comments yet</Text>
-              </View>
-            </TouchableOpacity>
-          </BottomSheetView>
-        </BottomSheet>  
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+      >
+        <BottomSheetView>
+          <TouchableOpacity>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+                width: "100%",
+              }}
+            >
+              <Text>No comments yet</Text>
+            </View>
+          </TouchableOpacity>
+        </BottomSheetView>
+      </BottomSheet>
     </Pressable>
-  )
-}
-  
+  );
+};
+
 export default VideoComponent;
 
 const styles = StyleSheet.create({
   preview: {
-    width:"100%",
-    height:"100%",
+    width: "100%",
+    height: "100%",
   },
   likeContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 80,
     right: 0,
     zIndex: 1,
     padding: 10,
   },
   commentContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 10,
     right: 0,
     zIndex: 1,
     padding: 10,
   },
   captionContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 80,
     left: 0,
     zIndex: 1,
     padding: 10,
   },
   caption: {
-    color:"white"
+    color: "white",
   },
   avatarContainer: {
     position: "absolute",
@@ -187,15 +201,15 @@ const styles = StyleSheet.create({
     ],
   },
   usernameContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 100,
     left: 0,
     zIndex: 1,
     padding: 10,
   },
   username: {
-    color:"white",
-    fontWeight:"bold",
-    textDecorationLine: "underline"
-  }
-})
+    color: "white",
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+  },
+});

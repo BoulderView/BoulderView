@@ -2,13 +2,12 @@ import { Stack } from "expo-router";
 
 const VenueLayout = () => {
   return (
-    // AuthProvider goes here
-    <Stack 
+    <Stack
       screenOptions={{
-        headerShown:false
-      }}>
-    </Stack>
-  )
+        headerShown: false,
+      }}
+    ></Stack>
+  );
 };
 
 export default VenueLayout;

@@ -3,8 +3,8 @@ export type gymModel = {
   name: string;
   cover_image_url: string;
   description: string;
-  gym_grade?:string[];
-  latitude:number;
-  longitude:number;
-  address:string;
-}
+  gym_grade?: string[];
+  latitude: number;
+  longitude: number;
+  address: string;
+};

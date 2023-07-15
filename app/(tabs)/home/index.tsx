@@ -1,14 +1,17 @@
-import * as React from 'react';
-import { View, StyleSheet, Alert } from "react-native";
-import LocationsComponent from '../../../components/homeComponents/LocationsComponent';
-import { useEffect, useState } from 'react';
-import { supabase } from '../../../lib/supabase';
-import { selectSession, updateProfile, updateSession } from '../../../features/profile/profileSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { profileModel } from '../../../models/profileModel';
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import LocationsComponent from "../../../components/homeComponents/LocationsComponent";
+import {
+  selectSession,
+  updateProfile,
+  updateSession,
+} from "../../../features/profile/profileSlice";
+import { supabase } from "../../../lib/supabase";
+import { profileModel } from "../../../models/profileModel";
 
 export const HomeScreen = () => {
-
   const dispatch = useDispatch();
   const session = useSelector(selectSession);
 
@@ -16,12 +19,12 @@ export const HomeScreen = () => {
 
   async function getProfile() {
     try {
-      if (!session) throw new Error('No user on the session!');
+      if (!session) throw new Error("No user on the session!");
 
       let { data, error, status } = await supabase
-        .from('profiles')
+        .from("profiles")
         .select()
-        .eq('id', session?.user.id)
+        .eq("id", session?.user.id)
         .single();
 
       if (error && status !== 406) {
@@ -40,37 +43,37 @@ export const HomeScreen = () => {
       setIsLoading(false);
     }
   }
-  
+
   useEffect(() => {
     if (!session) {
       supabase.auth.getSession().then(({ data: { session } }) => {
         dispatch(updateSession(session));
-      })
+      });
     }
     if (!isLoading && session) {
       setIsLoading(true);
       getProfile();
     }
-  }, [session])
+  }, [session]);
 
   return (
     <View style={styles.container}>
       <LocationsComponent />
     </View>
   );
-}
+};
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
   },
   buttons: {
-    alignContent: 'center',
-    flexDirection: 'row',
-  }
+    alignContent: "center",
+    flexDirection: "row",
+  },
 });

@@ -1,11 +1,11 @@
-import { useRouter } from 'expo-router';
-import * as React from 'react';
-import { useEffect } from 'react';
-import { View, StyleSheet, Alert } from "react-native";
-import { Button, Card, Paragraph, Title } from "react-native-paper";
-import { supabase } from '../lib/supabase';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectGymImage, updateGymImage } from '../features/gyms/gymImageSlice';
+import { useRouter } from "expo-router";
+import * as React from "react";
+import { useEffect } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import { Card, Paragraph, Title } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import { selectGymImage, updateGymImage } from "../features/gyms/gymImageSlice";
+import { supabase } from "../lib/supabase";
 
 export const HomeCard = (props: {
   id: string;
@@ -13,14 +13,15 @@ export const HomeCard = (props: {
   coverImage: string;
   description: string;
 }) => {
-
   const gymImage = useSelector(selectGymImage);
   const dispatch = useDispatch();
 
   // Retrieving image directly from supabase
-  const downloadImage = async  (coverImage: string) => {
+  const downloadImage = async (coverImage: string) => {
     try {
-      const { data, error } = await supabase.storage.from('homeCardImages').download(coverImage);
+      const { data, error } = await supabase.storage
+        .from("homeCardImages")
+        .download(coverImage);
 
       if (error) {
         throw error;
@@ -31,31 +32,33 @@ export const HomeCard = (props: {
       fr.onload = () => {
         const value = fr.result as string;
         const key = props.name;
-        dispatch(updateGymImage({key, value}));
-      }
+        dispatch(updateGymImage({ key, value }));
+      };
     } catch (error) {
       if (error instanceof Error) {
-        Alert.alert('Error downloading image: ', error.message);
+        Alert.alert("Error downloading image: ", error.message);
       }
     }
-  }
+  };
 
   useEffect(() => {
     // Only download when not downloaded before
     if (!(props.name in gymImage)) {
       downloadImage(props.coverImage);
     }
-  }, [])
+  }, []);
 
   const router = useRouter();
 
   return (
     <View style={styles.homecard}>
       {/* Will go to the gym page when the button is pressed */}
-      <Card onPress={() => {
-        router.push({pathname: `/home/${props.id}`})
-      }}>
-        <Card.Cover source={{ uri:gymImage[props.name]}}></Card.Cover>
+      <Card
+        onPress={() => {
+          router.push({ pathname: `/home/${props.id}` });
+        }}
+      >
+        <Card.Cover source={{ uri: gymImage[props.name] }}></Card.Cover>
         <Card.Content>
           <Title>{props.name}</Title>
         </Card.Content>
@@ -67,14 +70,13 @@ export const HomeCard = (props: {
         </Card.Actions> */}
       </Card>
     </View>
-    
   );
-}
+};
 
 const styles = StyleSheet.create({
   homecard: {
     paddingHorizontal: 5,
     paddingVertical: 3,
-    flex:1
+    flex: 1,
   },
 });

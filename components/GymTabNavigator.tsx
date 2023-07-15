@@ -1,7 +1,6 @@
-import React from 'react';
-import { View, Button, Text, Animated } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import React from "react";
+import { Text, View } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -10,15 +9,15 @@ function Home() {
     <View>
       <Text>Home</Text>
     </View>
-  )
+  );
 }
 
 function Content() {
   return (
     <View>
-        <Text>Home</Text>
+      <Text>Home</Text>
     </View>
-  )
+  );
 }
 
 function Profile() {
@@ -26,43 +25,39 @@ function Profile() {
     <View>
       <Text>Home</Text>
     </View>
-  )
+  );
 }
 
 const MyTabs = () => {
   return (
-    <Tab.Navigator
-      initialRouteName='Home'
-    >
+    <Tab.Navigator initialRouteName="Home">
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: "Home"
+          tabBarLabel: "Home",
         }}
       />
       <Tab.Screen
         name="Content"
         component={Content}
         options={{
-          tabBarLabel: "Content"
+          tabBarLabel: "Content",
         }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: "Profile"
+          tabBarLabel: "Profile",
         }}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
 const GymTabNavigation = () => {
-  return (
-    <MyTabs />
-  )
-}
+  return <MyTabs />;
+};
 
 export default GymTabNavigation;

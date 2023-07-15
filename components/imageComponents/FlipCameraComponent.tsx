@@ -1,20 +1,19 @@
-import { CameraType } from 'expo-camera';
-import React from 'react';
-import { IconButton } from 'react-native-paper';
+import { CameraType } from "expo-camera";
+import React from "react";
+import { IconButton } from "react-native-paper";
 
 interface Props {
   setType: (callback: (prevState: CameraType) => CameraType) => void;
-  type?: CameraType
+  type?: CameraType;
 }
 
-const FlipCameraComponent:React.FC<Props> = ({ setType, type }) => { 
+const FlipCameraComponent: React.FC<Props> = ({ setType, type }) => {
   // Change between front and back camera
   const toggleCameraType = () => {
-    setType(current => 
-      (current === CameraType.back 
-        ? CameraType.front 
-        : CameraType.back));
-  }
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+  };
 
   return (
     <IconButton
@@ -25,7 +24,7 @@ const FlipCameraComponent:React.FC<Props> = ({ setType, type }) => {
       mode="contained"
       onPress={toggleCameraType}
     />
-  )
-}
+  );
+};
 
 export default FlipCameraComponent;

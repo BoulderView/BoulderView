@@ -1,10 +1,8 @@
-import React from 'react';
-import NoContentComponent from '../NoContentComponent';
+import React from "react";
+import NoContentComponent from "../NoContentComponent";
 
 const WorkoutComponent = () => {
-    return (
-        <NoContentComponent />
-    )
-}
+  return <NoContentComponent />;
+};
 
 export default WorkoutComponent;

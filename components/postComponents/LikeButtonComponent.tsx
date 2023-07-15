@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, View, Text } from 'react-native';
-import { IconButton } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
-import { matchCurrentPostList, selectCurrentPost, updateCurrentPostLikes } from '../../features/post/postListSlice';
-import { selectSession, selectProfile, updateLike, updateProfile } from '../../features/profile/profileSlice';
-import { supabase } from '../../lib/supabase';
-import { profileModel } from '../../models/profileModel';
-import { postModel } from '../../models/postModel';
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, Text, View } from "react-native";
+import { IconButton } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  matchCurrentPostList,
+  selectCurrentPost,
+  updateCurrentPostLikes,
+} from "../../features/post/postListSlice";
+import {
+  selectProfile,
+  selectSession,
+  updateLike
+} from "../../features/profile/profileSlice";
+import { supabase } from "../../lib/supabase";
+import { postModel } from "../../models/postModel";
+import { profileModel } from "../../models/profileModel";
 
 const LikeButtonComponent = () => {
-
   const currentPostState = useSelector(selectCurrentPost);
   const profile = useSelector(selectProfile);
 
@@ -19,13 +26,13 @@ const LikeButtonComponent = () => {
   const session = useSelector(selectSession);
 
   // update liked_post_id for the profile
-  async function updateProfileUpload(likedPostArray:string[]) {
+  async function updateProfileUpload(likedPostArray: string[]) {
     try {
-      if (!profile) throw new Error('Unable to store profile...');
+      if (!profile) throw new Error("Unable to store profile...");
 
-      if (!currentPostState) throw new Error('Unable to store current post...');
+      if (!currentPostState) throw new Error("Unable to store current post...");
 
-      const updates:profileModel = {
+      const updates: profileModel = {
         id: profile.id,
         full_name: profile.full_name,
         username: profile.username,
@@ -33,9 +40,9 @@ const LikeButtonComponent = () => {
         avatar_url: profile.avatar_url,
         updated_at: profile.updated_at,
         liked_post_id: likedPostArray,
-      }
+      };
 
-      let { error } = await supabase.from('profiles').upsert(updates);
+      let { error } = await supabase.from("profiles").upsert(updates);
 
       if (error) {
         throw error;
@@ -47,16 +54,15 @@ const LikeButtonComponent = () => {
         Alert.alert(error.message);
       }
       console.log(error);
-
     }
   }
 
   // Update the number of likes for the post
-  async function updateCurrentPost(newLikes:number) {
+  async function updateCurrentPost(newLikes: number) {
     try {
-      if (!currentPostState) throw new Error('Unable to store current post...');
+      if (!currentPostState) throw new Error("Unable to store current post...");
 
-      const updates:postModel = {
+      const updates: postModel = {
         id: currentPostState.id,
         caption: currentPostState.caption,
         post_video_url: currentPostState.post_video_url,
@@ -67,10 +73,10 @@ const LikeButtonComponent = () => {
         gym_id: currentPostState.gym_id,
         is_private: currentPostState.is_private,
         selected_grade: currentPostState.selected_grade,
-        likes: newLikes
-      }
+        likes: newLikes,
+      };
 
-      let { error } = await supabase.from('post').upsert(updates);
+      let { error } = await supabase.from("post").upsert(updates);
 
       if (error) {
         throw error;
@@ -86,11 +92,11 @@ const LikeButtonComponent = () => {
   // handle like and dislike
   const handleLikePressed = () => {
     if (!profile || !currentPostState || !currentPostState.id) {
-      console.log("something went wrong")
+      console.log("something went wrong");
       return;
     }
 
-    let newLikes = currentPostState.likes
+    let newLikes = currentPostState.likes;
     let newBasket = [...profile.liked_post_id];
 
     // If it is previously liked by a user, remove the like
@@ -98,14 +104,14 @@ const LikeButtonComponent = () => {
       newLikes -= 1;
       const index = profile.liked_post_id.findIndex(
         (item) => item === currentPostState.id
-      )
+      );
 
       if (index >= 0) {
         newBasket.splice(index, 1);
       } else {
         console.warn(`unable to remove like ${currentPostState.id}`);
       }
-    // Adding a like
+      // Adding a like
     } else {
       newLikes += 1;
       newBasket = newBasket.concat(currentPostState.id);
@@ -119,14 +125,14 @@ const LikeButtonComponent = () => {
     dispatch(updateLike(newBasket));
     dispatch(updateCurrentPostLikes(newLikes));
     dispatch(matchCurrentPostList());
-  }
+  };
 
   // conditionally check if the user has liked this post already of not
   useEffect(() => {
     if (profile && currentPostState && currentPostState.id) {
-      setIsLikedByUser(profile.liked_post_id.includes(currentPostState.id))
+      setIsLikedByUser(profile.liked_post_id.includes(currentPostState.id));
     }
-  }, [profile, currentPostState])
+  }, [profile, currentPostState]);
 
   return (
     <View style={styles.container}>
@@ -139,7 +145,9 @@ const LikeButtonComponent = () => {
         size={30}
         onPress={() => handleLikePressed()}
       />
-      <Text style={styles.likes}>{currentPostState ? currentPostState.likes : 0}</Text>
+      <Text style={styles.likes}>
+        {currentPostState ? currentPostState.likes : 0}
+      </Text>
     </View>
   );
 };
@@ -147,15 +155,14 @@ const LikeButtonComponent = () => {
 export default LikeButtonComponent;
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   icon: {
     zIndex: 1,
-    margin:0,
-    backgroundColor:"transparent"
+    margin: 0,
+    backgroundColor: "transparent",
   },
   likes: {
-    color:"white",
-    textAlign:"center"
-  }
+    color: "white",
+    textAlign: "center",
+  },
 });
