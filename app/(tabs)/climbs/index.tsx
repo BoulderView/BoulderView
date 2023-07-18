@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
-import TabNavigation from "../../../components/miscComponents/TabNavigation";
+import TabBar from "../../../components/miscComponents/TabBar";
 import DashboardComponent from "../../../components/statsComponents/DashboardComponent";
 import HistoryComponent from "../../../components/statsComponents/HistoryComponent";
 import WorkoutComponent from "../../../components/statsComponents/WorkoutComponent";
@@ -25,7 +25,7 @@ const tabObject: TabObject = {
 const ClimbsScreen = () => {
   return (
     <View style={styles.container}>
-      <TabNavigation tabObject={tabObject} />
+      <TabBar tabObject={tabObject} />
     </View>
   );
 };

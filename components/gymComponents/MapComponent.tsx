@@ -6,7 +6,7 @@ import {
   State,
 } from "react-native-gesture-handler";
 
-const MapComponent: React.FC = () => {
+const MapComponent= () => {
   /*
     Using scale to measure zoom state and translate to measure left/right movement
   */

@@ -2,7 +2,7 @@ import { Stack, useSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 
-import TabNavigation from "../../../components/miscComponents/TabNavigation";
+import TabBar from "../../../components/miscComponents/TabBar";
 import ExploreComponent from "../../../components/gymComponents/ExploreComponent";
 import LeaderboardComponent from "../../../components/gymComponents/LeaderboardComponent";
 import MapComponent from "../../../components/gymComponents/MapComponent";
@@ -75,7 +75,7 @@ const GymDetailsPage = () => {
           headerTintColor: "white", // Replace with your desired color for the button
         }}
       />
-      <TabNavigation tabObject={tabObject} />
+      <TabBar tabObject={tabObject} />
     </View>
   );
 };

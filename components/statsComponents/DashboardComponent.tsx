@@ -1,12 +1,12 @@
 import {
-    Canvas,
-    Path,
-    runTiming,
-    Skia,
-    Text,
-    useComputedValue,
-    useFont,
-    useValue,
+  Canvas,
+  Path,
+  runTiming,
+  Skia,
+  Text,
+  useComputedValue,
+  useFont,
+  useValue,
 } from "@shopify/react-native-skia";
 import * as React from "react";
 import { Button, Easing, StyleSheet, View } from "react-native";

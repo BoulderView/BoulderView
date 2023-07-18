@@ -10,7 +10,7 @@ import {
 } from "../../features/gyms/gymImageSlice";
 import { supabase } from "../../lib/supabase";
 
-export const HomeCard = (props: {
+const HomeCard = (props: {
   id: string;
   name: string;
   coverImage: string;
@@ -72,6 +72,8 @@ export const HomeCard = (props: {
     </View>
   );
 };
+
+export default HomeCard;
 
 const styles = StyleSheet.create({
   homecard: {
