@@ -10,7 +10,7 @@ interface commentListState {
 }
 
 // Define the initial state using that type
-const initialState: commentListState = {
+export const initialState: commentListState = {
   commentList: undefined,
   currentComment: undefined,
 };
