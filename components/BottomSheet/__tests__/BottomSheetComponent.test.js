@@ -1,5 +1,4 @@
 import React from "react";
-
 import BottomSheetComponent from "../BottomSheetComponent";
 import { renderWithProviders } from "../../../utils/test-utils";
 
@@ -18,3 +17,4 @@ describe("Testing BottomSheetComponent", () => {
     renderWithProviders(<BottomSheetComponent gymModel={gymModel}/>);
   });
 });
+
