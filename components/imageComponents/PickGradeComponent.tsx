@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
-import { List, Divider, IconButton } from 'react-native-paper';
+import React, { Dispatch, SetStateAction } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Divider, IconButton, List } from "react-native-paper";
 
 interface Props {
   setIsSelectingGrade: Dispatch<SetStateAction<boolean>>;
@@ -8,12 +8,15 @@ interface Props {
   gymGrades: string[] | undefined;
 }
 
-const PickGradeComponent:React.FC<Props> = ({ setIsSelectingGrade, setSelectedGrade, gymGrades }) => {
-
-  const selectGrade = (selectedGrade:string) => {
+const PickGradeComponent: React.FC<Props> = ({
+  setIsSelectingGrade,
+  setSelectedGrade,
+  gymGrades,
+}) => {
+  const selectGrade = (selectedGrade: string) => {
     setSelectedGrade(selectedGrade);
     setIsSelectingGrade(false);
-  }
+  };
 
   const renderGym = (item: string, index: number) => (
     <React.Fragment key={index.toString()}>
@@ -25,7 +28,6 @@ const PickGradeComponent:React.FC<Props> = ({ setIsSelectingGrade, setSelectedGr
       <Divider />
     </React.Fragment>
   );
-
 
   return (
     <View style={styles.container}>
@@ -39,7 +41,7 @@ const PickGradeComponent:React.FC<Props> = ({ setIsSelectingGrade, setSelectedGr
           onPress={() => setIsSelectingGrade(false)}
         />
         <View style={styles.textContainer}>
-            <Text>Select Grade</Text>
+          <Text>Select Grade</Text>
         </View>
       </View>
       <View style={styles.scrollView}>
@@ -50,30 +52,30 @@ const PickGradeComponent:React.FC<Props> = ({ setIsSelectingGrade, setSelectedGr
         )}
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default PickGradeComponent;
 
 const styles = StyleSheet.create({
   container: {
-    height:'100%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    height: "100%",
+    backgroundColor: "#fff",
+    alignItems: "center",
   },
-  searchContainer:{
-    flexDirection:"row",
-    width:"100%",
-    alignItems:"center",
-    justifyContent:"space-evenly"
+  searchContainer: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
-  scrollView:{
-    width:"100%",
-    flex:1
+  scrollView: {
+    width: "100%",
+    flex: 1,
   },
   textContainer: {
-    width:"80%",
-    alignItems:"center",
-    justifyContent:"center"
-  }
+    width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

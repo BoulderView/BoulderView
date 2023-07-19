@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../store';
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../../store";
 
-import { profileModel } from '../../models/profileModel';
-import { Session } from '@supabase/supabase-js';
+import { Session } from "@supabase/supabase-js";
+import { profileModel } from "../../models/profileModel";
 
 // Define a type for the slice state
 interface ProfileState {
@@ -16,61 +16,47 @@ interface ProfileState {
 const initialState: ProfileState = {
   session: null,
   profile: null,
-  avatar: null
-}
+  avatar: null,
+};
 
 export const profileSlice = createSlice({
-  name: 'profile',
-  // `createSlice` will infer the state type from the `initialState` argument
+  name: "profile",
   initialState,
   reducers: {
-    // Insert add and remove gyms features here
-    // Use the PayloadAction type to declare the contents of `action.payload`
+    // Update the profile
     updateProfile: (state, action: PayloadAction<profileModel | null>) => {
       state.profile = action.payload;
     },
+    // Update session
     updateSession: (state, action: PayloadAction<Session | null>) => {
       state.session = action.payload;
     },
+    // Update the profile's avatar uri
     updateAvatar: (state, action: PayloadAction<string | null>) => {
       state.avatar = action.payload;
     },
-    addToLikeArray: (state, action: PayloadAction<string>) => {
-      if (state.profile) {
-        state.profile.liked_post_id = [...state.profile.liked_post_id, action.payload];
-      }
-    },
-    removeFromLikeArray: (state, action: PayloadAction<string>) => {
-      if (state.profile) {
-        const index = state.profile.liked_post_id.findIndex(
-          (item) => item === action.payload
-        )
-        let newBasket = [...state.profile.liked_post_id];
-
-        if (index >= 0) {
-          newBasket.splice(index, 1);
-        } else {
-          console.warn(`unable to remove like ${action.payload}`);
-        }
-        state.profile.liked_post_id = newBasket;
-      }
-    },
+    // Update the array of liked post
     updateLike: (state, action: PayloadAction<string[]>) => {
       if (state.profile) {
         state.profile.liked_post_id = action.payload;
+      }
+    },
+    // Update the array of liked comments
+    updateCommentArray: (state, action: PayloadAction<string[]>) => {
+      if (state.profile) {
+        state.profile.liked_comment_id = action.payload;
       }
     },
   },
 });
 
 // actions to use
-export const { 
-  updateProfile, 
-  updateSession, 
-  updateAvatar, 
+export const {
+  updateProfile,
+  updateSession,
+  updateAvatar,
   updateLike,
-  addToLikeArray,
-  removeFromLikeArray 
+  updateCommentArray,
 } = profileSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

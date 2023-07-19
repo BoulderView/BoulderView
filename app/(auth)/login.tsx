@@ -1,63 +1,87 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { useState } from "react";
-import { Text, TextInput, ActivityIndicator } from "react-native-paper";
 import { Link } from "expo-router";
-import { supabase } from "../../lib/supabase";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { ActivityIndicator, Text, TextInput } from "react-native-paper";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { supabase } from "../../lib/supabase";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
   const handleSubmit = async () => {
-    setErrMsg('');
-    if (email == '') {
-      setErrMsg("email cannot be empty")
+    setErrMsg("");
+    if (email == "") {
+      setErrMsg("email cannot be empty");
       return;
     }
-    if (password == '') {
-      setErrMsg("password cannot be empty")
+    if (password == "") {
+      setErrMsg("password cannot be empty");
       return;
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     setLoading(false);
 
     if (error) {
       setErrMsg(error.message);
       return;
     }
-  }
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
+    <View style={{ flex: 1, justifyContent: "center" }}>
       <View style={{ marginBottom: 150, marginTop: 100 }}>
-        <Text style={{ textAlign: "center", fontSize: 28, fontWeight: '500', color: "#333", marginBottom: 30 }}>Login</Text>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 28,
+            fontWeight: "500",
+            color: "#333",
+            marginBottom: 30,
+          }}
+        >
+          Login
+        </Text>
         <View style={styles.inputContainer}>
-          <MaterialIcons name="alternate-email" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
+          <MaterialIcons
+            name="alternate-email"
+            size={25}
+            color="#666"
+            style={styles.iconStyle}
+          ></MaterialIcons>
           <TextInput
             style={styles.input}
             placeholder="Email"
             mode="flat"
-            autoCapitalize='none'
-            textContentType='emailAddress'
+            autoCapitalize="none"
+            textContentType="emailAddress"
             value={email}
-            onChangeText={setEmail} />
+            onChangeText={setEmail}
+          />
         </View>
         <View style={styles.inputContainer}>
-          <MaterialIcons name="lock" size={25} color="#666" style={styles.iconStyle}></MaterialIcons>
+          <MaterialIcons
+            name="lock"
+            size={25}
+            color="#666"
+            style={styles.iconStyle}
+          ></MaterialIcons>
           <TextInput
             secureTextEntry
             style={styles.input}
             placeholder="Password"
-            autoCapitalize='none'
-            textContentType='password'
+            autoCapitalize="none"
+            textContentType="password"
             value={password}
-            onChangeText={setPassword} />
+            onChangeText={setPassword}
+          />
           <Link href="/forgot">Forgot?</Link>
         </View>
       </View>
@@ -70,21 +94,23 @@ const LoginPage = () => {
       </View>
       <View style={{ alignItems: "center", paddingTop: 20 }}>
         <Link href="/register">
-          <Text style={{ color: "#576CBC", fontWeight: "700", fontSize: 16 }}>Register</Text>
+          <Text style={{ color: "#576CBC", fontWeight: "700", fontSize: 16 }}>
+            Register
+          </Text>
         </Link>
       </View>
-    </View >
-  )
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     overflow: "hidden",
     borderWidth: 0.1,
-    borderColor: '#000',
+    borderColor: "#000",
     borderRadius: 20,
     height: 50,
     margin: 5,
@@ -94,7 +120,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     overflow: "hidden",
   },
   iconStyle: {
@@ -102,16 +128,16 @@ const styles = StyleSheet.create({
     width: 25,
   },
   buttonStyle: {
-    backgroundColor: '#19376D',
+    backgroundColor: "#19376D",
     padding: 20,
     borderRadius: 20,
     marginHorizontal: 10,
   },
   buttonTextStyle: {
-    textAlign: 'center',
-    fontWeight: '700',
+    textAlign: "center",
+    fontWeight: "700",
     fontSize: 16,
-    color: '#fff'
+    color: "#fff",
   },
 });
 

@@ -1,14 +1,18 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
-import { StyleSheet, View, Alert } from 'react-native';
-import { Button, Input } from 'react-native-elements';
-import Avatar from './Avatar';
-import { profileModel } from '../models/profileModel';
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import { Button, Input } from "react-native-elements";
+import { supabase } from "../../lib/supabase";
+import { profileModel } from "../../models/profileModel";
+import AvatarComponent from "./AvatarComponent";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { selectSession, selectProfile, updateProfile, updateSession } from '../features/profile/profileSlice';
-import { Snackbar } from 'react-native-paper';
+import { Snackbar } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectProfile,
+  selectSession,
+  updateProfile,
+  updateSession,
+} from "../../features/profile/profileSlice";
 
 export default function Account() {
   const [loading, setLoading] = useState(false);
@@ -24,51 +28,22 @@ export default function Account() {
   const session = useSelector(selectSession);
 
   useEffect(() => {
-    if (session !== null && profile === null && !loading) {
-      getProfile();
+    if (profile) {
+      setUsername(profile.username);
+      setDescription(profile.description);
+      setAvatarUrl(profile.avatar_url);
     }
-    console.log(avatarUrl);
-  }, [profile, session])
-
-  async function getProfile() {
-    try {
-      setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
-
-      let { data, error, status } = await supabase
-        .from('profiles')
-        .select()
-        .eq('id', session?.user.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        const updatedData = data as profileModel;
-        dispatch(updateProfile(updatedData));
-        setUsername(updatedData.username);
-        setDescription(updatedData.description);
-        setAvatarUrl(updatedData.avatar_url);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
+  }, [profile, session]);
 
   async function updatePassword(new_password: string) {
     try {
       setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
+      if (!session) throw new Error("No user on the session!");
 
-      if (profile === null) throw new Error('Unable to store profile...');
-      const { data, error } = await supabase.auth.updateUser({ password: new_password })
+      if (profile === null) throw new Error("Unable to store profile...");
+      const { data, error } = await supabase.auth.updateUser({
+        password: new_password,
+      });
 
       if (error) {
         throw error;
@@ -78,7 +53,6 @@ export default function Account() {
         Alert.alert(error.message);
       }
       console.log(error);
-
     } finally {
       setLoading(false);
     }
@@ -87,9 +61,9 @@ export default function Account() {
   async function updateProfileUpload(avatarUrl: string) {
     try {
       setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
+      if (!session) throw new Error("No user on the session!");
 
-      if (profile === null) throw new Error('Unable to store profile...');
+      if (profile === null) throw new Error("Unable to store profile...");
 
       const updates: profileModel = {
         id: profile.id,
@@ -98,24 +72,23 @@ export default function Account() {
         description: description ? description : profile.description,
         avatar_url: avatarUrl,
         updated_at: new Date(),
-        liked_post_id: []
-      }
+        liked_post_id: profile.liked_post_id,
+        liked_comment_id: profile.liked_comment_id
+      };
 
-      let { error } = await supabase.from('profiles').upsert(updates);
+      let { error } = await supabase.from("profiles").upsert(updates);
 
       if (error) {
         throw error;
       }
 
-      // Only update the global state when the user confirms update
-      getProfile();
-
+      // // Only update the global state when the user confirms update
+      // getProfile();
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
       }
       console.log(error);
-
     } finally {
       setLoading(false);
     }
@@ -124,7 +97,7 @@ export default function Account() {
   return (
     <View style={styles.container}>
       <View>
-        <Avatar
+        <AvatarComponent
           size={200}
           url={avatarUrl || ""}
           onUpload={(url: string) => {
@@ -138,44 +111,60 @@ export default function Account() {
         <Input label="Email" value={session?.user?.email} disabled />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input label="Username" value={username} onChangeText={(text) => setUsername(text)} />
+        <Input
+          label="Username"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+        />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input label="Description" value={description} onChangeText={(text) => setDescription(text)} />
+        <Input
+          label="Description"
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+        />
       </View>
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
-          title={loading ? 'Loading ...' : 'Update'}
+          title={loading ? "Loading ..." : "Update"}
           onPress={() => updateProfileUpload(avatarUrl)}
           disabled={loading}
         />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input label="Change Password" secureTextEntry={true} value={password} onChangeText={(text) => setPassword(text)} />
+        <Input
+          label="Change Password"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
-          title={loading ? 'Loading ...' : 'Change password'}
+          title={loading ? "Loading ..." : "Change password"}
           onPress={() => updatePassword(password)}
           disabled={loading}
         />
       </View>
       <View style={styles.verticallySpaced}>
-        <Button title="Sign Out" onPress={() => {
-          supabase.auth.signOut();
-          dispatch(updateProfile(null));
-          dispatch(updateSession(null));
-        }} />
+        <Button
+          title="Sign Out"
+          onPress={() => {
+            supabase.auth.signOut();
+            dispatch(updateProfile(null));
+            dispatch(updateSession(null));
+          }}
+        />
       </View>
       <View style={{ width: "100%", alignItems: "center" }}>
         <Snackbar
           visible={showSnackBar}
           onDismiss={() => setShowSnackBar(false)}
           action={{
-            label: 'Close',
+            label: "Close",
             onPress: () => {
-              setShowSnackBar(false)
+              setShowSnackBar(false);
             },
           }}
           duration={5000}
@@ -185,7 +174,7 @@ export default function Account() {
         </Snackbar>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -197,9 +186,9 @@ const styles = StyleSheet.create({
   verticallySpaced: {
     paddingTop: 4,
     paddingBottom: 4,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
   },
   mt20: {
     marginTop: 20,
-  }
-})
+  },
+});

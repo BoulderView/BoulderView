@@ -1,35 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { updatePostList, selectPostList } from '../../features/post/postListSlice';
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  FlatList,
+  ListRenderItem,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPostList,
+  updatePostList,
+} from "../../features/post/postListSlice";
 
-import { SearchBar } from '../SearchBar';
-import PostOverviewComponent from '../postComponents/PostOverviewComponent';
-import { supabase } from '../../lib/supabase';
-import { postModel } from '../../models/postModel';
-
+import { supabase } from "../../lib/supabase";
+import { postModel } from "../../models/postModel";
+import LoadingComponent from "../imageComponents/LoadingComponent";
+import PostOverviewComponent from "../postComponents/PostOverviewComponent";
 
 interface Props {
   gymId: string | string[] | undefined;
 }
 
 const ExploreComponent: React.FC<Props> = ({ gymId }) => {
-  // Do something on submit
-  const onSubmitSearch = (query: string) => {
-    console.log("hello");
-  }
-
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const postList = useSelector(selectPostList);
 
-  const fetchData = async () => {
+  const fetchPost = async () => {
     try {
       let { data, error, status } = await supabase
-        .from('post')
+        .from("post")
         .select()
-        .eq('gym_id', gymId);
+        .eq("gym_id", gymId);
 
       // If there is any form of error
       if (error || status !== 200) {
@@ -41,7 +44,6 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
         const updatedData = data as postModel[];
         dispatch(updatePostList(updatedData));
       }
-
     } catch (error: any) {
       Alert.alert(error.message);
     } finally {
@@ -52,23 +54,31 @@ const ExploreComponent: React.FC<Props> = ({ gymId }) => {
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
-      fetchData();
+      fetchPost();
     }
   }, []);
 
+  const handleEmpty = () => {
+    return <LoadingComponent />;
+  };
+
+  const renderItem: ListRenderItem<postModel> = ({ item }) => {
+    return <PostOverviewComponent postInfo={item} />;
+  };
+
   return (
     <View style={styles.container}>
-      <SearchBar searchFunction={onSubmitSearch} placeholder='Search posts' />
       <View style={styles.flatListContainer}>
         <FlatList
           data={postList}
           numColumns={2}
           keyExtractor={(item) => item.id as string}
-          renderItem={({ item }) =>
-            <PostOverviewComponent
-              postInfo={item}
-            />
-          }
+          ListEmptyComponent={handleEmpty}
+          onRefresh={fetchPost}
+          refreshing={false}
+          maxToRenderPerBatch={4}
+          renderItem={renderItem}
+          initialNumToRender={6}
         />
       </View>
     </View>
@@ -83,6 +93,6 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     alignItems: "center",
-    flex: 1
-  }
-})
+    flex: 1,
+  },
+});

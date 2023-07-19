@@ -1,8 +1,8 @@
 // TabBar.tsx
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { TabObject } from '../models/TabObject';
+import { TabObject } from "../../models/TabObject";
 
 /* 
   Have to provide a tabObject in this manner for it to work
@@ -39,13 +39,19 @@ const TabBar = ({ tabObject }: Props) => {
               style={selectedTab === tabKey ? styles.selectedTab : styles.tab}
               onPress={() => handleTabPress(tabKey)}
             >
-              <Text style={selectedTab === tabKey ? styles.selectedText : styles.text}>{tab.title}</Text>
+              <Text
+                style={
+                  selectedTab === tabKey ? styles.selectedText : styles.text
+                }
+              >
+                {tab.title}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
       </View>
       {tabObject[selectedTab].component}
-    </View >
+    </View>
   );
 };
 
@@ -56,42 +62,42 @@ const styles = StyleSheet.create({
   },
   navContainer: {
     paddingVertical: 8,
-    alignItems: 'center',
-    backgroundColor: '#0B2447',
+    alignItems: "center",
+    backgroundColor: "#0B2447",
   },
   tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: '#C3C3C3',
-    width: '95%',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "#C3C3C3",
+    width: "95%",
     borderWidth: 1,
     borderRadius: 40,
   },
   tab: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#C3C3C3',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#C3C3C3",
     borderRadius: 40,
-    height: 40
+    height: 40,
   },
   selectedTab: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
     borderRadius: 40,
-    height: 40
+    height: 40,
   },
   text: {
-    color: '#000000',
+    color: "#000000",
     fontSize: 16,
   },
   selectedText: {
-    color: '#A5D7E8',
-    fontWeight: 'bold',
-    fontSize: 16
+    color: "#A5D7E8",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 

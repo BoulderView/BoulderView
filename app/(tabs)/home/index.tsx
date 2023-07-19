@@ -1,54 +1,79 @@
-import * as React from 'react';
-import { View, StyleSheet } from "react-native";
-
-import LocationsComponent from '../../../components/homeComponents/LocationsComponent';
-import { TabObject } from '../../../models/TabObject';
-import FavouritesComponent from '../../../components/homeComponents/FavouritesComponent';
-import TabNavigation from '../../../components/TabNavigation';
-import { useEffect } from 'react';
-import { supabase } from '../../../lib/supabase';
-import { updateSession } from '../../../features/profile/profileSlice';
-import { useDispatch } from 'react-redux';
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import LocationsComponent from "../../../components/homeComponents/LocationsComponent";
+import {
+  selectSession,
+  updateProfile,
+  updateSession,
+} from "../../../features/profile/profileSlice";
+import { supabase } from "../../../lib/supabase";
+import { profileModel } from "../../../models/profileModel";
 
 export const HomeScreen = () => {
-  // Define the tab object
-  const tabObject: TabObject = {
-    LocationsComponent: {
-      title: 'Locations',
-      component: <LocationsComponent />,
-    },
-    FavouritesComponent: {
-      title: 'Favourites',
-      component: <FavouritesComponent />,
-    },
-  };
-
   const dispatch = useDispatch();
-  
+  const session = useSelector(selectSession);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function getProfile() {
+    try {
+      if (!session) throw new Error("No user on the session!");
+
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select()
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        const updatedData = data as profileModel;
+        dispatch(updateProfile(updatedData));
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      dispatch(updateSession(session));
-    })
-  }, [])
+    if (!session) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        dispatch(updateSession(session));
+      });
+    }
+    if (!isLoading && session) {
+      setIsLoading(true);
+      getProfile();
+    }
+  }, [session]);
 
   return (
     <View style={styles.container}>
-      <TabNavigation tabObject={tabObject} />
+      <LocationsComponent />
     </View>
   );
-}
+};
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
   },
   buttons: {
-    alignContent: 'center',
-    flexDirection: 'row',
-  }
+    alignContent: "center",
+    flexDirection: "row",
+  },
 });
