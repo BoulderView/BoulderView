@@ -7,4 +7,5 @@ describe("Testing SearchBar", () => {
   it("renders correctly", () => {
     renderWithProviders(<SearchBar />);
   });
+
 });
