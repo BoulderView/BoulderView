@@ -8,13 +8,13 @@ import { selectPostList } from "../../../../features/post/postListSlice";
 const VideoPage = () => {
   const { video } = useSearchParams();
 
-  const postListState = useSelector(selectPostList);
+  const postList = useSelector(selectPostList);
 
   return (
     <View style={styles.container}>
       <VideoScrollComponent
         video_url={video as string}
-        postList={postListState}
+        postList={postList}
       />
     </View>
   );

@@ -43,10 +43,10 @@ const TagGymComponent: React.FC<Props> = ({
 
   // Do something on submit
   const filterGyms = async () => {
-    if (gymList !== undefined) {
-      let filteredData: gymModel[] | undefined = gymList;
+    if (gymList) {
+      let filteredData: gymModel[]  = gymList;
       if (searchGyms !== "") {
-        filteredData = gymList?.filter((gym) =>
+        filteredData = gymList.filter((gym) =>
           gym.name.toLowerCase().includes(searchGyms.toLowerCase())
         );
       }
@@ -55,7 +55,7 @@ const TagGymComponent: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (gymList === undefined) {
+    if (gymList.length === 0) {
       console.log("fetch data");
       fetchData();
     }
@@ -97,7 +97,7 @@ const TagGymComponent: React.FC<Props> = ({
           style={styles.searchBar}
         />
       </View>
-      {gymList === undefined && displayGyms === undefined ? (
+      {gymList.length === 0 && displayGyms === undefined ? (
         <LoadingComponent />
       ) : (
         <View style={styles.scrollView}>

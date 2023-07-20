@@ -12,8 +12,6 @@ import { postModel } from "../../models/postModel";
 import PostOverviewComponent from "../postComponents/PostOverviewComponent";
 
 const HistoryComponent = () => {
-  const [postData, setPostData] = useState<postModel[]>();
-
   const dispatch = useDispatch();
   const postList = useSelector(selectPostList);
 
