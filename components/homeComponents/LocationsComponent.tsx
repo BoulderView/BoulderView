@@ -44,7 +44,7 @@ const LocationsComponent = () => {
   };
 
   useEffect(() => {
-    if (gymList === undefined && !isLoading) {
+    if (gymList.length === 0 && !isLoading) {
       setIsLoading(true);
       fetchData();
     }

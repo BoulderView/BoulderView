@@ -5,13 +5,13 @@ import type { RootState } from "../../store";
 
 // Define a type for the slice state
 interface postListState {
-  postList: postModel[] | undefined;
+  postList: postModel[];
   currentPost: postModel | undefined;
 }
 
 // Define the initial state using that type
 const initialState: postListState = {
-  postList: undefined,
+  postList: [],
   currentPost: undefined,
 };
 

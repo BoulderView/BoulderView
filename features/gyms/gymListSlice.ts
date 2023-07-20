@@ -5,12 +5,12 @@ import type { RootState } from "../../store";
 
 // Define a type for the slice state
 interface GymListState {
-  gymList: gymModel[] | undefined;
+  gymList: gymModel[];
 }
 
 // Define the initial state using that type
 const initialState: GymListState = {
-  gymList: undefined,
+  gymList: [],
 };
 
 export const gymListSlice = createSlice({
