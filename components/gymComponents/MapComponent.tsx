@@ -1,13 +1,5 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
-const MapComponent= () => {
-  /*
-    Using scale to measure zoom state and translate to measure left/right movement
-  */
-  const scale = useRef(new Animated.Value(1)).current;
-  const translateX = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(0)).current;
-
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 
 const MapComponent = () => {
