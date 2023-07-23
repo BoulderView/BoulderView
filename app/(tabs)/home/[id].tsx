@@ -52,7 +52,7 @@ const GymDetailsPage = () => {
   const tabObject: TabObject = {
     MapComponent: {
       title: "Map",
-      component: <MapComponent />,
+      component: <MapComponent gymData={gymData}/>,
     },
     ExploreComponent: {
       title: "Explore",

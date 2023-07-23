@@ -7,4 +7,5 @@ export type gymModel = {
   latitude: number;
   longitude: number;
   address: string;
+  map_url: string;
 };
