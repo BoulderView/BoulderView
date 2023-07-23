@@ -8,7 +8,6 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
@@ -23,10 +22,6 @@ export default function Register() {
     }
     if (username == "") {
       setErrMsg("username cannot be empty");
-      return;
-    }
-    if (fullName == "") {
-      setErrMsg("Name cannot be empty");
       return;
     }
 
