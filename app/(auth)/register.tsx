@@ -54,7 +54,7 @@ export default function Register() {
   const insertProfile = async () => {
     const { error } = await supabase
       .from("profiles")
-      .insert({ username: username, full_name: fullName, like_post_id: [], liked_comment_id: [] });
+      .insert({ username: username, full_name: username, like_post_id: [], liked_comment_id: [] });
     return error;
   };
 
@@ -74,7 +74,7 @@ export default function Register() {
         </Text>
         <View style={styles.inputContainer}>
           <MaterialIcons
-            name="alternate-email"
+            name="account-circle"
             size={25}
             color="#666"
             style={styles.iconStyle}
@@ -86,22 +86,6 @@ export default function Register() {
             autoCapitalize="none"
             value={username}
             onChangeText={setUsername}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <MaterialIcons
-            name="alternate-email"
-            size={25}
-            color="#666"
-            style={styles.iconStyle}
-          ></MaterialIcons>
-          <TextInput
-            style={styles.input}
-            placeholder="Full Name"
-            mode="flat"
-            autoCapitalize="none"
-            value={fullName}
-            onChangeText={setFullName}
           />
         </View>
         <View style={styles.inputContainer}>
