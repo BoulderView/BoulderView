@@ -13,7 +13,7 @@ const HomeLayout = () => {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: "Climbs",
+          headerTitle: "Analytics",
           headerTintColor: "white",
           headerStyle: {
             backgroundColor: "#19376D",

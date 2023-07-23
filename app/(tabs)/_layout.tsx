@@ -72,8 +72,8 @@ const TabLayout = () => {
       <Tabs.Screen
         name="climbs"
         options={{
-          tabBarLabel: "Climbs",
-          headerTitle: "Climbs",
+          tabBarLabel: "Analytics",
+          headerTitle: "Analytics",
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons

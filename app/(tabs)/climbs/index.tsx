@@ -8,16 +8,12 @@ import { TabObject } from "../../../models/TabObject";
 
 const tabObject: TabObject = {
   DashboardComponent: {
-    title: "Dashboard",
+    title: "Summary",
     component: <DashboardComponent />,
   },
   HistoryComponent: {
     title: "History",
     component: <HistoryComponent />,
-  },
-  WorkoutComponent: {
-    title: "Workouts",
-    component: <WorkoutComponent />,
   },
 };
 
