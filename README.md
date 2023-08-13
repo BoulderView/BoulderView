@@ -34,6 +34,3 @@
 
 4 - Start working on and improving the UI
 </p>
-
-## Usage Instructions
-Install the app, and then register/login
