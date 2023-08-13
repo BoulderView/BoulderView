@@ -1,39 +1,40 @@
 <h1 align="center">BoulderView - Your Climbing Companion</h1>
-<h3 align="center">We aim to create a one stop climbing app with all the features that a climber would find useful!</h3>
 
-- 🔭 Works for ALL the climbing gyms in Singapore, with a built in map to explore the different routes in the gym
+<p float="center">
+  <img src="assets/readme/IMG_5029.PNG" width="33%" />
+  <img src="assets/readme/IMG_5038.PNG" width="33%" /> 
+  <img src="assets/readme/IMG_5028.PNG" width="33%" />
+</p>
 
-- 🌱 A social media app dedicated to climbers to upload and share their climbs with fellow climbers!
-
-- 👨‍💻 A stat tracker to track your climbing sessions and record your best climbs 
+# About BoulderView
+This is BoulderView, a social media app desgined to allow climbers to connect and be part of the bouldering community. BoulderView is designed with the intention to motivate climbers to grow together. BoulderView has attained an Orbital achievement of Apollo11.
 
 - Main collaborators are [Kurt](https://github.com/Kurtyjlee) and [Zheng Jing](https://github.com/leezhengjing?tab=repositories)
 
-- Our colour scheme for the app will be: ![color-hunt](https://github.com/Kurtyjlee/BoulderView/tree/main/assets/colorhunt.png)
+# Features
+- 🌱 A social media app dedicated to climbers to upload and share their climbs with fellow climbers
+- 👨‍💻 A stat tracker to track your climbing sessions and record your best climbs
+- 👨‍👩‍👦‍👦 A platform for a more personal and immersive climbing experience.
 
-- Our figma design can be seen here: [figma](https://www.figma.com/file/y2II0rb3txuoqI8GATHsVM/BoulderView-UI?type=design&node-id=0-1)
+# User Stories
+The typical climber
+1. As a climber, I would be able to recieve help by seeing how other climbers tackle a problem I am facing difficulty with and learn new techniques from my peers.
+2. As a climber, I would be able to meet new people through the app and grow with them.
+3. As a climber, I would be able to build a presence in the climbing community through the app.
+4. As a climber with limited time, I want to be able to preview the climbing routes before even entering the gym so that I can plan my climbing better.
+5. As a climber I would be motivated if I can share my climbs with people and receive likes and comments on my climbs.
+6. As a climber I would like to be able to look back at my climbs in the past so that I can see my progress as a climber.
+7. As a climber, I would be able to track my climbing progress and better plan my climbing trainings. 
 
-<h3 align="left">For Milestone 1:</h3>
-<p align="left">
-1 - Created a functional login/register page that connects to our Supabase database
+Climbing gyms in Singapore
+1. As a climbing gym, I would be able to entice newcomers to experience the gym facilities.
+2. As a climbing gym, I would be able to build a community through the app and bring people together.
 
-2 - Created a functional profile page that retrieves information from Supabase with CRUD capability
 
-3 - Created a functional map component on our app to navigate to the gym
+# Design and development
+View our figma mockup here:
+- Colour Scheme: ![color-hunt](assets/colorhunt.png)
+- Figma Mockup: [figma](https://www.figma.com/file/y2II0rb3txuoqI8GATHsVM/BoulderView-UI?type=design&node-id=0-1)
 
-4 - Created the home card pages and explore tabs
-</p>
-
-<h3 align="left">For Milestone 2:</h3>
-<p align="left">
-1 - We aim to create the statistics page with fully customisable workouts to track
-
-2 - Create the media sharing and searching features
-
-3 - Attempt to create a interactable indoor map
-
-4 - Start working on and improving the UI
-</p>
-
-## Usage Instructions
-Install the app, and then register/login
+# Poster
+![Poster](assets/readme/BoulderView_poster.png)
