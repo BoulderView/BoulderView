@@ -1,9 +1,9 @@
 <h1 align="center">BoulderView - Your Climbing Companion</h1>
 
 <p float="center">
-  <img src="assets/readme/IMG_5029.PNG" width="33%" />
-  <img src="assets/readme/IMG_5038.PNG" width="33%" /> 
-  <img src="assets/readme/IMG_5028.PNG" width="33%" />
+  <img src="assets/readme/IMG_5029.PNG" width="30%" />
+  <img src="assets/readme/IMG_5038.PNG" width="30%" /> 
+  <img src="assets/readme/IMG_5028.PNG" width="30%" />
 </p>
 
 # About BoulderView
