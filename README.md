@@ -7,7 +7,7 @@
 </p>
 
 # About BoulderView
-BoulderView is a social media app designed to allow climbers to connect and be part of the bouldering community. BoulderView is designed to motivate climbers to grow together. BoulderView has attained an Orbital achievement of Apollo 11.
+BoulderView is a social media app designed to allow climbers to connect and be part of the bouldering community. BoulderView is designed to motivate climbers to grow together. BoulderView has attained an Orbital achievement of Apollo 11. Try out BoulderView [here](https://github.com/Kurtyjlee/BoulderView/releases/tag/v1.0) and view our documentation [here](https://docs.google.com/document/d/1QLNPyh0o4ubs_PH4ksNkZdLIuUT5X7YY4h-4ZB4-qOI/edit)!
 
 - Main collaborators are [Kurt](https://github.com/Kurtyjlee) and [Zheng Jing](https://github.com/leezhengjing?tab=repositories)
 
@@ -38,3 +38,6 @@ View our Figma mockup here:
 
 # Poster
 ![Poster](assets/readme/BoulderView_poster.png)
+
+## Other links
+[Video](https://drive.google.com/file/d/1MBxvO7LUAAjxHNn9LA1nXagAq97cxGc_/view)
